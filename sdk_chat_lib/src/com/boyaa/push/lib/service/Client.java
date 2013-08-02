@@ -111,129 +111,138 @@ public class Client {
 	
 	public synchronized void close()
 	{
-		if(state!=STATE_CLOSE)
-		{
-			try {
-				if(null!=socket)
-				{
-					socket.close();
+		try {
+			if(state!=STATE_CLOSE)
+			{
+				try {
+					if(null!=socket)
+					{
+						socket.close();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}finally{
+					socket=null;
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}finally{
-				socket=null;
-			}
-			
-			try {
-				if(null!=outStream)
-				{
-					outStream.close();
+				
+				try {
+					if(null!=outStream)
+					{
+						outStream.close();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}finally{
+					outStream=null;
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}finally{
-				outStream=null;
-			}
-			
-			try {
-				if(null!=inStream)
-				{
-					inStream.close();
+				
+				try {
+					if(null!=inStream)
+					{
+						inStream.close();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}finally{
+					inStream=null;
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}finally{
-				inStream=null;
-			}
-			
-			try {
-				if(null!=conn&&conn.isAlive())
-				{
-					conn.interrupt();
+				
+				try {
+					if(null!=conn&&conn.isAlive())
+					{
+						conn.interrupt();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}finally{
+					conn=null;
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}finally{
-				conn=null;
-			}
-			
-			try {
-				if(null!=send&&send.isAlive())
-				{
-					send.interrupt();
+				
+				try {
+					if(null!=send&&send.isAlive())
+					{
+						send.interrupt();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}finally{
+					send=null;
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}finally{
-				send=null;
-			}
-			
-			try {
-				if(null!=rec&&rec.isAlive())
-				{
-					rec.interrupt();
+				
+				try {
+					if(null!=rec&&rec.isAlive())
+					{
+						rec.interrupt();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}finally{
+					rec=null;
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}finally{
-				rec=null;
+				
+				state=STATE_CLOSE;
 			}
-			
-			state=STATE_CLOSE;
+			requestQueen.clear();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		requestQueen.clear();
 	}
 	
 	private class Conn implements Runnable
 	{
 		public void run() {
 Log.v(TAG,"Conn :Start");
-			while(state!=STATE_CLOSE)
-			{
-				try {
-					state=STATE_CONNECT_START;
-					socket=new Socket();
-					socket.connect(new InetSocketAddress(IP, PORT), 15*1000);
-					state=STATE_CONNECT_SUCCESS;
-				} catch (Exception e) {
-					e.printStackTrace();
-					state=STATE_CONNECT_FAILED;
-				}
-				
-				if(state==STATE_CONNECT_SUCCESS)
-				{
-					try {
-						outStream=socket.getOutputStream();
-						inStream=socket.getInputStream();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					
-					send=new Thread(new Send());
-					rec=new Thread(new Rec());
-					send.start();
-					rec.start();
-					break;
-				}
-				else
-				{
-					state=STATE_CONNECT_WAIT;
-					//如果有网络没有连接上，则定时取连接，没有网络则直接退出
-					if(NetworkUtil.isNetworkAvailable(context))
+			try {
+					while(state!=STATE_CLOSE)
 					{
 						try {
-								Thread.sleep(15*1000);
-						} catch (InterruptedException e) {
+							state=STATE_CONNECT_START;
+							socket=new Socket();
+							socket.connect(new InetSocketAddress(IP, PORT), 15*1000);
+							state=STATE_CONNECT_SUCCESS;
+						} catch (Exception e) {
 							e.printStackTrace();
+							state=STATE_CONNECT_FAILED;
+						}
+						
+						if(state==STATE_CONNECT_SUCCESS)
+						{
+							try {
+								outStream=socket.getOutputStream();
+								inStream=socket.getInputStream();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+							
+							send=new Thread(new Send());
+							rec=new Thread(new Rec());
+							send.start();
+							rec.start();
 							break;
 						}
+						else
+						{
+							state=STATE_CONNECT_WAIT;
+							//如果有网络没有连接上，则定时取连接，没有网络则直接退出
+							if(NetworkUtil.isNetworkAvailable(context))
+							{
+								try {
+										Thread.sleep(15*1000);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+									break;
+								}
+							}
+							else
+							{
+								break;
+							}
+						}
 					}
-					else
-					{
-						break;
-					}
-				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+
 Log.v(TAG,"Conn :End");
 		}
 	}
