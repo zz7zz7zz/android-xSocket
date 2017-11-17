@@ -1,0 +1,18 @@
+#Internal package file, do not edit.
+#Fri Nov 17 23:30:36 CST 2017
+1.base=/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/res/resources-debug.ap_
+4.file=/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main/classes.dex
+1.file=/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/res/resources-debug.ap_/resources.arsc
+4.set=DEX
+2.base=/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/res/resources-debug.ap_
+3.set=ANDROID_RESOURCE
+2.set=ANDROID_RESOURCE
+2.file=/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/res/resources-debug.ap_/res/layout/net_socket_connection.xml
+count=5
+1.set=ANDROID_RESOURCE
+3.base=/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/res/resources-debug.ap_
+0.set=ANDROID_RESOURCE
+0.base=/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/res/resources-debug.ap_
+3.file=/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/res/resources-debug.ap_/res/drawable-xxhdpi-v4/ic_launcher.png
+0.file=/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/res/resources-debug.ap_/AndroidManifest.xml
+4.base=/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main

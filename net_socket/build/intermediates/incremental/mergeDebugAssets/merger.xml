@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/Users/long/AndroidStudioProjects/android-socket-client/net_socket/src/main/assets"/><source path="/Users/long/AndroidStudioProjects/android-socket-client/net_socket/build/generated/assets/shaders/debug"/></dataSet><dataSet config="debug"><source path="/Users/long/AndroidStudioProjects/android-socket-client/net_socket/src/debug/assets"/></dataSet></merger>

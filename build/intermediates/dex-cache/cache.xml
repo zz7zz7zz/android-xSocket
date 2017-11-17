@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/exploded-aar/android-socket-client/net_socket/unspecified/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="fb858d155b9bba111021e0a70e2d17d4224b9f56">
+        <dex dex="/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/pre-dexed/debug/android-socket-client-net_socket-unspecified_8036596bee158d6600da6141b18b25de619a408a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/long/Library/Android/sdk/extras/android/m2repository/com/android/support/support-v4/18.0.0/support-v4-18.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.0"
+        sha1="44ec51e9d395a47aab135e5e1b556c0007442156">
+        <dex dex="/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/pre-dexed/debug/support-v4-18.0.0_672d6b60150d3c3a944f4aa080a2aaac328b0271.jar" />
+    </item>
+
+</items>
