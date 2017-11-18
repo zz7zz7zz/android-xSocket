@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: 'java'
 
 android {
     compileSdkVersion 17

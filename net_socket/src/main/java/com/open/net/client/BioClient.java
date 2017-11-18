@@ -13,7 +13,7 @@ import java.net.SocketException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * 
+ *
  * @author Administrator
  *
  */
@@ -28,8 +28,6 @@ public class BioClient {
 	private ConcurrentLinkedQueue<AbsMessage> mMessageQueen = new ConcurrentLinkedQueue();
 	private Thread mConnectionThread =null;
 	private BioConnection mConnection;
-
-	private final Object lock=new Object();
 
 	private IConnectStatusListener mConnectionStatusListener = new IConnectStatusListener() {
 		@Override
@@ -51,7 +49,7 @@ public class BioClient {
 	public void setConnectAddress(TcpAddress[] tcpArray ){
 		this.tcpArray = tcpArray;
 	}
-	
+
 	public void sendMessage(AbsMessage msg)
 	{
 		//1.没有连接,需要进行重连
@@ -65,10 +63,7 @@ public class BioClient {
 		}else{
 			mMessageQueen.add(msg);
 			if(mConnection.isConnected()){
-				synchronized (lock)
-				{
-					lock.notifyAll();
-				}
+				mConnection.mWriter.wakeup();
 			}else{
 				//说明正在重连中
 			}
@@ -133,7 +128,7 @@ public class BioClient {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private class BioConnection implements Runnable
 	{
 
@@ -152,6 +147,7 @@ public class BioClient {
 		private Socket socket=null;
 		private OutputStream outStream=null;
 		private InputStream inStream=null;
+		private WriteRunnable mWriter;
 		private Thread writeThread =null;
 		private Thread readThread =null;
 
@@ -266,7 +262,8 @@ public class BioClient {
                     outStream=socket.getOutputStream();
                     inStream=socket.getInputStream();
 
-                    writeThread =new Thread(new WriteRunnable());
+                    mWriter = new WriteRunnable();
+                    writeThread =new Thread(mWriter);
                     readThread =new Thread(new ReadRunnable());
                     writeThread.start();
                     readThread.start();
@@ -288,6 +285,16 @@ public class BioClient {
 
 		private class WriteRunnable implements Runnable
 		{
+
+			private final Object lock=new Object();
+
+			public void wakeup(){
+				synchronized (lock)
+				{
+					lock.notifyAll();
+				}
+			}
+
 			public void run() {
 				try {
 					while(state!=STATE_CLOSE&&state==STATE_CONNECT_SUCCESS&&null!=outStream)
