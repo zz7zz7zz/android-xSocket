@@ -1,6 +1,10 @@
 [
     {
-        "merged": "/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/res/merged/debug/drawable-xhdpi/ic_launcher.png",
-        "source": "/Users/long/AndroidStudioProjects/android-socket-client/app/src/main/res/drawable-xhdpi/ic_launcher.png"
+        "merged": "E:\\android-studio-workspace\\android-socket-client\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\ic_launcher.png",
+        "source": "E:\\android-studio-workspace\\android-socket-client\\app\\src\\main\\res\\drawable-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "E:\\Users\\long\\AndroidStudioProjects\\android-socket-client\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\ic_launcher.png",
+        "source": "E:\\Users\\long\\AndroidStudioProjects\\android-socket-client\\app\\src\\main\\res\\drawable-xhdpi\\ic_launcher.png"
     }
 ]

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.open.net.test">
 
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17" />
+    <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="25" />
 
     <application>
         <uses-library android:name="android.test.runner" />

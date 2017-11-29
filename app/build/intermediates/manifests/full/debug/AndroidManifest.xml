@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="17" />
+        android:minSdkVersion="15"
+        android:targetSdkVersion="25" />
 
     <!-- CHAT SDK配置开始 -->
     <uses-permission android:name="android.permission.READ_LOGS" />

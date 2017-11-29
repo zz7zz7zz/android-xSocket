@@ -1,6 +1,10 @@
 [
     {
-        "merged": "/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/res/merged/debug/layout/net_socket_connection.xml",
-        "source": "/Users/long/AndroidStudioProjects/android-socket-client/app/src/main/res/layout/net_socket_connection.xml"
+        "merged": "E:\\Users\\long\\AndroidStudioProjects\\android-socket-client\\app\\build\\intermediates\\res\\merged\\debug\\layout\\net_socket_connection.xml",
+        "source": "E:\\Users\\long\\AndroidStudioProjects\\android-socket-client\\app\\src\\main\\res\\layout\\net_socket_connection.xml"
+    },
+    {
+        "merged": "E:\\android-studio-workspace\\android-socket-client\\app\\build\\intermediates\\res\\merged\\debug\\layout\\net_socket_connection.xml",
+        "source": "E:\\android-studio-workspace\\android-socket-client\\app\\src\\main\\res\\layout\\net_socket_connection.xml"
     }
 ]
