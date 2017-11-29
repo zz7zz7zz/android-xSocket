@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/android-socket-client.iml" filepath="$PROJECT_DIR$/.idea/android-socket-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android-socket-client.iml" filepath="$PROJECT_DIR$/android-socket-client.iml" />
     </modules>
   </component>
 </project>
