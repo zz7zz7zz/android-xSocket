@@ -26,7 +26,7 @@ public class BioClient {
 	private int index = -1;
 	private BaseMessageProcessor mConnectReceiveListener;
 
-	private ConcurrentLinkedQueue<AbsMessage> mMessageQueen = new ConcurrentLinkedQueue();
+	private ConcurrentLinkedQueue<AbsMessage> mWriteMessageQueen = new ConcurrentLinkedQueue();
 	private Thread mConnectionThread =null;
 	private BioConnection mConnection;
 
@@ -56,13 +56,13 @@ public class BioClient {
 		//1.没有连接,需要进行重连
 		//2.在连接不成功，并且也不在重连中时，需要进行重连;
 		if(null == mConnection){
-			mMessageQueen.add(msg);
+			mWriteMessageQueen.add(msg);
 			startConnect();
 		}else if(!mConnection.isConnected() && !mConnection.isConnecting()){
-			mMessageQueen.add(msg);
+			mWriteMessageQueen.add(msg);
 			startConnect();
 		}else{
-			mMessageQueen.add(msg);
+			mWriteMessageQueen.add(msg);
 			if(mConnection.isConnected()){
 				mConnection.mWriter.wakeup();
 			}else{
@@ -106,7 +106,7 @@ public class BioClient {
 			index = -1;
 
 			//循环连接了一遍还没有连接上，说明网络连接不成功，此时清空消息队列，防止队列堆积
-			mMessageQueen.clear();
+			mWriteMessageQueen.clear();
 		}
 	}
 
@@ -298,34 +298,25 @@ public class BioClient {
 
 			public void run() {
 				try {
-					while(state!=STATE_CLOSE&&state==STATE_CONNECT_SUCCESS&&null!=outStream)
-					{
+					while(state!=STATE_CLOSE && state== STATE_CONNECT_SUCCESS && null!=outStream ) {
 
-						while(!mMessageQueen.isEmpty()) {
-							AbsMessage item= mMessageQueen.poll();
-							boolean ret = item.write(outStream);
-							if(!ret){
-								throw new Exception("write Exception !");
-							}
-							outStream.flush();
+						if(write()){
+							break;
 						}
 
-						synchronized (lock)
-						{
+						synchronized (lock) {
 							lock.wait();
 						}
 					}
-				}catch(SocketException e1)
-				{
-					e1.printStackTrace();//发送的时候出现异常，说明socket被关闭了(服务器关闭)java.net.SocketException: sendto failed: EPIPE (Broken pipe)
-				}
-				catch (Exception e) {
+				}catch (Exception e) {
 					e.printStackTrace();
-				}finally {
-					if(!isClosedByUser){
-						if(null != mConnectStatusListener){
-							mConnectStatusListener.onConnectionFailed();
-						}
+				}
+
+				System.out.println("client close when write");
+
+				if(!isClosedByUser){
+					if(null != mConnectStatusListener){
+						mConnectStatusListener.onConnectionFailed();
 					}
 				}
 			}
@@ -337,7 +328,7 @@ public class BioClient {
 
 				read();
 
-				System.out.println("client colse when read");
+				System.out.println("client close when read");
 
 				if(!isClosedByUser){
 					if(null != mConnectStatusListener){
@@ -349,8 +340,21 @@ public class BioClient {
 
 		//-------------------------------------------------------
 		public boolean write(){
-
-			return false;
+			boolean writeRet = false;
+			try{
+				AbsMessage msg= mWriteMessageQueen.poll();
+				while(null != msg) {
+					outStream.write(msg.getPacket());
+					outStream.flush();
+					msg= mWriteMessageQueen.poll();
+				}
+				writeRet = true;
+			} catch (SocketException e) {
+				e.printStackTrace();//客户端主动socket.stopConnect()会调用这里 java.net.SocketException: Socket closed
+			}catch (IOException e1) {
+				e1.printStackTrace();//发送的时候出现异常，说明socket被关闭了(服务器关闭)java.net.SocketException: sendto failed: EPIPE (Broken pipe)
+			}
+			return writeRet;
 		}
 
 		public boolean read(){
@@ -361,8 +365,7 @@ public class BioClient {
 
 				while((numRead=inStream.read(bodyBytes, 0, maximum_length))>0) {
 					if(numRead > 0){
-						if(null!= mMessageProcessor)
-						{
+						if(null!= mMessageProcessor) {
 							mMessageProcessor.onReceive(bodyBytes,0,numRead);
 						}
 					}
