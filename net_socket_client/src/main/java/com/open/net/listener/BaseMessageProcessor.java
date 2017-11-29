@@ -5,8 +5,8 @@ package com.open.net.listener;
  * Created by Administrator on 2017/11/17.
  */
 
-public interface IConnectReceiveListener {
+public interface BaseMessageProcessor {
 
-    void onConnectionReceive(byte[] array);
+    void onReceive(byte[] src , int offset , int length);
 
 }

@@ -2,7 +2,7 @@ package com.open.net.client;
 
 import com.open.net.data.AbsMessage;
 import com.open.net.data.TcpAddress;
-import com.open.net.listener.IConnectReceiveListener;
+import com.open.net.listener.BaseMessageProcessor;
 import com.open.net.listener.IConnectStatusListener;
 
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class NioClient{
 
     private TcpAddress[] tcpArray;
     private int index = -1;
-    private IConnectReceiveListener mConnectReceiveListener;
+    private BaseMessageProcessor mConnectReceiveListener;
 
     //无锁队列
     private ConcurrentLinkedQueue<AbsMessage> mMessageQueen = new ConcurrentLinkedQueue();
@@ -44,7 +44,7 @@ public class NioClient{
         }
     };
 
-    public NioClient(TcpAddress[] tcpArray, IConnectReceiveListener mConnectionReceiveListener) {
+    public NioClient(TcpAddress[] tcpArray, BaseMessageProcessor mConnectionReceiveListener) {
         this.tcpArray = tcpArray;
         this.mConnectReceiveListener = mConnectionReceiveListener;
     }
@@ -147,10 +147,10 @@ public class NioClient{
         private int state= STATE_CLOSE;
         private ConcurrentLinkedQueue<AbsMessage> mMessageQueen;
         private IConnectStatusListener mConnectStatusListener;
-        private IConnectReceiveListener mConnectReceiveListener;
+        private BaseMessageProcessor mConnectReceiveListener;
         private boolean isClosedByUser = false;
 
-        public NioConnection(String ip, int port, ConcurrentLinkedQueue<AbsMessage> queen, IConnectStatusListener mNioConnectionListener, IConnectReceiveListener mConnectReceiveListener) {
+        public NioConnection(String ip, int port, ConcurrentLinkedQueue<AbsMessage> queen, IConnectStatusListener mNioConnectionListener, BaseMessageProcessor mConnectReceiveListener) {
             this.ip = ip;
             this.port = port;
             this.mMessageQueen = queen;
@@ -288,9 +288,7 @@ public class NioClient{
 
             if(numRead > 0){
                 if(null != mConnectReceiveListener){
-                    byte[] readArray = new byte[numRead];
-                    System.arraycopy(readBuffer.array(),0,readArray,0,numRead);
-                    mConnectReceiveListener.onConnectionReceive(readArray);
+                    mConnectReceiveListener.onReceive(readBuffer.array(),0,numRead);
                 }
             }
             return true;

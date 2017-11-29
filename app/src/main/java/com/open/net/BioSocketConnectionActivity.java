@@ -2,13 +2,14 @@ package com.open.net;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 import com.open.net.client.BioClient;
 import com.open.net.data.TcpAddress;
-import com.open.net.listener.IConnectReceiveListener;
+import com.open.net.listener.BaseMessageProcessor;
 
 public class BioSocketConnectionActivity extends Activity {
 
@@ -74,13 +75,15 @@ public class BioSocketConnectionActivity extends Activity {
 		}
 	};
 
-	private IConnectReceiveListener socketListener=new IConnectReceiveListener() {
+	private BaseMessageProcessor socketListener=new BaseMessageProcessor() {
 
 		@Override
-		public void onConnectionReceive(final byte[] array) {
+		public void onReceive(final byte[] src , final int offset , final int length) {
+			Log.v("Socket A",new String(src,offset,length));
 			runOnUiThread(new Runnable() {
 				public void run() {
-					recContent.getText().append(new String(array)).append("\r\n");
+					Log.v("Socket B ",new String(src,offset,length));
+					recContent.getText().append(new String(src,offset,length)).append("\r\n");
 				}
 			});
 		}

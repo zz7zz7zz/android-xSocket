@@ -8,7 +8,7 @@ import android.widget.EditText;
 
 import com.open.net.client.NioClient;
 import com.open.net.data.TcpAddress;
-import com.open.net.listener.IConnectReceiveListener;
+import com.open.net.listener.BaseMessageProcessor;
 
 public class NioSocketConnectionActivity extends Activity {
 
@@ -74,13 +74,13 @@ public class NioSocketConnectionActivity extends Activity {
 		}
 	};
 
-	private IConnectReceiveListener socketListener=new IConnectReceiveListener() {
+	private BaseMessageProcessor socketListener=new BaseMessageProcessor() {
 
 		@Override
-		public void onConnectionReceive(final byte[] array) {
+		public void onReceive(final byte[] src , final int offset , final int length) {
 			runOnUiThread(new Runnable() {
 				public void run() {
-					recContent.getText().append(new String(array)).append("\r\n");
+					recContent.getText().append(new String(src,offset,length)).append("\r\n");
 				}
 			});
 		}

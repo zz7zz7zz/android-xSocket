@@ -2,9 +2,10 @@ package com.open.net.client;
 
 import com.open.net.data.AbsMessage;
 import com.open.net.data.TcpAddress;
-import com.open.net.listener.IConnectReceiveListener;
+import com.open.net.listener.BaseMessageProcessor;
 import com.open.net.listener.IConnectStatusListener;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -23,7 +24,7 @@ public class BioClient {
 
 	private TcpAddress[] tcpArray;
 	private int index = -1;
-	private IConnectReceiveListener mConnectReceiveListener;
+	private BaseMessageProcessor mConnectReceiveListener;
 
 	private ConcurrentLinkedQueue<AbsMessage> mMessageQueen = new ConcurrentLinkedQueue();
 	private Thread mConnectionThread =null;
@@ -41,7 +42,7 @@ public class BioClient {
 		}
 	};
 
-	public BioClient(TcpAddress[] tcpArray , IConnectReceiveListener mConnectReceiveListener) {
+	public BioClient(TcpAddress[] tcpArray , BaseMessageProcessor mConnectReceiveListener) {
 		this.tcpArray = tcpArray;
 		this.mConnectReceiveListener = mConnectReceiveListener;
 	}
@@ -141,7 +142,7 @@ public class BioClient {
 		private int port =9999;
 		private int state = STATE_CLOSE;
 		private IConnectStatusListener mConnectStatusListener;
-		private IConnectReceiveListener mConnectReceiveListener;
+		private BaseMessageProcessor mMessageProcessor;
 		private boolean isClosedByUser = false;
 
 		private Socket socket=null;
@@ -152,11 +153,11 @@ public class BioClient {
 		private Thread readThread =null;
 
 
-		public BioConnection(String ip, int port, IConnectStatusListener mConnectionStatusListener, IConnectReceiveListener mConnectReceiveListener) {
+		public BioConnection(String ip, int port, IConnectStatusListener mConnectionStatusListener, BaseMessageProcessor mConnectReceiveListener) {
 			this.ip = ip;
 			this.port = port;
 			this.mConnectStatusListener = mConnectionStatusListener;
-			this.mConnectReceiveListener = mConnectReceiveListener;
+			this.mMessageProcessor = mConnectReceiveListener;
 		}
 
 		public boolean isClosed(){
@@ -300,8 +301,7 @@ public class BioClient {
 					while(state!=STATE_CLOSE&&state==STATE_CONNECT_SUCCESS&&null!=outStream)
 					{
 
-						while(!mMessageQueen.isEmpty())
-						{
+						while(!mMessageQueen.isEmpty()) {
 							AbsMessage item= mMessageQueen.poll();
 							boolean ret = item.write(outStream);
 							if(!ret){
@@ -334,43 +334,47 @@ public class BioClient {
 		private class ReadRunnable implements Runnable
 		{
 			public void run() {
-				try {
-					while(state!=STATE_CLOSE&&state==STATE_CONNECT_SUCCESS&&null!=inStream)
-					{
-						int maximum_length = 8192;
-						byte[] bodyBytes=new byte[maximum_length];
-						int numRead;
 
-						while((numRead=inStream.read(bodyBytes, 0, maximum_length))>0)
-						{
-							if(numRead > 0){
-								if(null!= mConnectReceiveListener)
-								{
-									byte[] readArray = new byte[numRead];
-									System.arraycopy(bodyBytes,0,readArray,0,numRead);
-									mConnectReceiveListener.onConnectionReceive(readArray);
-								}
-							}
-						}
+				read();
 
-						throw new Exception("read Exception !");
-					}
-				}
-				catch(SocketException e1)
-				{
-					e1.printStackTrace();//客户端主动socket.stopConnect()会调用这里 java.net.SocketException: Socket closed
-				}
-				catch (Exception e2) {
-					e2.printStackTrace();
-				}finally {
-					if(!isClosedByUser){
-						if(null != mConnectStatusListener){
-							mConnectStatusListener.onConnectionFailed();
-						}
+				System.out.println("client colse when read");
+
+				if(!isClosedByUser){
+					if(null != mConnectStatusListener){
+						mConnectStatusListener.onConnectionFailed();
 					}
 				}
 			}
 		}
 
+		//-------------------------------------------------------
+		public boolean write(){
+
+			return false;
+		}
+
+		public boolean read(){
+			try {
+				int maximum_length = 8192;
+				byte[] bodyBytes=new byte[maximum_length];
+				int numRead;
+
+				while((numRead=inStream.read(bodyBytes, 0, maximum_length))>0) {
+					if(numRead > 0){
+						if(null!= mMessageProcessor)
+						{
+							mMessageProcessor.onReceive(bodyBytes,0,numRead);
+						}
+					}
+				}
+			} catch (SocketException e) {
+				e.printStackTrace();//客户端主动socket.stopConnect()会调用这里 java.net.SocketException: Socket closed
+			}catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			return false;
+		}
+
 	}
+
 }
