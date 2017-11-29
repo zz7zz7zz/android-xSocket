@@ -253,6 +253,46 @@ public class BioClient {
 			}
 		}
 
+		//-------------------------------------------------------------------------------------------
+		public boolean write(){
+			boolean writeRet = false;
+			try{
+				AbsMessage msg= mWriteMessageQueen.poll();
+				while(null != msg) {
+					outStream.write(msg.getPacket());
+					outStream.flush();
+					msg= mWriteMessageQueen.poll();
+				}
+				writeRet = true;
+			} catch (SocketException e) {
+				e.printStackTrace();//客户端主动socket.stopConnect()会调用这里 java.net.SocketException: Socket closed
+			}catch (IOException e1) {
+				e1.printStackTrace();//发送的时候出现异常，说明socket被关闭了(服务器关闭)java.net.SocketException: sendto failed: EPIPE (Broken pipe)
+			}
+			return writeRet;
+		}
+
+		public boolean read(){
+			try {
+				int maximum_length = 8192;
+				byte[] bodyBytes=new byte[maximum_length];
+				int numRead;
+
+				while((numRead=inStream.read(bodyBytes, 0, maximum_length))>0) {
+					if(numRead > 0){
+						if(null!= mMessageProcessor) {
+							mMessageProcessor.onReceive(bodyBytes,0,numRead);
+						}
+					}
+				}
+			} catch (SocketException e) {
+				e.printStackTrace();//客户端主动socket.stopConnect()会调用这里 java.net.SocketException: Socket closed
+			}catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			return false;
+		}
+
 		public void run() {
 			try {
                     isClosedByUser = false;
@@ -284,8 +324,7 @@ public class BioClient {
 		}
 
 
-		private class WriteRunnable implements Runnable
-		{
+		private class WriteRunnable implements Runnable {
 
 			private final Object lock=new Object();
 
@@ -337,47 +376,6 @@ public class BioClient {
 				}
 			}
 		}
-
-		//-------------------------------------------------------
-		public boolean write(){
-			boolean writeRet = false;
-			try{
-				AbsMessage msg= mWriteMessageQueen.poll();
-				while(null != msg) {
-					outStream.write(msg.getPacket());
-					outStream.flush();
-					msg= mWriteMessageQueen.poll();
-				}
-				writeRet = true;
-			} catch (SocketException e) {
-				e.printStackTrace();//客户端主动socket.stopConnect()会调用这里 java.net.SocketException: Socket closed
-			}catch (IOException e1) {
-				e1.printStackTrace();//发送的时候出现异常，说明socket被关闭了(服务器关闭)java.net.SocketException: sendto failed: EPIPE (Broken pipe)
-			}
-			return writeRet;
-		}
-
-		public boolean read(){
-			try {
-				int maximum_length = 8192;
-				byte[] bodyBytes=new byte[maximum_length];
-				int numRead;
-
-				while((numRead=inStream.read(bodyBytes, 0, maximum_length))>0) {
-					if(numRead > 0){
-						if(null!= mMessageProcessor) {
-							mMessageProcessor.onReceive(bodyBytes,0,numRead);
-						}
-					}
-				}
-			} catch (SocketException e) {
-				e.printStackTrace();//客户端主动socket.stopConnect()会调用这里 java.net.SocketException: Socket closed
-			}catch (IOException e1) {
-				e1.printStackTrace();
-			}
-			return false;
-		}
-
 	}
 
 }
