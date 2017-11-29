@@ -1,12 +1,12 @@
 package com.open.net;
 
-import com.open.net.data.AbsMessage;
+import com.open.net.data.Message;
 
 /**
  * Created by Administrator on 2017/11/17.
  */
 
-public class WeMessage extends AbsMessage {
+public class WeMessage extends Message {
 
     public String msg;
 
