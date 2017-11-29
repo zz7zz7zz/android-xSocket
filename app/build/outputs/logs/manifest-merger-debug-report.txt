@@ -35,7 +35,7 @@ ADDED from E:\android-studio-workspace\android-socket-client\app\src\main\Androi
 		ADDED from E:\android-studio-workspace\android-socket-client\app\src\main\AndroidManifest.xml:13:9-45
 	android:theme
 		ADDED from E:\android-studio-workspace\android-socket-client\app\src\main\AndroidManifest.xml:15:9-40
-activity#com.open.net.BioSocketConnectionActivity
+activity#com.open.net.NioClientConnectionActivity
 ADDED from E:\android-studio-workspace\android-socket-client\app\src\main\AndroidManifest.xml:16:9-24:20
 	android:label
 		ADDED from E:\android-studio-workspace\android-socket-client\app\src\main\AndroidManifest.xml:18:13-45
