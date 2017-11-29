@@ -268,6 +268,8 @@ public class BioClient {
 				e.printStackTrace();//客户端主动socket.stopConnect()会调用这里 java.net.SocketException: Socket closed
 			}catch (IOException e1) {
 				e1.printStackTrace();//发送的时候出现异常，说明socket被关闭了(服务器关闭)java.net.SocketException: sendto failed: EPIPE (Broken pipe)
+			}catch (Exception e2) {
+				e2.printStackTrace();
 			}
 			return writeRet;
 		}
@@ -289,6 +291,8 @@ public class BioClient {
 				e.printStackTrace();//客户端主动socket.stopConnect()会调用这里 java.net.SocketException: Socket closed
 			}catch (IOException e1) {
 				e1.printStackTrace();
+			}catch (Exception e2) {
+				e2.printStackTrace();
 			}
 			return false;
 		}
