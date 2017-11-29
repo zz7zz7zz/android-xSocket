@@ -1,4 +1,4 @@
-#Fri Nov 17 23:30:36 CST 2017
-base.0=/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main
+#Wed Nov 29 17:28:50 CST 2017
+base.0=E\:\\android-studio-workspace\\android-socket-client\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main
 renamed.0=classes.dex
-file.0=/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/transforms/dex/debug/folders/1000/1f/main/classes.dex
+file.0=E\:\\android-studio-workspace\\android-socket-client\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main\\classes.dex

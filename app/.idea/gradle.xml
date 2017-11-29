@@ -9,7 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$/.." />
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/../net_socket" />
+            <option value="$PROJECT_DIR$/../net_socket_client" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/../android-socket-client.iml" filepath="$PROJECT_DIR$/../android-socket-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/app.iml" filepath="$PROJECT_DIR$/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/../net_socket/net_socket.iml" filepath="$PROJECT_DIR$/../net_socket/net_socket.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../net_socket_client/net_socket_client.iml" filepath="$PROJECT_DIR$/../net_socket_client/net_socket_client.iml" />
     </modules>
   </component>
 </project>
