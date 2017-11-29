@@ -1,6 +1,6 @@
 package com.open.net.client;
 
-import com.open.net.data.AbsMessage;
+import com.open.net.data.Message;
 import com.open.net.data.TcpAddress;
 import com.open.net.listener.BaseMessageProcessor;
 import com.open.net.listener.IConnectStatusListener;
@@ -26,7 +26,7 @@ public class BioClient {
 	private int index = -1;
 	private BaseMessageProcessor mConnectReceiveListener;
 
-	private ConcurrentLinkedQueue<AbsMessage> mWriteMessageQueen = new ConcurrentLinkedQueue();
+	private ConcurrentLinkedQueue<Message> mWriteMessageQueen = new ConcurrentLinkedQueue();
 	private Thread mConnectionThread =null;
 	private BioConnection mConnection;
 
@@ -51,7 +51,7 @@ public class BioClient {
 		this.tcpArray = tcpArray;
 	}
 
-	public void sendMessage(AbsMessage msg)
+	public void sendMessage(Message msg)
 	{
 		//1.没有连接,需要进行重连
 		//2.在连接不成功，并且也不在重连中时，需要进行重连;
@@ -257,7 +257,7 @@ public class BioClient {
 		public boolean write(){
 			boolean writeRet = false;
 			try{
-				AbsMessage msg= mWriteMessageQueen.poll();
+				Message msg= mWriteMessageQueen.poll();
 				while(null != msg) {
 					outStream.write(msg.getPacket());
 					outStream.flush();

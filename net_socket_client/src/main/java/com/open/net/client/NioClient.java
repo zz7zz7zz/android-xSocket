@@ -1,6 +1,6 @@
 package com.open.net.client;
 
-import com.open.net.data.AbsMessage;
+import com.open.net.data.Message;
 import com.open.net.data.TcpAddress;
 import com.open.net.listener.BaseMessageProcessor;
 import com.open.net.listener.IConnectStatusListener;
@@ -28,7 +28,7 @@ public class NioClient{
     private BaseMessageProcessor mConnectReceiveListener;
 
     //无锁队列
-    private ConcurrentLinkedQueue<AbsMessage> mMessageQueen = new ConcurrentLinkedQueue();
+    private ConcurrentLinkedQueue<Message> mMessageQueen = new ConcurrentLinkedQueue();
     private Thread mConnectionThread;
     private NioConnection mConnection;
 
@@ -53,7 +53,7 @@ public class NioClient{
         this.tcpArray = tcpArray;
     }
 
-    public void sendMessage(AbsMessage msg){
+    public void sendMessage(Message msg){
         //1.没有连接,需要进行重连
         //2.在连接不成功，并且也不在重连中时，需要进行重连;
         if(null == mConnection){
@@ -145,17 +145,17 @@ public class NioClient{
         private SocketChannel socketChannel;
 
         private int state= STATE_CLOSE;
-        private ConcurrentLinkedQueue<AbsMessage> mMessageQueen;
+        private ConcurrentLinkedQueue<Message> mMessageQueen;
         private IConnectStatusListener mConnectStatusListener;
-        private BaseMessageProcessor mConnectReceiveListener;
+        private BaseMessageProcessor mMessageProcessor;
         private boolean isClosedByUser = false;
 
-        public NioConnection(String ip, int port, ConcurrentLinkedQueue<AbsMessage> queen, IConnectStatusListener mNioConnectionListener, BaseMessageProcessor mConnectReceiveListener) {
+        public NioConnection(String ip, int port, ConcurrentLinkedQueue<Message> queen, IConnectStatusListener mNioConnectionListener, BaseMessageProcessor mConnectReceiveListener) {
             this.ip = ip;
             this.port = port;
             this.mMessageQueen = queen;
             this.mConnectStatusListener = mNioConnectionListener;
-            this.mConnectReceiveListener = mConnectReceiveListener;
+            this.mMessageProcessor = mConnectReceiveListener;
         }
 
         public boolean isClosed(){
@@ -194,6 +194,73 @@ public class NioClient{
             }
         }
 
+    //-------------------------------------------------------------------------------------------
+
+        private boolean finishConnection(SelectionKey key) throws IOException {
+            boolean result;
+            SocketChannel socketChannel = (SocketChannel) key.channel();
+            result= socketChannel.finishConnect();//没有网络的时候也返回true
+            if(result) {
+                key.interestOps(SelectionKey.OP_READ);
+                state=STATE_CONNECT_SUCCESS;
+                this.mConnectStatusListener.onConnectionSuccess();
+            }
+            return result;
+        }
+
+        private boolean read(SelectionKey key) {
+            boolean readRet = true;
+            try{
+                SocketChannel socketChannel = (SocketChannel) key.channel();
+                readBuffer.clear();
+                int numRead;
+                numRead = socketChannel.read(readBuffer);
+                if (numRead == -1) {
+                    key.channel().close();
+                    key.cancel();
+                    readRet = false;
+                }else if(numRead > 0){
+                    if(null != mMessageProcessor){
+                        mMessageProcessor.onReceive(readBuffer.array(),0,numRead);
+                    }
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                readRet = false;
+            }
+
+            return readRet;
+        }
+
+        private boolean write(SelectionKey key) {
+            SocketChannel socketChannel = (SocketChannel) key.channel();
+            Message msg = mMessageQueen.poll();
+            while (null != msg){
+                try {
+                    ByteBuffer buf= ByteBuffer.wrap(msg.getPacket());
+                    socketChannel.write(buf);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    try {
+                        key.cancel();
+                        key.channel().close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    return false;
+                }
+                msg = mMessageQueen.poll();
+            }
+            key.interestOps(SelectionKey.OP_READ);
+            return true;
+        }
+
+        private void setConnectionTimeout(long timeout){
+            new Thread(new NioConnectStateWatcher(timeout)).start();
+        }
+
+        //-------------------------------------------------------------------------------------------
+
         @Override
         public void run() {
             try {
@@ -207,38 +274,42 @@ public class NioClient{
                 socketChannel.connect(address);
                 socketChannel.register(selector, SelectionKey.OP_CONNECT);
 
-                while(state != STATE_CLOSE)
-                {
+                boolean isExit = false;
+                while(state != STATE_CLOSE && !isExit) {
+
                     selector.select();
                     Iterator<SelectionKey> selectedKeys = selector.selectedKeys().iterator();
-                    while (selectedKeys.hasNext())
-                    {
+                    while (selectedKeys.hasNext()) {
                         SelectionKey key =  selectedKeys.next();
                         selectedKeys.remove();
 
-                        if (!key.isValid())
-                        {
+                        if (!key.isValid()) {
                             continue;
                         }
 
-                        if (key.isConnectable())
-                        {
+                        if (key.isConnectable()) {
+
                             finishConnection(key);
-                        }
-                        else if (key.isReadable())
-                        {
+
+                        }else if (key.isReadable()) {
+
                             boolean ret = read(key);
                             if(!ret){
-                                throw new Exception("read Exception !");
+                                isExit = true;
+                                break;
                             }
-                        }
-                        else if (key.isWritable())
-                        {
+
+                        }else if (key.isWritable()) {
                             boolean ret = write(key);
                             if(!ret){
-                                throw new Exception("write Exception !");
+                                isExit = true;
+                                break;
                             }
                         }
+                    }
+
+                    if(isExit){
+                        break;
                     }
 
                     if(!mMessageQueen.isEmpty()) {
@@ -257,58 +328,6 @@ public class NioClient{
                     }
                 }
             }
-        }
-
-        private boolean finishConnection(SelectionKey key) throws IOException
-        {
-            boolean result;
-            SocketChannel socketChannel = (SocketChannel) key.channel();
-            result= socketChannel.finishConnect();//没有网络的时候也返回true
-            if(result)
-            {
-                key.interestOps(SelectionKey.OP_READ);
-                state=STATE_CONNECT_SUCCESS;
-                this.mConnectStatusListener.onConnectionSuccess();
-            }
-            return result;
-        }
-
-        private boolean read(SelectionKey key) throws IOException
-        {
-            SocketChannel socketChannel = (SocketChannel) key.channel();
-            readBuffer.clear();
-            int numRead;
-            numRead = socketChannel.read(readBuffer);
-            if (numRead == -1)
-            {
-                key.channel().close();
-                key.cancel();
-                return false;
-            }
-
-            if(numRead > 0){
-                if(null != mConnectReceiveListener){
-                    mConnectReceiveListener.onReceive(readBuffer.array(),0,numRead);
-                }
-            }
-            return true;
-        }
-
-        private boolean write(SelectionKey key)
-        {
-            SocketChannel socketChannel = (SocketChannel) key.channel();
-            while (!mMessageQueen.isEmpty()){
-                AbsMessage msg = mMessageQueen.poll();
-                if(!msg.write(socketChannel)){
-                    return false;
-                }
-            }
-            key.interestOps(SelectionKey.OP_READ);
-            return true;
-        }
-
-        private void setConnectionTimeout(long timeout){
-            new Thread(new NioConnectStateWatcher(timeout)).start();
         }
 
         private class NioConnectStateWatcher implements Runnable {
