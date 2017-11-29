@@ -7,7 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 import com.open.net.client.impl.BioClient;
-import com.open.net.client.listener.BaseMessageProcessor;
+import com.open.net.client.listener.IMessageProcessor;
 import com.open.net.client.listener.IConnectStatusListener;
 import com.open.net.client.structures.Message;
 import com.open.net.client.structures.TcpAddress;
@@ -89,7 +89,7 @@ public class BioClientConnectionActivity extends Activity {
 		}
 	};
 
-	private BaseMessageProcessor socketListener=new BaseMessageProcessor() {
+	private IMessageProcessor socketListener=new IMessageProcessor() {
 
 		@Override
 		public void onReceive(final byte[] src , final int offset , final int length) {

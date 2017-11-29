@@ -10,7 +10,7 @@ import com.open.net.client.impl.NioClient;
 import com.open.net.client.listener.IConnectStatusListener;
 import com.open.net.client.structures.Message;
 import com.open.net.client.structures.TcpAddress;
-import com.open.net.client.listener.BaseMessageProcessor;
+import com.open.net.client.listener.IMessageProcessor;
 
 public class NioClientConnectionActivity extends Activity {
 
@@ -89,7 +89,7 @@ public class NioClientConnectionActivity extends Activity {
 		}
 	};
 
-	private BaseMessageProcessor socketListener=new BaseMessageProcessor() {
+	private IMessageProcessor socketListener=new IMessageProcessor() {
 
 		@Override
 		public void onReceive(final byte[] src , final int offset , final int length) {

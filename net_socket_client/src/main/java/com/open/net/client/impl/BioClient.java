@@ -2,7 +2,7 @@ package com.open.net.client.impl;
 
 import com.open.net.client.structures.Message;
 import com.open.net.client.structures.TcpAddress;
-import com.open.net.client.listener.BaseMessageProcessor;
+import com.open.net.client.listener.IMessageProcessor;
 import com.open.net.client.listener.IConnectStatusListener;
 
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class BioClient {
 
 	private TcpAddress[] tcpArray;
 	private int index = -1;
-	private BaseMessageProcessor mConnectReceiveListener;
+	private IMessageProcessor mConnectReceiveListener;
 
 	private ConcurrentLinkedQueue<Message> mWriteMessageQueen = new ConcurrentLinkedQueue();
 	private Thread mConnectionThread =null;
@@ -32,7 +32,7 @@ public class BioClient {
 
 	private IConnectStatusListener mConnectStatusListener = null;
 
-	public BioClient(TcpAddress[] tcpArray , BaseMessageProcessor mConnectReceiveListener) {
+	public BioClient(TcpAddress[] tcpArray , IMessageProcessor mConnectReceiveListener) {
 		this.tcpArray = tcpArray;
 		this.mConnectReceiveListener = mConnectReceiveListener;
 	}
@@ -136,7 +136,7 @@ public class BioClient {
 		private int port =9999;
 		private int state = STATE_CLOSE;
 		private IConnectStatusListener mConnectStatusListener;
-		private BaseMessageProcessor mMessageProcessor;
+		private IMessageProcessor mMessageProcessor;
 		private boolean isClosedByUser = false;
 
 		private Socket socket=null;
@@ -147,7 +147,7 @@ public class BioClient {
 		private Thread readThread =null;
 
 
-		public BioConnection(String ip, int port, IConnectStatusListener mConnectionStatusListener, BaseMessageProcessor mConnectReceiveListener) {
+		public BioConnection(String ip, int port, IConnectStatusListener mConnectionStatusListener, IMessageProcessor mConnectReceiveListener) {
 			this.ip = ip;
 			this.port = port;
 			this.mConnectStatusListener = mConnectionStatusListener;

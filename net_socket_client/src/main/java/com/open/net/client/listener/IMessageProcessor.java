@@ -6,7 +6,7 @@ package com.open.net.client.listener;
  * description  :   数据回调
  */
 
-public interface BaseMessageProcessor {
+public interface IMessageProcessor {
 
     void onReceive(byte[] src , int offset , int length);
 

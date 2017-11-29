@@ -2,7 +2,7 @@ package com.open.net.client.impl;
 
 import com.open.net.client.structures.Message;
 import com.open.net.client.structures.TcpAddress;
-import com.open.net.client.listener.BaseMessageProcessor;
+import com.open.net.client.listener.IMessageProcessor;
 import com.open.net.client.listener.IConnectStatusListener;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class NioClient{
 
     private TcpAddress[] tcpArray;
     private int index = -1;
-    private BaseMessageProcessor mConnectReceiveListener;
+    private IMessageProcessor mConnectReceiveListener;
 
     //无锁队列
     private ConcurrentLinkedQueue<Message> mWriteMessageQueen = new ConcurrentLinkedQueue();
@@ -36,7 +36,7 @@ public class NioClient{
 
     private IConnectStatusListener mConnectStatusListener = null;
 
-    public NioClient(TcpAddress[] tcpArray, BaseMessageProcessor mConnectionReceiveListener) {
+    public NioClient(TcpAddress[] tcpArray, IMessageProcessor mConnectionReceiveListener) {
         this.tcpArray = tcpArray;
         this.mConnectReceiveListener = mConnectionReceiveListener;
     }
@@ -144,10 +144,10 @@ public class NioClient{
         private int state= STATE_CLOSE;
         private ConcurrentLinkedQueue<Message> mMessageQueen;
         private IConnectStatusListener mConnectStatusListener;
-        private BaseMessageProcessor mMessageProcessor;
+        private IMessageProcessor mMessageProcessor;
         private boolean isClosedByUser = false;
 
-        public NioConnection(String ip, int port, ConcurrentLinkedQueue<Message> queen, IConnectStatusListener mNioConnectionListener, BaseMessageProcessor mConnectReceiveListener) {
+        public NioConnection(String ip, int port, ConcurrentLinkedQueue<Message> queen, IConnectStatusListener mNioConnectionListener, IMessageProcessor mConnectReceiveListener) {
             this.ip = ip;
             this.port = port;
             this.mMessageQueen = queen;
