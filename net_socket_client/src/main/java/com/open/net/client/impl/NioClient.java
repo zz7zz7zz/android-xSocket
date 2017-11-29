@@ -137,7 +137,8 @@ public class NioClient{
         private int port =9999;
 
         private Selector selector;
-        private ByteBuffer readBuffer = ByteBuffer.allocate(8192);
+        private ByteBuffer mReadByteBuffer  = ByteBuffer.allocate(256*1024);
+        private ByteBuffer mWriteByteBuffer = ByteBuffer.allocate(256*1024);
         private SocketChannel socketChannel;
 
         private int state= STATE_CLOSE;
@@ -210,18 +211,20 @@ public class NioClient{
             boolean readRet = true;
             try{
                 SocketChannel socketChannel = (SocketChannel) key.channel();
-                readBuffer.clear();
+                mReadByteBuffer.clear();
                 int numRead;
-                numRead = socketChannel.read(readBuffer);
+                numRead = socketChannel.read(mReadByteBuffer);
+                mReadByteBuffer.flip();
                 if (numRead == -1) {
                     key.channel().close();
                     key.cancel();
                     readRet = false;
                 }else if(numRead > 0){
                     if(null != mMessageProcessor){
-                        mMessageProcessor.onReceive(readBuffer.array(),0,numRead);
+                        mMessageProcessor.onReceive(mReadByteBuffer.array(),0,numRead);
                     }
                 }
+                mReadByteBuffer.clear();
             }catch (Exception e){
                 e.printStackTrace();
                 readRet = false;
@@ -235,8 +238,48 @@ public class NioClient{
             Message msg = mMessageQueen.poll();
             while (null != msg){
                 try {
-                    ByteBuffer buf= ByteBuffer.wrap(msg.getPacket());
-                    socketChannel.write(buf);
+                    //如果消息块的大小超过缓存的最大值，则需要分段写入后才丢弃消息，不能在数据未完全写完的情况下将消息丢弃;avoid BufferOverflowException
+                    if(mWriteByteBuffer.capacity() < msg.length){
+
+                        int offset = 0;
+                        int leftLength = msg.length;
+                        int writtenTotalLength;
+
+                        while(true){
+
+                            int putLength = leftLength > mWriteByteBuffer.capacity() ? mWriteByteBuffer.capacity() : leftLength;
+                            mWriteByteBuffer.put(msg.data,offset,putLength);
+                            mWriteByteBuffer.flip();
+                            offset      += putLength;
+                            leftLength  -= putLength;
+
+                            int writtenLength   = socketChannel.write(mWriteByteBuffer);//客户端关闭连接后，此处将抛出异常
+                            writtenTotalLength  = writtenLength;
+
+                            while(writtenLength > 0 && mWriteByteBuffer.hasRemaining()){
+                                writtenLength       = socketChannel.write(mWriteByteBuffer);
+                                writtenTotalLength += writtenLength;
+                            }
+                            mWriteByteBuffer.clear();
+
+                            if(leftLength <=0){
+                                break;
+                            }
+                        }
+                    }else{
+                        mWriteByteBuffer.put(msg.data,0,msg.length);
+                        mWriteByteBuffer.flip();
+
+                        int writtenLength      = socketChannel.write(mWriteByteBuffer);//客户端关闭连接后，此处将抛出异常
+                        int writtenTotalLength = writtenLength;
+
+                        while(writtenLength > 0 && mWriteByteBuffer.hasRemaining()){
+                            writtenLength       = socketChannel.write(mWriteByteBuffer);
+                            writtenTotalLength += writtenLength;
+                        }
+                        mWriteByteBuffer.clear();
+                    }
+
                 } catch (IOException e) {
                     e.printStackTrace();
                     try {

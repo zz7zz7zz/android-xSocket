@@ -7,9 +7,10 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 import com.open.net.client.impl.BioClient;
-import com.open.net.client.listener.IConnectStatusListener;
-import com.open.net.client.structures.TcpAddress;
 import com.open.net.client.listener.BaseMessageProcessor;
+import com.open.net.client.listener.IConnectStatusListener;
+import com.open.net.client.structures.Message;
+import com.open.net.client.structures.TcpAddress;
 
 public class BioClientConnectionActivity extends Activity {
 
@@ -74,8 +75,10 @@ public class BioClientConnectionActivity extends Activity {
 					break;
 					
 				case R.id.send:
-					WeMessage packet=new WeMessage(sendContent.getText().toString());
-					mConnection.sendMessage(packet);
+					Message msg=new Message();
+					msg.data = sendContent.getText().toString().getBytes();
+					msg.length = msg.data.length;
+					mConnection.sendMessage(msg);
 					sendContent.setText("");
 					break;
 					

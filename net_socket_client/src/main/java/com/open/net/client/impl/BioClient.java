@@ -253,7 +253,7 @@ public class BioClient {
 			try{
 				Message msg= mWriteMessageQueen.poll();
 				while(null != msg) {
-					outStream.write(msg.getPacket());
+					outStream.write(msg.data,0,msg.length);
 					outStream.flush();
 					msg= mWriteMessageQueen.poll();
 				}
