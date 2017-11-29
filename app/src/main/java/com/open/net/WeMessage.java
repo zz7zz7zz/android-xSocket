@@ -1,6 +1,6 @@
 package com.open.net;
 
-import com.open.net.data.Message;
+import com.open.net.client.structures.Message;
 
 /**
  * Created by Administrator on 2017/11/17.

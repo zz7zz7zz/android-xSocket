@@ -1,4 +1,4 @@
-package com.open.net.data;
+package com.open.net.client.structures;
 
 
 /**

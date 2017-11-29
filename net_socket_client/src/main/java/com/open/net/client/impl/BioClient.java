@@ -1,9 +1,9 @@
-package com.open.net.client;
+package com.open.net.client.impl;
 
-import com.open.net.data.Message;
-import com.open.net.data.TcpAddress;
-import com.open.net.listener.BaseMessageProcessor;
-import com.open.net.listener.IConnectStatusListener;
+import com.open.net.client.structures.Message;
+import com.open.net.client.structures.TcpAddress;
+import com.open.net.client.listener.BaseMessageProcessor;
+import com.open.net.client.listener.IConnectStatusListener;
 
 import java.io.IOException;
 import java.io.InputStream;

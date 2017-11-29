@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 
-import com.open.net.client.NioClient;
-import com.open.net.data.TcpAddress;
-import com.open.net.listener.BaseMessageProcessor;
+import com.open.net.client.impl.NioClient;
+import com.open.net.client.structures.TcpAddress;
+import com.open.net.client.listener.BaseMessageProcessor;
 
 public class NioClientConnectionActivity extends Activity {
 

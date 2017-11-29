@@ -1,4 +1,4 @@
-package com.open.net.data;
+package com.open.net.client.structures;
 
 /**
  * Created by Administrator on 2017/11/17.
