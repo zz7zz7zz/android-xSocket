@@ -61,7 +61,7 @@ public class NioClient{
         }else{
             mWriteMessageQueen.add(msg);
             if(mConnection.isConnected()){
-                mConnection.selector.wakeup();
+                mConnection.mSelector.wakeup();
             }else{
                 //说明正在重连中
             }
@@ -136,10 +136,10 @@ public class NioClient{
         private String ip ="192.168.1.1";
         private int port =9999;
 
-        private Selector selector;
+        private Selector mSelector;
         private ByteBuffer mReadByteBuffer  = ByteBuffer.allocate(256*1024);
         private ByteBuffer mWriteByteBuffer = ByteBuffer.allocate(256*1024);
-        private SocketChannel socketChannel;
+        private SocketChannel mSocketChannel;
 
         private int state= STATE_CLOSE;
         private ConcurrentLinkedQueue<Message> mMessageQueen;
@@ -173,16 +173,16 @@ public class NioClient{
 
         public void close(){
             if(state != STATE_CLOSE){
-                if(null!=socketChannel)
+                if(null!= mSocketChannel)
                 {
                     try {
-                        SelectionKey key = socketChannel.keyFor(selector);
+                        SelectionKey key = mSocketChannel.keyFor(mSelector);
                         if(null != key){
                             key.cancel();
                         }
-                        selector.close();
-                        socketChannel.socket().close();
-                        socketChannel.close();
+                        mSelector.close();
+                        mSocketChannel.socket().close();
+                        mSocketChannel.close();
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
@@ -210,21 +210,40 @@ public class NioClient{
         private boolean read(SelectionKey key) {
             boolean readRet = true;
             try{
-                SocketChannel socketChannel = (SocketChannel) key.channel();
+                SocketChannel mSocketChannel = (SocketChannel) key.channel();
                 mReadByteBuffer.clear();
-                int numRead;
-                numRead = socketChannel.read(mReadByteBuffer);
-                mReadByteBuffer.flip();
-                if (numRead == -1) {
-                    key.channel().close();
-                    key.cancel();
-                    readRet = false;
-                }else if(numRead > 0){
-                    if(null != mMessageProcessor){
-                        mMessageProcessor.onReceive(mReadByteBuffer.array(),0,numRead);
+                int readTotalLength = 0;
+                int readReceiveLength = 0;
+                while (true){
+                    int readLength = mSocketChannel.read(mReadByteBuffer);//客户端关闭连接后，此处将抛出异常/或者返回-1
+                    if(readLength == -1){
+                        readRet = false;
+                        break;
+                    }
+                    readReceiveLength += readLength;
+                    //如果一次性读满了，则先回调一次，然后接着读剩下的，目的是为了一次性读完单个通道的数据
+                    if(readReceiveLength == mReadByteBuffer.capacity()){
+                        mReadByteBuffer.flip();
+                        if(mReadByteBuffer.remaining() > 0){
+                            this.mMessageProcessor.onReceive(mReadByteBuffer.array(), 0 , mReadByteBuffer.remaining());
+                        }
+                        mReadByteBuffer.clear();
+                        readReceiveLength = 0;
+                    }
+
+                    if(readLength > 0){
+                        readTotalLength += readLength;
+                    }else {
+                        break;
                     }
                 }
+
+                mReadByteBuffer.flip();
+                if(mReadByteBuffer.remaining() > 0){
+                    this.mMessageProcessor.onReceive(mReadByteBuffer.array(), 0 , mReadByteBuffer.remaining());
+                }
                 mReadByteBuffer.clear();
+
             }catch (Exception e){
                 e.printStackTrace();
                 readRet = false;
@@ -234,10 +253,11 @@ public class NioClient{
         }
 
         private boolean write(SelectionKey key) {
-            SocketChannel socketChannel = (SocketChannel) key.channel();
-            Message msg = mMessageQueen.poll();
-            while (null != msg){
-                try {
+            boolean writeRet = true;
+            try {
+                SocketChannel socketChannel = (SocketChannel) key.channel();
+                Message msg = mMessageQueen.poll();
+                while (null != msg){
                     //如果消息块的大小超过缓存的最大值，则需要分段写入后才丢弃消息，不能在数据未完全写完的情况下将消息丢弃;avoid BufferOverflowException
                     if(mWriteByteBuffer.capacity() < msg.length){
 
@@ -280,20 +300,15 @@ public class NioClient{
                         mWriteByteBuffer.clear();
                     }
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    try {
-                        key.cancel();
-                        key.channel().close();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                    return false;
+                    msg = mMessageQueen.poll();
                 }
-                msg = mMessageQueen.poll();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                writeRet = false;
             }
             key.interestOps(SelectionKey.OP_READ);
-            return true;
+            return writeRet;
         }
 
         private void setConnectionTimeout(long timeout){
@@ -307,19 +322,19 @@ public class NioClient{
             try {
                 state = STATE_CONNECT_START;
                 setConnectionTimeout(10);
-                selector= SelectorProvider.provider().openSelector();
-                socketChannel = SocketChannel.open();
-                socketChannel.configureBlocking(false);
+                mSelector = SelectorProvider.provider().openSelector();
+                mSocketChannel = SocketChannel.open();
+                mSocketChannel.configureBlocking(false);
 
                 InetSocketAddress address=new InetSocketAddress(ip, port);
-                socketChannel.connect(address);
-                socketChannel.register(selector, SelectionKey.OP_CONNECT);
+                mSocketChannel.connect(address);
+                mSocketChannel.register(mSelector, SelectionKey.OP_CONNECT);
 
                 boolean isExit = false;
                 while(state != STATE_CLOSE && !isExit) {
 
-                    selector.select();
-                    Iterator<SelectionKey> selectedKeys = selector.selectedKeys().iterator();
+                    mSelector.select();
+                    Iterator<SelectionKey> selectedKeys = mSelector.selectedKeys().iterator();
                     while (selectedKeys.hasNext()) {
                         SelectionKey key =  selectedKeys.next();
                         selectedKeys.remove();
@@ -337,6 +352,8 @@ public class NioClient{
                             boolean ret = read(key);
                             if(!ret){
                                 isExit = true;
+                                key.cancel();
+                                key.channel().close();
                                 break;
                             }
 
@@ -344,6 +361,8 @@ public class NioClient{
                             boolean ret = write(key);
                             if(!ret){
                                 isExit = true;
+                                key.cancel();
+                                key.channel().close();
                                 break;
                             }
                         }
@@ -354,7 +373,7 @@ public class NioClient{
                     }
 
                     if(!mMessageQueen.isEmpty()) {
-                        SelectionKey key=socketChannel.keyFor(selector);
+                        SelectionKey key= mSocketChannel.keyFor(mSelector);
                         key.interestOps(SelectionKey.OP_WRITE);
                     }
                 }
