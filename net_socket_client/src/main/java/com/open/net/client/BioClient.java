@@ -339,7 +339,7 @@ public class BioClient {
 				try {
 					while(state!=STATE_CLOSE && state== STATE_CONNECT_SUCCESS && null!=outStream ) {
 
-						if(write()){
+						if(!write()){
 							break;
 						}
 

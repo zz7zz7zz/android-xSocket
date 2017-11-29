@@ -6,13 +6,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 
-import com.open.net.client.NioClient;
+import com.open.net.client.BioClient;
 import com.open.net.data.TcpAddress;
 import com.open.net.listener.BaseMessageProcessor;
 
-public class NioSocketConnectionActivity extends Activity {
+public class BioClientConnectionActivity extends Activity {
 
-	private NioClient mConnection =null;
+	private BioClient mConnection =null;
 	private EditText ip,port,sendContent,recContent;
 	
 	@Override
@@ -39,11 +39,11 @@ public class NioSocketConnectionActivity extends Activity {
 		ip.setText("192.168.123.1");
 		port.setText("9999");
 
-		mConnection = new NioClient(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))},socketListener);
+		mConnection = new BioClient(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))},socketListener);
 	}
-
+	
 	private OnClickListener listener=new OnClickListener() {
-
+		
 		@Override
 		public void onClick(View v) {
 			mConnection.setConnectAddress(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
