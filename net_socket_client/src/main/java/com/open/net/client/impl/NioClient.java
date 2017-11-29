@@ -16,7 +16,9 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * Created by Administrator on 2017/11/17.
+ * author       :   long
+ * created on   :   2017/11/30
+ * description  :   NioClient
  */
 
 public class NioClient{
@@ -28,21 +30,11 @@ public class NioClient{
     private BaseMessageProcessor mConnectReceiveListener;
 
     //无锁队列
-    private ConcurrentLinkedQueue<Message> mMessageQueen = new ConcurrentLinkedQueue();
+    private ConcurrentLinkedQueue<Message> mWriteMessageQueen = new ConcurrentLinkedQueue();
     private Thread mConnectionThread;
     private NioConnection mConnection;
 
-    private IConnectStatusListener mConnectStatusListener = new IConnectStatusListener() {
-        @Override
-        public void onConnectionSuccess() {
-
-        }
-
-        @Override
-        public void onConnectionFailed() {
-            connect();//try to connect next ip port
-        }
-    };
+    private IConnectStatusListener mConnectStatusListener = null;
 
     public NioClient(TcpAddress[] tcpArray, BaseMessageProcessor mConnectionReceiveListener) {
         this.tcpArray = tcpArray;
@@ -53,17 +45,21 @@ public class NioClient{
         this.tcpArray = tcpArray;
     }
 
+    public void setConnectStatusListener(IConnectStatusListener mConnectStatusListener){
+        this.mConnectStatusListener = mConnectStatusListener;
+    }
+
     public void sendMessage(Message msg){
         //1.没有连接,需要进行重连
         //2.在连接不成功，并且也不在重连中时，需要进行重连;
         if(null == mConnection){
-            mMessageQueen.add(msg);
+            mWriteMessageQueen.add(msg);
             startConnect();
         }else if(!mConnection.isConnected() && !mConnection.isConnecting()){
-            mMessageQueen.add(msg);
+            mWriteMessageQueen.add(msg);
             startConnect();
         }else{
-            mMessageQueen.add(msg);
+            mWriteMessageQueen.add(msg);
             if(mConnection.isConnected()){
                 mConnection.selector.wakeup();
             }else{
@@ -98,14 +94,14 @@ public class NioClient{
         index++;
         if(index < tcpArray.length && index >= 0){
             stopConnect(false);
-            mConnection = new NioConnection(tcpArray[index].ip,tcpArray[index].port,mMessageQueen, mConnectStatusListener, mConnectReceiveListener);
+            mConnection = new NioConnection(tcpArray[index].ip,tcpArray[index].port, mWriteMessageQueen, mConnectStatusListener, mConnectReceiveListener);
             mConnectionThread =new Thread(mConnection);
             mConnectionThread.start();
         }else{
             index = -1;
 
             //循环连接了一遍还没有连接上，说明网络连接不成功，此时清空消息队列，防止队列堆积
-            mMessageQueen.clear();
+            mWriteMessageQueen.clear();
         }
     }
 
@@ -203,7 +199,9 @@ public class NioClient{
             if(result) {
                 key.interestOps(SelectionKey.OP_READ);
                 state=STATE_CONNECT_SUCCESS;
-                this.mConnectStatusListener.onConnectionSuccess();
+                if(null != mConnectStatusListener){
+                    mConnectStatusListener.onConnectionSuccess();
+                }
             }
             return result;
         }

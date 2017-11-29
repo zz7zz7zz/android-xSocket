@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 import com.open.net.client.impl.NioClient;
+import com.open.net.client.listener.IConnectStatusListener;
 import com.open.net.client.structures.TcpAddress;
 import com.open.net.client.listener.BaseMessageProcessor;
 
@@ -40,6 +41,17 @@ public class NioClientConnectionActivity extends Activity {
 		port.setText("9999");
 
 		mConnection = new NioClient(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))},socketListener);
+		mConnection.setConnectStatusListener(new IConnectStatusListener() {
+			@Override
+			public void onConnectionSuccess() {
+
+			}
+
+			@Override
+			public void onConnectionFailed() {
+				mConnection.connect();//try to connect next ip port
+			}
+		});
 	}
 
 	private OnClickListener listener=new OnClickListener() {

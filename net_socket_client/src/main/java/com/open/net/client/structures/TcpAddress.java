@@ -1,7 +1,9 @@
 package com.open.net.client.structures;
 
 /**
- * Created by Administrator on 2017/11/17.
+ * author       :   long
+ * created on   :   2017/11/30
+ * description  :   Server地址
  */
 
 public class TcpAddress {

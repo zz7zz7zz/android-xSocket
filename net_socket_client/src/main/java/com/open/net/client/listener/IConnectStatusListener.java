@@ -1,8 +1,9 @@
 package com.open.net.client.listener;
 
 /**
- * 链接状态回调
- * Created by Administrator on 2017/11/17.
+ * author       :   long
+ * created on   :   2017/11/30
+ * description  :   连接状态回调
  */
 
 public interface IConnectStatusListener {

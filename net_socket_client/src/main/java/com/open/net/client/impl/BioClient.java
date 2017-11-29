@@ -14,9 +14,9 @@ import java.net.SocketException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- *
- * @author Administrator
- *
+ * author       :   long
+ * created on   :   2017/11/30
+ * description  :   BioClient
  */
 public class BioClient {
 
@@ -30,17 +30,7 @@ public class BioClient {
 	private Thread mConnectionThread =null;
 	private BioConnection mConnection;
 
-	private IConnectStatusListener mConnectionStatusListener = new IConnectStatusListener() {
-		@Override
-		public void onConnectionSuccess() {
-
-		}
-
-		@Override
-		public void onConnectionFailed() {
-			connect();//try to connect next ip port
-		}
-	};
+	private IConnectStatusListener mConnectStatusListener = null;
 
 	public BioClient(TcpAddress[] tcpArray , BaseMessageProcessor mConnectReceiveListener) {
 		this.tcpArray = tcpArray;
@@ -49,6 +39,10 @@ public class BioClient {
 
 	public void setConnectAddress(TcpAddress[] tcpArray ){
 		this.tcpArray = tcpArray;
+	}
+
+	public void setConnectStatusListener(IConnectStatusListener mConnectStatusListener){
+		this.mConnectStatusListener = mConnectStatusListener;
 	}
 
 	public void sendMessage(Message msg)
@@ -99,7 +93,7 @@ public class BioClient {
 		index++;
 		if(index < tcpArray.length && index >= 0){
 			stopConnect(false);
-			mConnection = new BioConnection(tcpArray[index].ip,tcpArray[index].port, mConnectionStatusListener, mConnectReceiveListener);
+			mConnection = new BioConnection(tcpArray[index].ip,tcpArray[index].port, mConnectStatusListener, mConnectReceiveListener);
 			mConnectionThread =new Thread(mConnection);
 			mConnectionThread.start();
 		}else{
