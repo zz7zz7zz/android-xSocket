@@ -1,9 +1,10 @@
 package com.open.net.client.impl;
 
-import com.open.net.client.structures.Message;
-import com.open.net.client.structures.TcpAddress;
-import com.open.net.client.listener.IMessageProcessor;
 import com.open.net.client.listener.IConnectStatusListener;
+import com.open.net.client.structures.BaseClient;
+import com.open.net.client.structures.BaseMessageProcessor;
+import com.open.net.client.structures.TcpAddress;
+import com.open.net.client.structures.message.Message;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,30 +12,28 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * author       :   long
  * created on   :   2017/11/30
  * description  :   BioClient
  */
-public class BioClient {
+public class BioClient extends BaseClient{
 
 	private final String TAG="BioClient";
 
 	private TcpAddress[] tcpArray;
 	private int index = -1;
-	private IMessageProcessor mConnectReceiveListener;
+	private BaseMessageProcessor mMessageProcessor;
 
-	private ConcurrentLinkedQueue<Message> mWriteMessageQueen = new ConcurrentLinkedQueue();
 	private Thread mConnectionThread =null;
 	private BioConnection mConnection;
 
 	private IConnectStatusListener mConnectStatusListener = null;
 
-	public BioClient(TcpAddress[] tcpArray , IMessageProcessor mConnectReceiveListener) {
+	public BioClient(TcpAddress[] tcpArray , BaseMessageProcessor mMessageProcessor) {
 		this.tcpArray = tcpArray;
-		this.mConnectReceiveListener = mConnectReceiveListener;
+		this.mMessageProcessor = mMessageProcessor;
 	}
 
 	public void setConnectAddress(TcpAddress[] tcpArray ){
@@ -50,13 +49,13 @@ public class BioClient {
 		//1.没有连接,需要进行重连
 		//2.在连接不成功，并且也不在重连中时，需要进行重连;
 		if(null == mConnection){
-			mWriteMessageQueen.add(msg);
+			addWriteMessage(msg);
 			startConnect();
 		}else if(!mConnection.isConnected() && !mConnection.isConnecting()){
-			mWriteMessageQueen.add(msg);
+			addWriteMessage(msg);
 			startConnect();
 		}else{
-			mWriteMessageQueen.add(msg);
+			addWriteMessage(msg);
 			if(mConnection.isConnected()){
 				mConnection.mWriter.wakeup();
 			}else{
@@ -93,14 +92,14 @@ public class BioClient {
 		index++;
 		if(index < tcpArray.length && index >= 0){
 			stopConnect(false);
-			mConnection = new BioConnection(tcpArray[index].ip,tcpArray[index].port, mConnectStatusListener, mConnectReceiveListener);
+			mConnection = new BioConnection(tcpArray[index].ip,tcpArray[index].port, mConnectStatusListener, mMessageProcessor);
 			mConnectionThread =new Thread(mConnection);
 			mConnectionThread.start();
 		}else{
 			index = -1;
 
 			//循环连接了一遍还没有连接上，说明网络连接不成功，此时清空消息队列，防止队列堆积
-			mWriteMessageQueen.clear();
+			super.clear();
 		}
 	}
 
@@ -136,7 +135,7 @@ public class BioClient {
 		private int port =9999;
 		private int state = STATE_CLOSE;
 		private IConnectStatusListener mConnectStatusListener;
-		private IMessageProcessor mMessageProcessor;
+		private BaseMessageProcessor mMessageProcessor;
 		private boolean isClosedByUser = false;
 
 		private Socket socket=null;
@@ -147,11 +146,11 @@ public class BioClient {
 		private Thread readThread =null;
 
 
-		public BioConnection(String ip, int port, IConnectStatusListener mConnectionStatusListener, IMessageProcessor mConnectReceiveListener) {
+		public BioConnection(String ip, int port, IConnectStatusListener mConnectionStatusListener, BaseMessageProcessor mMessageProcessor) {
 			this.ip = ip;
 			this.port = port;
 			this.mConnectStatusListener = mConnectionStatusListener;
-			this.mMessageProcessor = mConnectReceiveListener;
+			this.mMessageProcessor = mMessageProcessor;
 		}
 
 		public boolean isClosed(){
@@ -251,11 +250,12 @@ public class BioClient {
 		public boolean write(){
 			boolean writeRet = false;
 			try{
-				Message msg= mWriteMessageQueen.poll();
+				Message msg= pollWriteMessage();
 				while(null != msg) {
 					outStream.write(msg.data,0,msg.length);
 					outStream.flush();
-					msg= mWriteMessageQueen.poll();
+					removeWriteMessage(msg);
+					msg= pollWriteMessage();
 				}
 				writeRet = true;
 			} catch (SocketException e) {
@@ -277,7 +277,8 @@ public class BioClient {
 				while((numRead=inStream.read(bodyBytes, 0, maximum_length))>0) {
 					if(numRead > 0){
 						if(null!= mMessageProcessor) {
-							mMessageProcessor.onReceive(bodyBytes,0,numRead);
+							mMessageProcessor.onReceive(BioClient.this, bodyBytes,0,numRead);
+							mMessageProcessor.onProcessReceivedMessage(BioClient.this);
 						}
 					}
 				}

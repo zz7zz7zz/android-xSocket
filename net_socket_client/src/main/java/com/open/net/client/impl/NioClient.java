@@ -1,8 +1,9 @@
 package com.open.net.client.impl;
 
-import com.open.net.client.structures.Message;
+import com.open.net.client.structures.BaseClient;
+import com.open.net.client.structures.message.Message;
 import com.open.net.client.structures.TcpAddress;
-import com.open.net.client.listener.IMessageProcessor;
+import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.listener.IConnectStatusListener;
 
 import java.io.IOException;
@@ -13,7 +14,6 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
 import java.util.Iterator;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * author       :   long
@@ -21,24 +21,22 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * description  :   NioClient
  */
 
-public class NioClient{
+public class NioClient extends BaseClient{
 
     private final String TAG="NioClient";
 
     private TcpAddress[] tcpArray;
     private int index = -1;
-    private IMessageProcessor mConnectReceiveListener;
+    private BaseMessageProcessor mMessageProcessor;
 
-    //无锁队列
-    private ConcurrentLinkedQueue<Message> mWriteMessageQueen = new ConcurrentLinkedQueue();
     private Thread mConnectionThread;
     private NioConnection mConnection;
 
     private IConnectStatusListener mConnectStatusListener = null;
 
-    public NioClient(TcpAddress[] tcpArray, IMessageProcessor mConnectionReceiveListener) {
+    public NioClient(TcpAddress[] tcpArray, BaseMessageProcessor mMessageProcessor) {
         this.tcpArray = tcpArray;
-        this.mConnectReceiveListener = mConnectionReceiveListener;
+        this.mMessageProcessor = mMessageProcessor;
     }
 
     public void setConnectAddress(TcpAddress[] tcpArray ){
@@ -53,13 +51,13 @@ public class NioClient{
         //1.没有连接,需要进行重连
         //2.在连接不成功，并且也不在重连中时，需要进行重连;
         if(null == mConnection){
-            mWriteMessageQueen.add(msg);
+            addWriteMessage(msg);
             startConnect();
         }else if(!mConnection.isConnected() && !mConnection.isConnecting()){
-            mWriteMessageQueen.add(msg);
+            addWriteMessage(msg);
             startConnect();
         }else{
-            mWriteMessageQueen.add(msg);
+            addWriteMessage(msg);
             if(mConnection.isConnected()){
                 mConnection.mSelector.wakeup();
             }else{
@@ -94,14 +92,14 @@ public class NioClient{
         index++;
         if(index < tcpArray.length && index >= 0){
             stopConnect(false);
-            mConnection = new NioConnection(tcpArray[index].ip,tcpArray[index].port, mWriteMessageQueen, mConnectStatusListener, mConnectReceiveListener);
+            mConnection = new NioConnection(tcpArray[index].ip,tcpArray[index].port, mConnectStatusListener, mMessageProcessor);
             mConnectionThread =new Thread(mConnection);
             mConnectionThread.start();
         }else{
             index = -1;
 
             //循环连接了一遍还没有连接上，说明网络连接不成功，此时清空消息队列，防止队列堆积
-            mWriteMessageQueen.clear();
+            super.clear();
         }
     }
 
@@ -142,17 +140,15 @@ public class NioClient{
         private SocketChannel mSocketChannel;
 
         private int state= STATE_CLOSE;
-        private ConcurrentLinkedQueue<Message> mMessageQueen;
         private IConnectStatusListener mConnectStatusListener;
-        private IMessageProcessor mMessageProcessor;
+        private BaseMessageProcessor mMessageProcessor;
         private boolean isClosedByUser = false;
 
-        public NioConnection(String ip, int port, ConcurrentLinkedQueue<Message> queen, IConnectStatusListener mNioConnectionListener, IMessageProcessor mConnectReceiveListener) {
+        public NioConnection(String ip, int port, IConnectStatusListener mNioConnectionListener, BaseMessageProcessor mMessageProcessor) {
             this.ip = ip;
             this.port = port;
-            this.mMessageQueen = queen;
             this.mConnectStatusListener = mNioConnectionListener;
-            this.mMessageProcessor = mConnectReceiveListener;
+            this.mMessageProcessor = mMessageProcessor;
         }
 
         public boolean isClosed(){
@@ -225,7 +221,7 @@ public class NioClient{
                     if(readReceiveLength == mReadByteBuffer.capacity()){
                         mReadByteBuffer.flip();
                         if(mReadByteBuffer.remaining() > 0){
-                            this.mMessageProcessor.onReceive(mReadByteBuffer.array(), 0 , mReadByteBuffer.remaining());
+                            this.mMessageProcessor.onReceive(NioClient.this, mReadByteBuffer.array(), 0 , mReadByteBuffer.remaining());
                         }
                         mReadByteBuffer.clear();
                         readReceiveLength = 0;
@@ -240,7 +236,7 @@ public class NioClient{
 
                 mReadByteBuffer.flip();
                 if(mReadByteBuffer.remaining() > 0){
-                    this.mMessageProcessor.onReceive(mReadByteBuffer.array(), 0 , mReadByteBuffer.remaining());
+                    this.mMessageProcessor.onReceive(NioClient.this, mReadByteBuffer.array(), 0 , mReadByteBuffer.remaining());
                 }
                 mReadByteBuffer.clear();
 
@@ -249,6 +245,8 @@ public class NioClient{
                 readRet = false;
             }
 
+            mMessageProcessor.onProcessReceivedMessage(NioClient.this);
+
             return readRet;
         }
 
@@ -256,7 +254,7 @@ public class NioClient{
             boolean writeRet = true;
             try {
                 SocketChannel socketChannel = (SocketChannel) key.channel();
-                Message msg = mMessageQueen.poll();
+                Message msg = pollWriteMessage();
                 while (null != msg){
                     //如果消息块的大小超过缓存的最大值，则需要分段写入后才丢弃消息，不能在数据未完全写完的情况下将消息丢弃;avoid BufferOverflowException
                     if(mWriteByteBuffer.capacity() < msg.length){
@@ -300,7 +298,8 @@ public class NioClient{
                         mWriteByteBuffer.clear();
                     }
 
-                    msg = mMessageQueen.poll();
+                    removeWriteMessage(msg);
+                    msg = pollWriteMessage();
                 }
 
             } catch (IOException e) {
@@ -372,7 +371,7 @@ public class NioClient{
                         break;
                     }
 
-                    if(!mMessageQueen.isEmpty()) {
+                    if(!mWriteMessageQueen.mQueen.isEmpty()) {
                         SelectionKey key= mSocketChannel.keyFor(mSelector);
                         key.interestOps(SelectionKey.OP_WRITE);
                     }

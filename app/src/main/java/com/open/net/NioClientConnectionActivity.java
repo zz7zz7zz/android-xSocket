@@ -8,9 +8,12 @@ import android.widget.EditText;
 
 import com.open.net.client.impl.NioClient;
 import com.open.net.client.listener.IConnectStatusListener;
-import com.open.net.client.structures.Message;
+import com.open.net.client.structures.BaseClient;
+import com.open.net.client.structures.message.Message;
 import com.open.net.client.structures.TcpAddress;
-import com.open.net.client.listener.IMessageProcessor;
+import com.open.net.client.structures.BaseMessageProcessor;
+
+import java.util.LinkedList;
 
 public class NioClientConnectionActivity extends Activity {
 
@@ -41,7 +44,7 @@ public class NioClientConnectionActivity extends Activity {
 		ip.setText("192.168.123.1");
 		port.setText("9999");
 
-		mConnection = new NioClient(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))},socketListener);
+		mConnection = new NioClient(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))}, mMessageProcessor);
 		mConnection.setConnectStatusListener(new IConnectStatusListener() {
 			@Override
 			public void onConnectionSuccess() {
@@ -89,15 +92,21 @@ public class NioClientConnectionActivity extends Activity {
 		}
 	};
 
-	private IMessageProcessor socketListener=new IMessageProcessor() {
+	private BaseMessageProcessor mMessageProcessor =new BaseMessageProcessor() {
 
 		@Override
-		public void onReceive(final byte[] src , final int offset , final int length) {
-			runOnUiThread(new Runnable() {
-				public void run() {
-					recContent.getText().append(new String(src,offset,length)).append("\r\n");
-				}
-			});
+		public void onReceive(BaseClient mClient, final LinkedList<Message> mQueen) {
+			for (int i = 0 ;i< mQueen.size();i++) {
+				Message msg = mQueen.get(i);
+				final String s = new String(msg.data,0,msg.length);
+				runOnUiThread(new Runnable() {
+					public void run() {
+
+						recContent.getText().append(s).append("\r\n");
+					}
+				});
+			}
+
 		}
 	};
 

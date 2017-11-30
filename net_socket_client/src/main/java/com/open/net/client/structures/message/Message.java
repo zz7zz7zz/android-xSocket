@@ -1,4 +1,4 @@
-package com.open.net.client.structures;
+package com.open.net.client.structures.message;
 
 
 /**
@@ -9,6 +9,9 @@ package com.open.net.client.structures;
 
 public final class Message {
 
+	private static long G_MESSAGE_ID = 0;
+	public long msgId;
+
 	public int src_reuse_type;
 	public int dst_resue_type;
 
@@ -18,4 +21,20 @@ public final class Message {
 	public int offset;//在数组的偏移量
 	public int length;//有效长度
 
+	public Message() {
+		reset();
+	}
+
+	public void reset() {
+		++G_MESSAGE_ID;
+		msgId = G_MESSAGE_ID;
+		src_reuse_type = 0;
+		dst_resue_type = 0;
+
+		data = null;
+		capacity = 0;
+		block_index = 0;
+		offset = 0;
+		length = 0;
+	}
 }
