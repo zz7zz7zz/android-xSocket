@@ -113,6 +113,10 @@ public class SocketCrwProcessor implements Runnable {
             mWriteThread.start();
             mReadThread =new Thread(new ReadRunnable());
             mReadThread.start();
+
+            if(null != mConnectStatusListener){
+                mConnectStatusListener.onConnectionSuccess();
+            }
             return;
         } catch (Exception e) {
             e.printStackTrace();
