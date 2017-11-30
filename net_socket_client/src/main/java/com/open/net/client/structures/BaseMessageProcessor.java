@@ -13,6 +13,10 @@ import java.util.LinkedList;
 public abstract class BaseMessageProcessor {
 
     //----------------------------------发数据------------------------------------------------
+    public final void send(BaseClient mClient,byte[] src){
+        this.send(mClient,src,0,src.length);
+    }
+
     public final void send(BaseClient mClient,byte[] src , int offset , int length){
         Message msg = mClient.mWriteMessageQueen.build(src,offset,length);
         mClient.addWriteMessage(msg);

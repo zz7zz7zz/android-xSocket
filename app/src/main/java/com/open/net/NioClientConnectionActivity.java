@@ -69,10 +69,7 @@ public class NioClientConnectionActivity extends Activity {
 					break;
 					
 				case R.id.send:
-					Message msg=new Message();
-					msg.data = sendContent.getText().toString().getBytes();
-					msg.length = msg.data.length;
-					mClient.sendMessage(msg);
+					mMessageProcessor.send(mClient,sendContent.getText().toString().getBytes());
 					sendContent.setText("");
 					break;
 					

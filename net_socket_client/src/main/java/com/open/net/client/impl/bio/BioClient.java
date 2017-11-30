@@ -29,8 +29,8 @@ public class BioClient extends BaseClient{
 		this.mConnector = mBioConnector;
 	}
 
-	public void sendMessage(Message msg) {
-		addWriteMessage(msg);
+	public void addWriteMessage(Message msg) {
+		super.addWriteMessage(msg);
 		mConnector.checkConnect();
 	}
 
