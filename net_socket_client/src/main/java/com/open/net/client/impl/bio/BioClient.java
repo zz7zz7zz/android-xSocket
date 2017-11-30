@@ -1,6 +1,6 @@
 package com.open.net.client.impl.bio;
 
-import com.open.net.client.impl.bio.processor.ConnectProcessor;
+import com.open.net.client.impl.bio.processor.SocketCrwProcessor;
 import com.open.net.client.listener.IConnectStatusListener;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;
@@ -25,7 +25,7 @@ public class BioClient extends BaseClient{
 	private TcpAddress[] 	tcpArray 	= null;
 	private int 			index 		= -1;
 
-	private ConnectProcessor 	mConnectProcessor;
+	private SocketCrwProcessor mConnectProcessor;
 	private Thread 				mConnectProcessorThread =null;
 
 	private BaseMessageProcessor 	mMessageProcessor;
@@ -90,7 +90,7 @@ public class BioClient extends BaseClient{
 		index++;
 		if(index < tcpArray.length && index >= 0){
 			stopConnect(false);
-			mConnectProcessor = new ConnectProcessor(this,tcpArray[index].ip,tcpArray[index].port, mConnectStatusListener);
+			mConnectProcessor = new SocketCrwProcessor(this,tcpArray[index].ip,tcpArray[index].port, mConnectStatusListener);
 			mConnectProcessorThread =new Thread(mConnectProcessor);
 			mConnectProcessorThread.start();
 		}else{

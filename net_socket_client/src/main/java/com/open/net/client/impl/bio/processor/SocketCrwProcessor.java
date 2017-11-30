@@ -13,7 +13,7 @@ import java.net.Socket;
  * description  :
  */
 
-public class ConnectProcessor implements Runnable {
+public class SocketCrwProcessor implements Runnable {
 
     private final int STATE_CLOSE			= 1<<1;//socket关闭
     private final int STATE_CONNECT_START	= 1<<2;//开始连接server
@@ -34,7 +34,7 @@ public class ConnectProcessor implements Runnable {
     private Thread mReadThread =null;
 
 
-    public ConnectProcessor(BaseClient mClient , String ip, int port, IConnectStatusListener mConnectionStatusListener) {
+    public SocketCrwProcessor(BaseClient mClient , String ip, int port, IConnectStatusListener mConnectionStatusListener) {
         this.mClient = mClient;
         this.mIp = ip;
         this.mPort = port;
