@@ -9,9 +9,9 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 
 /**
- * author       :   Administrator
+ * author       :   long
  * created on   :   2017/11/30
- * description  :
+ * description  :   连/读/写 处理器
  */
 
 public class SocketCrwProcessor implements Runnable {

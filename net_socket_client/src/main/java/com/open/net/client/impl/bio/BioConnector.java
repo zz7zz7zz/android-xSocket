@@ -6,9 +6,9 @@ import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.structures.TcpAddress;
 
 /**
- * author       :   Administrator
+ * author       :   long
  * created on   :   2017/11/30
- * description  :
+ * description  :   连接器
  */
 
 public class BioConnector {
