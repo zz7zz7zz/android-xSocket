@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 import com.open.net.client.impl.bio.BioClient;
+import com.open.net.client.impl.bio.BioConnector;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.listener.IConnectStatusListener;
@@ -17,7 +18,7 @@ import java.util.LinkedList;
 
 public class BioClientConnectionActivity extends Activity {
 
-	private BioClient mConnection =null;
+	private BioClient mClient =null;
 	private EditText ip,port,sendContent,recContent;
 	
 	@Override
@@ -44,33 +45,34 @@ public class BioClientConnectionActivity extends Activity {
 		ip.setText("192.168.123.1");
 		port.setText("9999");
 
-		mConnection = new BioClient(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))}, mMessageProcessor,mConnectStatusListener);
+		mClient = new BioClient();
+		mClient.setBioConnector(new BioConnector(mClient,new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))}, mMessageProcessor,mConnectStatusListener));
 	}
 	
 	private OnClickListener listener=new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
-			mConnection.setConnectAddress(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
+			mClient.getBioConnector().setConnectAddress(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
 			switch(v.getId())
 			{
 				case R.id.open:
-					mConnection.connect();
+					mClient.getBioConnector().connect();
 					break;
 					
 				case R.id.close:
-					mConnection.disconnect();
+					mClient.getBioConnector().disconnect();
 					break;
 					
 				case R.id.reconn:
-					mConnection.reconnect();
+					mClient.getBioConnector().reconnect();
 					break;
 					
 				case R.id.send:
 					Message msg=new Message();
 					msg.data = sendContent.getText().toString().getBytes();
 					msg.length = msg.data.length;
-					mConnection.sendMessage(msg);
+					mClient.sendMessage(msg);
 					sendContent.setText("");
 					break;
 					
@@ -89,7 +91,7 @@ public class BioClientConnectionActivity extends Activity {
 
 		@Override
 		public void onConnectionFailed() {
-			mConnection.connect();//try to connect next ip port
+			mClient.getBioConnector().connect();//try to connect next ip port
 		}
 	};
 
@@ -113,6 +115,6 @@ public class BioClientConnectionActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		mConnection.disconnect();
+		mClient.getBioConnector().disconnect();
 	}
 }

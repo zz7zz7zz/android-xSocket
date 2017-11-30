@@ -3,6 +3,7 @@ package com.open.net.client.impl.bio.processor;
 import com.open.net.client.impl.bio.BioClient;
 import com.open.net.client.listener.IConnectStatusListener;
 import com.open.net.client.structures.BaseClient;
+import com.open.net.client.structures.BaseMessageProcessor;
 
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -23,6 +24,7 @@ public class SocketCrwProcessor implements Runnable {
     private String mIp ="192.168.1.1";
     private int    mPort =9999;
 
+    private BaseMessageProcessor mMessageProcessor;
     private IConnectStatusListener mConnectStatusListener;
     private boolean isClosedByUser = false;
 
@@ -34,11 +36,12 @@ public class SocketCrwProcessor implements Runnable {
     private Thread mReadThread =null;
 
 
-    public SocketCrwProcessor(BaseClient mClient , String ip, int port, IConnectStatusListener mConnectionStatusListener) {
+    public SocketCrwProcessor(BaseClient mClient , String ip, int port, IConnectStatusListener mConnectionStatusListener,BaseMessageProcessor mMessageProcessor) {
         this.mClient = mClient;
         this.mIp = ip;
         this.mPort = port;
         this.mConnectStatusListener = mConnectionStatusListener;
+        this.mMessageProcessor = mMessageProcessor;
     }
 
     public boolean isClosed(){
@@ -105,7 +108,7 @@ public class SocketCrwProcessor implements Runnable {
             state=STATE_CONNECT_START;
             Socket mSocket =new Socket();
             mSocket.connect(new InetSocketAddress(mIp, mPort), 15*1000);
-            ((BioClient)mClient).init(mSocket);
+            ((BioClient)mClient).init(mSocket,mMessageProcessor);
             state=STATE_CONNECT_SUCCESS;
 
             mWriteProcessor = new WriteRunnable();

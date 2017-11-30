@@ -19,6 +19,7 @@ public abstract class BaseClient {
     //收队列
     public MessageWriteQueen mWriteMessageQueen  = new MessageWriteQueen();
 
+    protected BaseMessageProcessor mMessageProcessor;
     //--------------------------------------------------------------------------------------
     public abstract void close();
 
@@ -27,6 +28,11 @@ public abstract class BaseClient {
     public abstract boolean write();
 
     //--------------------------------------------------------------------------------------
+    //--------------------------------------------------------------------------------------
+    public void init(BaseMessageProcessor mMessageProcessor) {
+        this.mMessageProcessor = mMessageProcessor;
+    }
+
     public void clear(){
         Message msg = pollWriteMessage();
         while (null != msg) {
