@@ -107,14 +107,21 @@ public final class NioClient extends BaseClient{
         }
 
         mMessageProcessor.onReceiveMessages(this);
-
+        //退出客户端的时候需要把要写给该客户端的数据清空
+        if(!readRet){
+            Message msg = pollWriteMessage();
+            while (null != msg) {
+                removeWriteMessage(msg);
+                msg= pollWriteMessage();
+            }
+        }
         return readRet;
     }
 
     public boolean onWrite() {
         boolean writeRet = true;
+        Message msg = pollWriteMessage();
         try {
-            Message msg = pollWriteMessage();
             while (null != msg){
                 //如果消息块的大小超过缓存的最大值，则需要分段写入后才丢弃消息，不能在数据未完全写完的情况下将消息丢弃;avoid BufferOverflowException
                 if(mWriteByteBuffer.capacity() < msg.length){
@@ -166,6 +173,19 @@ public final class NioClient extends BaseClient{
             e.printStackTrace();
             writeRet = false;
         }
+
+        //退出客户端的时候需要把要写给该客户端的数据清空
+        if(!writeRet){
+            if(null != msg){
+                removeWriteMessage(msg);
+            }
+            msg= pollWriteMessage();
+            while (null != msg) {
+                removeWriteMessage(msg);
+                msg= pollWriteMessage();
+            }
+        }
+
         return writeRet;
     }
 
