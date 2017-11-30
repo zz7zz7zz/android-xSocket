@@ -3,6 +3,7 @@ package com.open.net.client.impl.nio.processor;
 import com.open.net.client.impl.nio.NioClient;
 import com.open.net.client.listener.IConnectStatusListener;
 import com.open.net.client.structures.BaseClient;
+import com.open.net.client.structures.BaseMessageProcessor;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -18,7 +19,7 @@ import java.util.Iterator;
  * description  :   连/读/写 处理器
  */
 
-public class SocketCrwProcessor implements Runnable {
+public final class SocketCrwProcessor implements Runnable {
 
     private final String TAG = "SocketCrwProcessor";
 
@@ -33,15 +34,18 @@ public class SocketCrwProcessor implements Runnable {
     private SocketChannel mSocketChannel;
     private Selector mSelector;
     private int state= STATE_CLOSE;
+
+    private BaseMessageProcessor mMessageProcessor;
     private IConnectStatusListener mConnectStatusListener;
     private boolean isClosedByUser = false;
 
     private BaseClient mClient;
 
-    public SocketCrwProcessor(BaseClient mClient, String ip, int port, IConnectStatusListener mNioConnectionListener) {
+    public SocketCrwProcessor(BaseClient mClient, String ip, int port, BaseMessageProcessor mMessageProcessor,IConnectStatusListener mNioConnectionListener) {
         this.mClient = mClient;
         this.ip = ip;
         this.port = port;
+        this.mMessageProcessor = mMessageProcessor;
         this.mConnectStatusListener = mNioConnectionListener;
     }
 
@@ -84,7 +88,7 @@ public class SocketCrwProcessor implements Runnable {
         SocketChannel socketChannel = (SocketChannel) key.channel();
         result= socketChannel.finishConnect();//没有网络的时候也返回true
         if(result) {
-            ((NioClient)mClient).init(mSocketChannel,mSelector);
+            ((NioClient)mClient).init(mSocketChannel,mSelector,mMessageProcessor);
             key.interestOps(SelectionKey.OP_READ);
             state=STATE_CONNECT_SUCCESS;
             if(null != mConnectStatusListener){

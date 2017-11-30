@@ -7,17 +7,18 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 import com.open.net.client.impl.nio.NioClient;
+import com.open.net.client.impl.nio.NioConnector;
 import com.open.net.client.listener.IConnectStatusListener;
 import com.open.net.client.structures.BaseClient;
-import com.open.net.client.structures.message.Message;
-import com.open.net.client.structures.TcpAddress;
 import com.open.net.client.structures.BaseMessageProcessor;
+import com.open.net.client.structures.TcpAddress;
+import com.open.net.client.structures.message.Message;
 
 import java.util.LinkedList;
 
 public class NioClientConnectionActivity extends Activity {
 
-	private NioClient mConnection =null;
+	private NioClient mClient =null;
 	private EditText ip,port,sendContent,recContent;
 	
 	@Override
@@ -44,33 +45,34 @@ public class NioClientConnectionActivity extends Activity {
 		ip.setText("192.168.123.1");
 		port.setText("9999");
 
-		mConnection = new NioClient(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))}, mMessageProcessor,mConnectStatusListener);
+		mClient = new NioClient();
+		mClient.setConnector(new NioConnector(mClient,new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))}, mMessageProcessor,mConnectStatusListener));
 	}
 
 	private OnClickListener listener=new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
-			mConnection.setConnectAddress(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
+			mClient.getConnector().setConnectAddress(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
 			switch(v.getId())
 			{
 				case R.id.open:
-					mConnection.connect();
+					mClient.getConnector().connect();
 					break;
 					
 				case R.id.close:
-					mConnection.disconnect();
+					mClient.getConnector().disconnect();
 					break;
 					
 				case R.id.reconn:
-					mConnection.reconnect();
+					mClient.getConnector().reconnect();
 					break;
 					
 				case R.id.send:
 					Message msg=new Message();
 					msg.data = sendContent.getText().toString().getBytes();
 					msg.length = msg.data.length;
-					mConnection.sendMessage(msg);
+					mClient.sendMessage(msg);
 					sendContent.setText("");
 					break;
 					
@@ -89,7 +91,7 @@ public class NioClientConnectionActivity extends Activity {
 
 		@Override
 		public void onConnectionFailed() {
-			mConnection.connect();//try to connect next ip port
+			mClient.getConnector().connect();//try to connect next ip port
 		}
 	};
 
@@ -114,6 +116,6 @@ public class NioClientConnectionActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		mConnection.disconnect();
+		mClient.getConnector().disconnect();
 	}
 }

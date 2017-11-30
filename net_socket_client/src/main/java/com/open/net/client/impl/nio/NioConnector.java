@@ -1,6 +1,6 @@
-package com.open.net.client.impl.bio;
+package com.open.net.client.impl.nio;
 
-import com.open.net.client.impl.bio.processor.SocketCrwProcessor;
+import com.open.net.client.impl.nio.processor.SocketCrwProcessor;
 import com.open.net.client.listener.IConnectStatusListener;
 import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.structures.TcpAddress;
@@ -11,33 +11,33 @@ import com.open.net.client.structures.TcpAddress;
  * description  :
  */
 
-public class BioConnector {
+public final class NioConnector {
 
-    private BioClient mClient;
+    private NioClient mClient;
 
-    private TcpAddress[] 	tcpArray 	= null;
-    private int 			index 		= -1;
+    private TcpAddress[] tcpArray   = null;
+    private int          index      = -1;
 
-    private SocketCrwProcessor mConnectProcessor;
-    private Thread 				mConnectProcessorThread =null;
+    private SocketCrwProcessor mConnectProcessor = null;
+    private Thread mConnectProcessorThread = null;
 
-    private BaseMessageProcessor mMessageProcessor;
+    private BaseMessageProcessor mMessageProcessor = null;
     private IConnectStatusListener mConnectStatusListener = null;
 
-    public BioConnector(BioClient mClient , TcpAddress[] tcpArray , BaseMessageProcessor mMessageProcessor, IConnectStatusListener mConnectStatusListener) {
+    public NioConnector(NioClient mClient, TcpAddress[] tcpArray, BaseMessageProcessor mMessageProcessor, IConnectStatusListener mConnectStatusListener) {
         this.mClient = mClient;
         this.tcpArray = tcpArray;
         this.mMessageProcessor = mMessageProcessor;
         this.mConnectStatusListener = mConnectStatusListener;
     }
 
+    //-------------------------------------------------------------------------------------------
     public void setConnectAddress(TcpAddress[] tcpArray ){
         this.tcpArray = tcpArray;
     }
 
     //-------------------------------------------------------------------------------------------
-    public void checkConnect()
-    {
+    public void checkConnect(){
         //1.没有连接,需要进行重连
         //2.在连接不成功，并且也不在重连中时，需要进行重连;
         if(null == mConnectProcessor){
@@ -53,8 +53,8 @@ public class BioConnector {
         }
     }
 
-    public synchronized void connect()
-    {
+    //-------------------------------------------------------------------------------------------
+    public synchronized void connect() {
         startConnect();
     }
 
@@ -71,8 +71,7 @@ public class BioConnector {
         stopConnect(true);
     }
 
-    private synchronized void startConnect()
-    {
+    private synchronized void startConnect(){
         //已经在连接中就不再进行连接
         if(null != mConnectProcessor && !mConnectProcessor.isClosed()){
             return;
@@ -81,7 +80,7 @@ public class BioConnector {
         index++;
         if(index < tcpArray.length && index >= 0){
             stopConnect(false);
-            mConnectProcessor = new SocketCrwProcessor(mClient,tcpArray[index].ip,tcpArray[index].port, mConnectStatusListener,mMessageProcessor);
+            mConnectProcessor = new SocketCrwProcessor(mClient, tcpArray[index].ip,tcpArray[index].port, mMessageProcessor,mConnectStatusListener);
             mConnectProcessorThread =new Thread(mConnectProcessor);
             mConnectProcessorThread.start();
         }else{
@@ -92,8 +91,7 @@ public class BioConnector {
         }
     }
 
-    private synchronized void stopConnect(boolean isCloseByUser)
-    {
+    private synchronized void stopConnect(boolean isCloseByUser){
         try {
 
             if(null != mConnectProcessor) {

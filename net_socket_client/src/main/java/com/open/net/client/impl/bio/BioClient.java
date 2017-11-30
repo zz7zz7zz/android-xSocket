@@ -31,7 +31,7 @@ public class BioClient extends BaseClient{
 
 	public void sendMessage(Message msg) {
 		addWriteMessage(msg);
-		mConnector.sendMessage(msg);
+		mConnector.checkConnect();
 	}
 
 	//-------------------------------------------------------------------------------------------
