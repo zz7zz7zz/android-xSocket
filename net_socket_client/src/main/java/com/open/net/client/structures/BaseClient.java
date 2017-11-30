@@ -20,6 +20,13 @@ public abstract class BaseClient {
     public MessageWriteQueen mWriteMessageQueen  = new MessageWriteQueen();
 
     //--------------------------------------------------------------------------------------
+    public abstract void close();
+
+    public abstract boolean read();
+
+    public abstract boolean write();
+
+    //--------------------------------------------------------------------------------------
     public void clear(){
         Message msg = pollWriteMessage();
         while (null != msg) {
