@@ -10,11 +10,10 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5fa108f9-ba8c-4821-9e54-e7acf7fcfef2" name="Default" comment="init project !">
+    <list default="true" id="5fa108f9-ba8c-4821-9e54-e7acf7fcfef2" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioClient.java" afterPath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioClient.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/processor/ConnectProcessor.java" afterPath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/processor/ConnectProcessor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/BaseClient.java" afterPath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/BaseClient.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioClient.java" afterPath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioClient.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/processor/ConnectProcessor.java" afterPath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/processor/ConnectProcessor.java" />
     </list>
     <ignored path="app.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,15 +48,14 @@
       <file leaf-file-name="BioClient.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1309">
-              <caret line="194" column="25" selection-start-line="194" selection-start-column="25" selection-end-line="194" selection-end-column="25" />
+            <state relative-caret-position="519">
+              <caret line="128" column="0" selection-start-line="128" selection-start-column="0" selection-end-line="128" selection-end-column="55" />
               <folding>
                 <element signature="method#connect#0;class#BioClient#0" expanded="false" />
                 <element signature="method#reconnect#0;class#BioClient#0" expanded="false" />
                 <element signature="method#disconnect#0;class#BioClient#0" expanded="false" />
                 <element signature="method#startConnect#0;class#BioClient#0" expanded="false" />
                 <element signature="method#stopConnect#0;class#BioClient#0" expanded="false" />
-                <element signature="method#init#0;class#BioClient#0" expanded="false" />
                 <element signature="method#close#0;class#BioClient#0" expanded="false" />
                 <element signature="method#write#0;class#BioClient#0" expanded="false" />
                 <element signature="method#read#0;class#BioClient#0" expanded="false" />
@@ -66,26 +64,61 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ConnectProcessor.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/processor/ConnectProcessor.java">
+      <file leaf-file-name="NioClient.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="161" column="19" selection-start-line="161" selection-start-column="12" selection-end-line="161" selection-end-column="19" />
+            <state relative-caret-position="2950">
+              <caret line="249" column="9" selection-start-line="249" selection-start-column="9" selection-end-line="249" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#close#0;class#ConnectProcessor#0" expanded="false" />
-                <element signature="method#run#0;class#ConnectProcessor#0" expanded="false" />
-                <element signature="class#WriteRunnable#0;class#ConnectProcessor#0" expanded="false" />
+                <element signature="method#NioClient#0;class#NioClient#0" expanded="false" />
+                <element signature="method#setConnectAddress#0;class#NioClient#0" expanded="false" />
+                <element signature="method#sendMessage#0;class#NioClient#0" expanded="false" />
+                <element signature="method#connect#0;class#NioClient#0" expanded="false" />
+                <element signature="method#reconnect#0;class#NioClient#0" expanded="false" />
+                <element signature="method#disconnect#0;class#NioClient#0" expanded="false" />
+                <element signature="method#startConnect#0;class#NioClient#0" expanded="false" />
+                <element signature="method#stopConnect#0;class#NioClient#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BaseClient.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ConnectProcessor.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/processor/ConnectProcessor.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1258">
+              <caret line="74" column="5" selection-start-line="74" selection-start-column="5" selection-end-line="74" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#run#0;class#ConnectProcessor#0" expanded="false" />
+                <element signature="class#NioConnectStateWatcher#0;class#ConnectProcessor#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ConnectProcessor.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/processor/ConnectProcessor.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="570">
+              <caret line="43" column="30" selection-start-line="43" selection-start-column="30" selection-end-line="43" selection-end-column="30" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#close#0;class#ConnectProcessor#0" expanded="false" />
+                <element signature="method#run#0;class#ConnectProcessor#0" expanded="false" />
+                <element signature="class#WriteRunnable#0;class#ConnectProcessor#0" expanded="false" />
+                <element signature="class#ReadRunnable#0;class#ConnectProcessor#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BaseClient.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/BaseClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="22" column="20" selection-start-line="22" selection-start-column="20" selection-end-line="22" selection-end-column="20" />
+            <state relative-caret-position="280">
+              <caret line="24" column="28" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -2022,12 +2055,12 @@
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/message/MessageBuffer.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/open/net/NioClientConnectionActivity.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/open/net/BioClientConnectionActivity.java" />
-        <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/processor/ConnectProcessor.java" />
-        <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioClient.java" />
         <option value="$PROJECT_DIR$/../build.gradle" />
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/BaseClient.java" />
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/processor/ConnectProcessor.java" />
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioClient.java" />
+        <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioClient.java" />
+        <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/processor/ConnectProcessor.java" />
       </list>
     </option>
   </component>
@@ -2169,7 +2202,67 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="nio" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="processor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android-socket-client" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="net_socket_client" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="bio" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="android-socket-client" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="net_socket_client" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="client" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="impl" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bio" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="processor" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2673,7 +2766,14 @@
       <option name="project" value="LOCAL" />
       <updated>1512028743145</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="init project !">
+      <created>1512030267765</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1512030267765</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -2806,13 +2906,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioClient.java</url>
-          <line>43</line>
+          <line>49</line>
           <properties />
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioClient.java</url>
-          <line>52</line>
+          <line>58</line>
           <properties />
           <option name="timeStamp" value="18" />
         </line-breakpoint>
@@ -2834,20 +2934,18 @@
           <properties />
           <option name="timeStamp" value="24" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioClient.java</url>
+          <line>135</line>
+          <properties />
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="25" />
+      <option name="time" value="26" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/message/Message.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/TcpAddress.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
@@ -3153,20 +3251,45 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/processor/ConnectProcessor.java">
+    <entry file="jar://$APPLICATION_HOME_DIR$/jre/jre/lib/rt.jar!/java/nio/channels/SocketChannel.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="47" column="31" selection-start-line="47" selection-start-column="31" selection-end-line="47" selection-end-column="31" />
+        <state relative-caret-position="392">
+          <caret line="68" column="28" selection-start-line="68" selection-start-column="28" selection-end-line="68" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/BaseClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="24" column="28" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="28" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="519">
+          <caret line="128" column="0" selection-start-line="128" selection-start-column="0" selection-end-line="128" selection-end-column="55" />
+          <folding>
+            <element signature="method#connect#0;class#BioClient#0" expanded="false" />
+            <element signature="method#reconnect#0;class#BioClient#0" expanded="false" />
+            <element signature="method#disconnect#0;class#BioClient#0" expanded="false" />
+            <element signature="method#startConnect#0;class#BioClient#0" expanded="false" />
+            <element signature="method#stopConnect#0;class#BioClient#0" expanded="false" />
+            <element signature="method#close#0;class#BioClient#0" expanded="false" />
+            <element signature="method#write#0;class#BioClient#0" expanded="false" />
+            <element signature="method#read#0;class#BioClient#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="15" column="36" selection-start-line="15" selection-start-column="36" selection-end-line="15" selection-end-column="36" />
+        <state relative-caret-position="2950">
+          <caret line="249" column="9" selection-start-line="249" selection-start-column="9" selection-end-line="249" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#NioClient#0;class#NioClient#0" expanded="false" />
@@ -3183,41 +3306,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/processor/ConnectProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="161" column="19" selection-start-line="161" selection-start-column="12" selection-end-line="161" selection-end-column="19" />
+        <state relative-caret-position="570">
+          <caret line="43" column="30" selection-start-line="43" selection-start-column="30" selection-end-line="43" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#close#0;class#ConnectProcessor#0" expanded="false" />
             <element signature="method#run#0;class#ConnectProcessor#0" expanded="false" />
             <element signature="class#WriteRunnable#0;class#ConnectProcessor#0" expanded="false" />
+            <element signature="class#ReadRunnable#0;class#ConnectProcessor#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioClient.java">
+    <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/processor/ConnectProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1309">
-          <caret line="194" column="25" selection-start-line="194" selection-start-column="25" selection-end-line="194" selection-end-column="25" />
-          <folding>
-            <element signature="method#connect#0;class#BioClient#0" expanded="false" />
-            <element signature="method#reconnect#0;class#BioClient#0" expanded="false" />
-            <element signature="method#disconnect#0;class#BioClient#0" expanded="false" />
-            <element signature="method#startConnect#0;class#BioClient#0" expanded="false" />
-            <element signature="method#stopConnect#0;class#BioClient#0" expanded="false" />
-            <element signature="method#init#0;class#BioClient#0" expanded="false" />
-            <element signature="method#close#0;class#BioClient#0" expanded="false" />
-            <element signature="method#write#0;class#BioClient#0" expanded="false" />
-            <element signature="method#read#0;class#BioClient#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/BaseClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="22" column="20" selection-start-line="22" selection-start-column="20" selection-end-line="22" selection-end-column="20" />
+        <state relative-caret-position="1258">
+          <caret line="74" column="5" selection-start-line="74" selection-start-column="5" selection-end-line="74" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="method#run#0;class#ConnectProcessor#0" expanded="false" />
+            <element signature="class#NioConnectStateWatcher#0;class#ConnectProcessor#0" expanded="false" />
           </folding>
         </state>
       </provider>
