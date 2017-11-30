@@ -70,6 +70,7 @@ public class BioClientConnectionActivity extends Activity {
 					
 				case R.id.send:
 					mMessageProcessor.send(mClient,sendContent.getText().toString().getBytes());
+					sendContent.setText("");
 					break;
 					
 				case R.id.clear:
