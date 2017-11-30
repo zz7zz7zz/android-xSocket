@@ -13,7 +13,7 @@ public final class Message {
 	public long msgId;
 
 	public int src_reuse_type;
-	public int dst_resue_type;
+	public int dst_reuse_type;
 
 	public byte[] data;//共享数组中的数据
 	public int capacity;//数组中的容量
@@ -27,9 +27,10 @@ public final class Message {
 
 	public void reset() {
 		++G_MESSAGE_ID;
+
 		msgId = G_MESSAGE_ID;
 		src_reuse_type = 0;
-		dst_resue_type = 0;
+		dst_reuse_type = 0;
 
 		data = null;
 		capacity = 0;

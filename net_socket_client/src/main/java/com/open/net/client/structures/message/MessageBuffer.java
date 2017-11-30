@@ -91,7 +91,7 @@ public final class MessageBuffer {
                 ret.block_index   = index;
                 ret.offset   = capacity_small * index;
                 ret.length   = 0;
-                ret.dst_resue_type = 1;
+                ret.dst_reuse_type = 1;
                 return ret;
             }
         }
@@ -104,7 +104,7 @@ public final class MessageBuffer {
                 ret.block_index   = index;
                 ret.offset   = capacity_middle * index;
                 ret.length   = 0;
-                ret.dst_resue_type = 2;
+                ret.dst_reuse_type = 2;
                 return ret;
             }
         }
@@ -117,7 +117,7 @@ public final class MessageBuffer {
                 ret.block_index   = index;
                 ret.offset   = capacity_large * index;
                 ret.length   = 0;
-                ret.dst_resue_type = 3;
+                ret.dst_reuse_type = 3;
                 return ret;
             }
         }
@@ -130,7 +130,7 @@ public final class MessageBuffer {
                 ret.block_index   = -1;
                 ret.offset   = 0;
                 ret.length   = 0;
-                ret.dst_resue_type = 4;
+                ret.dst_reuse_type = 4;
                 return ret;
             }
         }
@@ -141,19 +141,19 @@ public final class MessageBuffer {
         ret.block_index   = -1;
         ret.offset   = 0;
         ret.length   = 0;
-        ret.dst_resue_type = 4;
+        ret.dst_reuse_type = 4;
 
         return ret;
     }
 
     public void release(Message msg){
-        if(msg.dst_resue_type == 1){
+        if(msg.dst_reuse_type == 1){
             buffer_small_tracker.release(msg.block_index);
             MessagePool.put(msg);
-        }else if(msg.dst_resue_type == 2){
+        }else if(msg.dst_reuse_type == 2){
             buffer_middle_tracker.release(msg.block_index);
             MessagePool.put(msg);
-        }else if(msg.dst_resue_type == 3){
+        }else if(msg.dst_reuse_type == 3){
             buffer_large_tracker.release(msg.block_index);
             MessagePool.put(msg);
         }else{
