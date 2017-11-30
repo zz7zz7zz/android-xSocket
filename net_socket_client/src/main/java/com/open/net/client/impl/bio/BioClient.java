@@ -19,19 +19,19 @@ public class BioClient extends BaseClient{
 
 	private final String TAG = "BioClient";
 
-	private BioConnector mBioConnector;
+	private BioConnector mConnector;
 
-	public BioConnector getBioConnector() {
-		return mBioConnector;
+	public BioConnector getConnector() {
+		return mConnector;
 	}
 
-	public void setBioConnector(BioConnector mBioConnector) {
-		this.mBioConnector = mBioConnector;
+	public void setConnector(BioConnector mBioConnector) {
+		this.mConnector = mBioConnector;
 	}
 
 	public void sendMessage(Message msg) {
 		addWriteMessage(msg);
-		mBioConnector.sendMessage(msg);
+		mConnector.sendMessage(msg);
 	}
 
 	//-------------------------------------------------------------------------------------------

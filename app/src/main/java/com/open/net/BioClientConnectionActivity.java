@@ -46,26 +46,26 @@ public class BioClientConnectionActivity extends Activity {
 		port.setText("9999");
 
 		mClient = new BioClient();
-		mClient.setBioConnector(new BioConnector(mClient,new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))}, mMessageProcessor,mConnectStatusListener));
+		mClient.setConnector(new BioConnector(mClient,new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))}, mMessageProcessor,mConnectStatusListener));
 	}
 	
 	private OnClickListener listener=new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
-			mClient.getBioConnector().setConnectAddress(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
+			mClient.getConnector().setConnectAddress(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
 			switch(v.getId())
 			{
 				case R.id.open:
-					mClient.getBioConnector().connect();
+					mClient.getConnector().connect();
 					break;
 					
 				case R.id.close:
-					mClient.getBioConnector().disconnect();
+					mClient.getConnector().disconnect();
 					break;
 					
 				case R.id.reconn:
-					mClient.getBioConnector().reconnect();
+					mClient.getConnector().reconnect();
 					break;
 					
 				case R.id.send:
@@ -91,7 +91,7 @@ public class BioClientConnectionActivity extends Activity {
 
 		@Override
 		public void onConnectionFailed() {
-			mClient.getBioConnector().connect();//try to connect next ip port
+			mClient.getConnector().connect();//try to connect next ip port
 		}
 	};
 
@@ -115,6 +115,6 @@ public class BioClientConnectionActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		mClient.getBioConnector().disconnect();
+		mClient.getConnector().disconnect();
 	}
 }
