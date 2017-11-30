@@ -13,7 +13,10 @@ import com.open.net.client.structures.message.MessageWriteQueen;
 
 public abstract class BaseClient {
 
+    //读队列
     public MessageReadQueen mReadMessageQueen   = new MessageReadQueen();
+
+    //收队列
     public MessageWriteQueen mWriteMessageQueen  = new MessageWriteQueen();
 
     //--------------------------------------------------------------------------------------

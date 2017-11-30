@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 
-import com.open.net.client.impl.BioClient;
+import com.open.net.client.impl.bio.BioClient;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.listener.IConnectStatusListener;
@@ -44,18 +44,7 @@ public class BioClientConnectionActivity extends Activity {
 		ip.setText("192.168.123.1");
 		port.setText("9999");
 
-		mConnection = new BioClient(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))}, mMessageProcessor);
-		mConnection.setConnectStatusListener(new IConnectStatusListener() {
-			@Override
-			public void onConnectionSuccess() {
-
-			}
-
-			@Override
-			public void onConnectionFailed() {
-				mConnection.connect();//try to connect next ip port
-			}
-		});
+		mConnection = new BioClient(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))}, mMessageProcessor,mConnectStatusListener);
 	}
 	
 	private OnClickListener listener=new OnClickListener() {
@@ -89,6 +78,18 @@ public class BioClientConnectionActivity extends Activity {
 					recContent.setText("");
 					break;
 			}
+		}
+	};
+
+	private IConnectStatusListener mConnectStatusListener = new IConnectStatusListener() {
+		@Override
+		public void onConnectionSuccess() {
+
+		}
+
+		@Override
+		public void onConnectionFailed() {
+			mConnection.connect();//try to connect next ip port
 		}
 	};
 

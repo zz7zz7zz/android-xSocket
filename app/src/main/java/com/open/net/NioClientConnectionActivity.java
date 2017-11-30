@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 
-import com.open.net.client.impl.NioClient;
+import com.open.net.client.impl.nio.NioClient;
 import com.open.net.client.listener.IConnectStatusListener;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.message.Message;
@@ -44,18 +44,7 @@ public class NioClientConnectionActivity extends Activity {
 		ip.setText("192.168.123.1");
 		port.setText("9999");
 
-		mConnection = new NioClient(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))}, mMessageProcessor);
-		mConnection.setConnectStatusListener(new IConnectStatusListener() {
-			@Override
-			public void onConnectionSuccess() {
-
-			}
-
-			@Override
-			public void onConnectionFailed() {
-				mConnection.connect();//try to connect next ip port
-			}
-		});
+		mConnection = new NioClient(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))}, mMessageProcessor,mConnectStatusListener);
 	}
 
 	private OnClickListener listener=new OnClickListener() {
@@ -89,6 +78,18 @@ public class NioClientConnectionActivity extends Activity {
 					recContent.setText("");
 					break;
 			}
+		}
+	};
+
+	private IConnectStatusListener mConnectStatusListener = new IConnectStatusListener() {
+		@Override
+		public void onConnectionSuccess() {
+
+		}
+
+		@Override
+		public void onConnectionFailed() {
+			mConnection.connect();//try to connect next ip port
 		}
 	};
 

@@ -7,7 +7,7 @@
         jumboMode="false"
         optimize="true"
         revision="26.0.0"
-        sha1="cfd335e82759d46bf92d2a4107efcf7fb0cd5364">
+        sha1="68815d6bdcbb9c0eb76628aa1c4660643aae4062">
         <dex dex="E:\android-studio-workspace\android-socket-client\app\build\intermediates\pre-dexed\debug\net_socket_client_076d8dc1beaa7406e88aa80bc123f0698b1a3150.jar" />
     </item>
 
