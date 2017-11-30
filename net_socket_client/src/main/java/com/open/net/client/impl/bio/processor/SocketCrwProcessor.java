@@ -106,21 +106,22 @@ public class SocketCrwProcessor implements Runnable {
             Socket mSocket =new Socket();
             mSocket.connect(new InetSocketAddress(mIp, mPort), 15*1000);
             ((BioClient)mClient).init(mSocket);
+            state=STATE_CONNECT_SUCCESS;
 
             mWriteProcessor = new WriteRunnable();
             mWriteThread =new Thread(mWriteProcessor);
-            mReadThread =new Thread(new ReadRunnable());
             mWriteThread.start();
+            mReadThread =new Thread(new ReadRunnable());
             mReadThread.start();
-            state=STATE_CONNECT_SUCCESS;
+            return;
         } catch (Exception e) {
             e.printStackTrace();
             state=STATE_CONNECT_FAILED;
-        }finally {
-            if(!(state == STATE_CONNECT_SUCCESS || isClosedByUser)) {
-                if(null != mConnectStatusListener){
-                    mConnectStatusListener.onConnectionFailed();
-                }
+        }
+
+        if(!(state == STATE_CONNECT_SUCCESS || isClosedByUser)) {
+            if(null != mConnectStatusListener){
+                mConnectStatusListener.onConnectionFailed();
             }
         }
     }
@@ -148,7 +149,9 @@ public class SocketCrwProcessor implements Runnable {
             }catch (Exception e) {
                 e.printStackTrace();
             }
+
             System.out.println("client close when write");
+
             if(!isClosedByUser){
                 if(null != mConnectStatusListener){
                     mConnectStatusListener.onConnectionFailed();
@@ -160,7 +163,9 @@ public class SocketCrwProcessor implements Runnable {
     private class ReadRunnable implements Runnable{
         public void run() {
             mClient.read();
+
             System.out.println("client close when read");
+
             if(!isClosedByUser){
                 if(null != mConnectStatusListener){
                     mConnectStatusListener.onConnectionFailed();
