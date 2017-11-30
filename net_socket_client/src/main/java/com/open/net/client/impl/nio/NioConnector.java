@@ -1,7 +1,7 @@
 package com.open.net.client.impl.nio;
 
 import com.open.net.client.impl.nio.processor.SocketCrwProcessor;
-import com.open.net.client.listener.IConnectStatusListener;
+import com.open.net.client.structures.IConnectResultListener;
 import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.structures.TcpAddress;
 
@@ -22,9 +22,9 @@ public final class NioConnector {
     private Thread mConnectProcessorThread = null;
 
     private BaseMessageProcessor mMessageProcessor = null;
-    private IConnectStatusListener mConnectStatusListener = null;
+    private IConnectResultListener mConnectStatusListener = null;
 
-    public NioConnector(NioClient mClient, TcpAddress[] tcpArray, BaseMessageProcessor mMessageProcessor, IConnectStatusListener mConnectStatusListener) {
+    public NioConnector(NioClient mClient, TcpAddress[] tcpArray, BaseMessageProcessor mMessageProcessor, IConnectResultListener mConnectStatusListener) {
         this.mClient = mClient;
         this.tcpArray = tcpArray;
         this.mMessageProcessor = mMessageProcessor;

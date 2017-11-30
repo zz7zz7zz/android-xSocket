@@ -1,7 +1,7 @@
 package com.open.net.client.impl.bio.processor;
 
 import com.open.net.client.impl.bio.BioClient;
-import com.open.net.client.listener.IConnectStatusListener;
+import com.open.net.client.structures.IConnectResultListener;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;
 
@@ -25,7 +25,7 @@ public class SocketCrwProcessor implements Runnable {
     private int    mPort =9999;
 
     private BaseMessageProcessor mMessageProcessor;
-    private IConnectStatusListener mConnectStatusListener;
+    private IConnectResultListener mConnectStatusListener;
     private boolean isClosedByUser = false;
 
     private int state = STATE_CLOSE;
@@ -36,7 +36,7 @@ public class SocketCrwProcessor implements Runnable {
     private Thread mReadThread =null;
 
 
-    public SocketCrwProcessor(BaseClient mClient , String ip, int port, IConnectStatusListener mConnectionStatusListener,BaseMessageProcessor mMessageProcessor) {
+    public SocketCrwProcessor(BaseClient mClient , String ip, int port, IConnectResultListener mConnectionStatusListener, BaseMessageProcessor mMessageProcessor) {
         this.mClient = mClient;
         this.mIp = ip;
         this.mPort = port;

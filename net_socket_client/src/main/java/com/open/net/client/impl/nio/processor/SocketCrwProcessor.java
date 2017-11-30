@@ -1,7 +1,7 @@
 package com.open.net.client.impl.nio.processor;
 
 import com.open.net.client.impl.nio.NioClient;
-import com.open.net.client.listener.IConnectStatusListener;
+import com.open.net.client.structures.IConnectResultListener;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;
 
@@ -36,12 +36,12 @@ public final class SocketCrwProcessor implements Runnable {
     private int state= STATE_CLOSE;
 
     private BaseMessageProcessor mMessageProcessor;
-    private IConnectStatusListener mConnectStatusListener;
+    private IConnectResultListener mConnectStatusListener;
     private boolean isClosedByUser = false;
 
     private BaseClient mClient;
 
-    public SocketCrwProcessor(BaseClient mClient, String ip, int port, BaseMessageProcessor mMessageProcessor,IConnectStatusListener mNioConnectionListener) {
+    public SocketCrwProcessor(BaseClient mClient, String ip, int port, BaseMessageProcessor mMessageProcessor,IConnectResultListener mNioConnectionListener) {
         this.mClient = mClient;
         this.ip = ip;
         this.port = port;

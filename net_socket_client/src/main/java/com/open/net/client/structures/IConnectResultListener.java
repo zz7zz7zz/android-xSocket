@@ -1,4 +1,4 @@
-package com.open.net.client.listener;
+package com.open.net.client.structures;
 
 /**
  * author       :   long
@@ -6,7 +6,7 @@ package com.open.net.client.listener;
  * description  :   连接状态回调
  */
 
-public interface IConnectStatusListener {
+public interface IConnectResultListener {
 
     void onConnectionSuccess();
 

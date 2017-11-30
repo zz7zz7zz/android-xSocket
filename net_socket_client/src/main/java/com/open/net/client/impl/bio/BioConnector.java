@@ -1,7 +1,7 @@
 package com.open.net.client.impl.bio;
 
 import com.open.net.client.impl.bio.processor.SocketCrwProcessor;
-import com.open.net.client.listener.IConnectStatusListener;
+import com.open.net.client.structures.IConnectResultListener;
 import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.structures.TcpAddress;
 
@@ -22,9 +22,9 @@ public class BioConnector {
     private Thread 				mConnectProcessorThread =null;
 
     private BaseMessageProcessor mMessageProcessor;
-    private IConnectStatusListener mConnectStatusListener = null;
+    private IConnectResultListener mConnectStatusListener = null;
 
-    public BioConnector(BioClient mClient , TcpAddress[] tcpArray , BaseMessageProcessor mMessageProcessor, IConnectStatusListener mConnectStatusListener) {
+    public BioConnector(BioClient mClient , TcpAddress[] tcpArray , BaseMessageProcessor mMessageProcessor, IConnectResultListener mConnectStatusListener) {
         this.mClient = mClient;
         this.tcpArray = tcpArray;
         this.mMessageProcessor = mMessageProcessor;
