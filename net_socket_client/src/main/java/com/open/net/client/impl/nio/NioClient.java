@@ -31,11 +31,6 @@ public final class NioClient extends BaseClient{
         this.mConnector = mConnector;
     }
 
-    @Override
-    public void onCheckConnect() {
-        mConnector.checkConnect();
-    }
-
     //-------------------------------------------------------------------------------------------
     private SocketChannel mSocketChannel;
     private Selector   mSelector;
@@ -49,9 +44,13 @@ public final class NioClient extends BaseClient{
     }
 
     @Override
+    public void onCheckConnect() {
+        mConnector.checkConnect();
+    }
+
+    @Override
     public void onClose() {
-        if(null!= mSocketChannel)
-        {
+        if(null!= mSocketChannel) {
             try {
                 SelectionKey key = mSocketChannel.keyFor(mSelector);
                 if(null != key){
