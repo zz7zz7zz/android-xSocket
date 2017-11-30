@@ -26,26 +26,28 @@ public class ConnectProcessor implements Runnable
     private final int STATE_CONNECT_SUCCESS	= 1<<3;//连接成功
     private final int STATE_CONNECT_FAILED	= 1<<4;//连接失败
 
-    private String ip ="192.168.1.1";
-    private int port =9999;
-    private int state = STATE_CLOSE;
+    private String mIp ="192.168.1.1";
+    private int    mPort =9999;
+
     private IConnectStatusListener mConnectStatusListener;
     private BaseMessageProcessor mMessageProcessor;
     private boolean isClosedByUser = false;
 
-    private Socket socket=null;
-    private OutputStream outStream=null;
-    private InputStream inStream=null;
+    private int state = STATE_CLOSE;
+
+    private Socket mSocket =null;
+    private OutputStream mOutputStream =null;
+    private InputStream mInputStream =null;
     private WriteRunnable mWriter;
-    private Thread writeThread =null;
-    private Thread readThread =null;
+    private Thread mWriteThread =null;
+    private Thread mReadThread =null;
 
     private BaseClient mClient;
 
     public ConnectProcessor(BaseClient mClient , String ip, int port, IConnectStatusListener mConnectionStatusListener, BaseMessageProcessor mMessageProcessor) {
         this.mClient = mClient;
-        this.ip = ip;
-        this.port = port;
+        this.mIp = ip;
+        this.mPort = port;
         this.mConnectStatusListener = mConnectionStatusListener;
         this.mMessageProcessor = mMessageProcessor;
     }
@@ -71,58 +73,58 @@ public class ConnectProcessor implements Runnable
             if(state!=STATE_CLOSE)
             {
                 try {
-                    if(null!=socket)
+                    if(null!= mSocket)
                     {
-                        socket.close();
+                        mSocket.close();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }finally{
-                    socket=null;
+                    mSocket =null;
                 }
 
                 try {
-                    if(null!=outStream)
+                    if(null!= mOutputStream)
                     {
-                        outStream.close();
+                        mOutputStream.close();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }finally{
-                    outStream=null;
+                    mOutputStream =null;
                 }
 
                 try {
-                    if(null!=inStream)
+                    if(null!= mInputStream)
                     {
-                        inStream.close();
+                        mInputStream.close();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }finally{
-                    inStream=null;
+                    mInputStream =null;
                 }
 
                 try {
-                    if(null!= writeThread && writeThread.isAlive())
+                    if(null!= mWriteThread && mWriteThread.isAlive())
                     {
-                        writeThread.interrupt();
+                        mWriteThread.interrupt();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }finally{
-                    writeThread =null;
+                    mWriteThread =null;
                 }
 
                 try {
-                    if(null!= readThread && readThread.isAlive())
+                    if(null!= mReadThread && mReadThread.isAlive())
                     {
-                        readThread.interrupt();
+                        mReadThread.interrupt();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }finally{
-                    readThread =null;
+                    mReadThread =null;
                 }
 
                 state=STATE_CLOSE;
@@ -144,8 +146,8 @@ public class ConnectProcessor implements Runnable
         try{
             Message msg= mClient.pollWriteMessage();
             while(null != msg) {
-                outStream.write(msg.data,0,msg.length);
-                outStream.flush();
+                mOutputStream.write(msg.data,0,msg.length);
+                mOutputStream.flush();
                 mClient.removeWriteMessage(msg);
                 msg= mClient.pollWriteMessage();
             }
@@ -166,7 +168,7 @@ public class ConnectProcessor implements Runnable
             byte[] bodyBytes=new byte[maximum_length];
             int numRead;
 
-            while((numRead=inStream.read(bodyBytes, 0, maximum_length))>0) {
+            while((numRead= mInputStream.read(bodyBytes, 0, maximum_length))>0) {
                 if(numRead > 0){
                     if(null!= mMessageProcessor) {
                         mMessageProcessor.onReceive(mClient, bodyBytes,0,numRead);
@@ -188,17 +190,17 @@ public class ConnectProcessor implements Runnable
         try {
             isClosedByUser = false;
             state=STATE_CONNECT_START;
-            socket=new Socket();
-            socket.connect(new InetSocketAddress(ip, port), 15*1000);
+            mSocket =new Socket();
+            mSocket.connect(new InetSocketAddress(mIp, mPort), 15*1000);
 
-            outStream=socket.getOutputStream();
-            inStream=socket.getInputStream();
+            mOutputStream = mSocket.getOutputStream();
+            mInputStream = mSocket.getInputStream();
 
             mWriter = new WriteRunnable();
-            writeThread =new Thread(mWriter);
-            readThread =new Thread(new ReadRunnable());
-            writeThread.start();
-            readThread.start();
+            mWriteThread =new Thread(mWriter);
+            mReadThread =new Thread(new ReadRunnable());
+            mWriteThread.start();
+            mReadThread.start();
 
             state=STATE_CONNECT_SUCCESS;
 
@@ -228,7 +230,7 @@ public class ConnectProcessor implements Runnable
 
         public void run() {
             try {
-                while(state!=STATE_CLOSE && state== STATE_CONNECT_SUCCESS && null!=outStream ) {
+                while(state != STATE_CLOSE && state== STATE_CONNECT_SUCCESS && null!= mOutputStream) {
 
                     if(!write()){
                         break;
