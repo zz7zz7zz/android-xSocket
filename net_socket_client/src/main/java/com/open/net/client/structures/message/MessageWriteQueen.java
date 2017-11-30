@@ -18,11 +18,15 @@ public final class MessageWriteQueen {
     }
 
     public void put(Message msg){
-        mQueen.add(msg);
+        if(null != msg){
+            mQueen.add(msg);
+        }
     }
 
     public void remove(Message msg){
-        mQueen.remove(msg);
-        mWriteMessageBuffer.release(msg);
+        if(null != msg){
+            mQueen.remove(msg);
+            mWriteMessageBuffer.release(msg);
+        }
     }
 }

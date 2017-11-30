@@ -18,25 +18,17 @@ public abstract class BaseMessageProcessor {
     }
 
     public final void send(BaseClient mClient,byte[] src , int offset , int length){
-        Message msg = mClient.mWriteMessageQueen.build(src,offset,length);
-        mClient.addWriteMessage(msg);
-        mClient.onCheckConnect();
+        mClient.onSendMessage(src,offset,length);
     }
 
     //----------------------------------收数据------------------------------------------------
     public final void onReceive(BaseClient mClient,byte[] src , int offset , int length) {
-        Message msg = mClient.mReadMessageQueen.build(src,offset,length);
-        mClient.addReadMessage(msg);
+        mClient.onReceiveMessage(src,offset,length);
     }
 
     public final void onProcessReceivedMessage(BaseClient mClient){
         onReceive(mClient,mClient.mReadMessageQueen.mQueen);
-
-        Message msg = mClient.pollReadMessage();
-        while (null != msg){
-            mClient.removeReadMessageId(msg);
-            msg = mClient.pollReadMessage();
-        }
+        mClient.onReceiveMessageClear();
     }
 
     //请不要去操作这个表的数据，只能读，不能增删改

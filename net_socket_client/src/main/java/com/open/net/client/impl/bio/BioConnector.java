@@ -88,7 +88,7 @@ public class BioConnector {
             index = -1;
 
             //循环连接了一遍还没有连接上，说明网络连接不成功，此时清空消息队列，防止队列堆积
-            mClient.clear();
+            mClient.clearUnreachableMessages();
         }
     }
 

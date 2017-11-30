@@ -26,7 +26,7 @@ public abstract class BaseClient {
         this.mMessageProcessor = mMessageProcessor;
     }
 
-    public void clear(){
+    public void clearUnreachableMessages(){
         Message msg = pollWriteMessage();
         while (null != msg) {
             removeWriteMessage(msg);
@@ -34,33 +34,35 @@ public abstract class BaseClient {
         }
     }
     //--------------------------------------------------------------------------------------
-    public void addReadMessage(Message msg) {
+    public void onReceiveMessage(byte[] src , int offset , int length){
+        Message msg = mReadMessageQueen.build(src,offset,length);
         mReadMessageQueen.put(msg);
     }
 
-    public Message pollReadMessage(){
-        return mReadMessageQueen.mQueen.poll();
-    }
-
-    public void removeReadMessageId(Message msg){
-        mReadMessageQueen.remove(msg);
+    public void onReceiveMessageClear(){
+        Message msg = mReadMessageQueen.mQueen.poll();
+        while (null != msg){
+            mReadMessageQueen.remove(msg);
+            msg = mReadMessageQueen.mQueen.poll();
+        }
     }
 
     //--------------------------------------------------------------------------------------
-    public void addWriteMessage(Message msg) {
+    public void onSendMessage(byte[] src , int offset , int length) {
+        Message msg = mWriteMessageQueen.build(src,offset,length);
         mWriteMessageQueen.put(msg);
+        onCheckConnect();
     }
 
-    public Message pollWriteMessage(){
+    protected Message pollWriteMessage(){
         return mWriteMessageQueen.mQueen.poll();
     }
 
-    public void removeWriteMessage(Message msg){
+    protected void removeWriteMessage(Message msg){
         mWriteMessageQueen.remove(msg);
     }
 
     //--------------------------------------------------------------------------------------
-
     public abstract void onCheckConnect();
 
     public abstract void onClose();
