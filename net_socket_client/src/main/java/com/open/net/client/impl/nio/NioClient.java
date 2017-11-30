@@ -82,7 +82,7 @@ public final class NioClient extends BaseClient{
                 if(readReceiveLength == mReadByteBuffer.capacity()){
                     mReadByteBuffer.flip();
                     if(mReadByteBuffer.remaining() > 0){
-                        this.mMessageProcessor.onReceive(this, mReadByteBuffer.array(), 0 , mReadByteBuffer.remaining());
+                        this.mMessageProcessor.onReceiveData(this, mReadByteBuffer.array(), 0 , mReadByteBuffer.remaining());
                     }
                     mReadByteBuffer.clear();
                     readReceiveLength = 0;
@@ -97,7 +97,7 @@ public final class NioClient extends BaseClient{
 
             mReadByteBuffer.flip();
             if(mReadByteBuffer.remaining() > 0){
-                this.mMessageProcessor.onReceive(this, mReadByteBuffer.array(), 0 , mReadByteBuffer.remaining());
+                this.mMessageProcessor.onReceiveData(this, mReadByteBuffer.array(), 0 , mReadByteBuffer.remaining());
             }
             mReadByteBuffer.clear();
 
@@ -106,7 +106,7 @@ public final class NioClient extends BaseClient{
             readRet = false;
         }
 
-        mMessageProcessor.onProcessReceivedMessage(this);
+        mMessageProcessor.onReceiveMessages(this);
 
         return readRet;
     }

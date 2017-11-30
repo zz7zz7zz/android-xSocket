@@ -84,6 +84,7 @@ public class BioClient extends BaseClient{
 	}
 
 	public boolean onRead(){
+		boolean readRet = true;
 		try {
 			int maximum_length = 8192;
 			byte[] bodyBytes=new byte[maximum_length];
@@ -92,39 +93,68 @@ public class BioClient extends BaseClient{
 			while((numRead= mInputStream.read(bodyBytes, 0, maximum_length))>0) {
 				if(numRead > 0){
 					if(null!= mMessageProcessor) {
-						mMessageProcessor.onReceive(this, bodyBytes,0,numRead);
-						mMessageProcessor.onProcessReceivedMessage(this);
+						mMessageProcessor.onReceiveData(this, bodyBytes,0,numRead);
+						mMessageProcessor.onReceiveMessages(this);
 					}
 				}
 			}
 		} catch (SocketException e) {
 			e.printStackTrace();//客户端主动socket.stopConnect()会调用这里 java.net.SocketException: Socket closed
+			readRet = false;
 		}catch (IOException e1) {
 			e1.printStackTrace();
+			readRet = false;
 		}catch (Exception e2) {
 			e2.printStackTrace();
+			readRet = false;
+		}
+
+		mMessageProcessor.onReceiveMessages(this);
+
+		//退出客户端的时候需要把要写给该客户端的数据清空
+		if(!readRet){
+			Message msg = pollWriteMessage();
+			while (null != msg) {
+				removeWriteMessage(msg);
+				msg= pollWriteMessage();
+			}
 		}
 		return false;
 	}
 
 	public boolean onWrite(){
-		boolean writeRet = false;
+		boolean writeRet = true;
+		Message msg= pollWriteMessage();
 		try{
-			Message msg= pollWriteMessage();
 			while(null != msg) {
 				mOutputStream.write(msg.data,0,msg.length);
 				mOutputStream.flush();
 				removeWriteMessage(msg);
 				msg= pollWriteMessage();
 			}
-			writeRet = true;
 		} catch (SocketException e) {
 			e.printStackTrace();//客户端主动socket.stopConnect()会调用这里 java.net.SocketException: Socket closed
+			writeRet = false;
 		}catch (IOException e1) {
 			e1.printStackTrace();//发送的时候出现异常，说明socket被关闭了(服务器关闭)java.net.SocketException: sendto failed: EPIPE (Broken pipe)
+			writeRet = false;
 		}catch (Exception e2) {
 			e2.printStackTrace();
+			writeRet = false;
 		}
+
+		//退出客户端的时候需要把要写给该客户端的数据清空
+		if(!writeRet){
+			if(null != msg){
+				removeWriteMessage(msg);
+			}
+			msg= pollWriteMessage();
+			while (null != msg) {
+				removeWriteMessage(msg);
+				msg= pollWriteMessage();
+			}
+		}
+
 		return writeRet;
 	}
 }

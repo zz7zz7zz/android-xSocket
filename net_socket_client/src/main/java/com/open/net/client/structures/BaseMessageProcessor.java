@@ -22,16 +22,18 @@ public abstract class BaseMessageProcessor {
     }
 
     //----------------------------------收数据------------------------------------------------
-    public final void onReceive(BaseClient mClient,byte[] src , int offset , int length) {
-        mClient.onReceiveMessage(src,offset,length);
+    public final void onReceiveData(BaseClient mClient, byte[] src , int offset , int length) {
+        mClient.onReceiveData(src,offset,length);
     }
 
-    public final void onProcessReceivedMessage(BaseClient mClient){
-        onReceive(mClient,mClient.mReadMessageQueen.mQueen);
-        mClient.onReceiveMessageClear();
+    public final void onReceiveMessages(BaseClient mClient){
+        if(mClient.mReadMessageQueen.mQueen.size()>0){
+            onReceiveMessages(mClient,mClient.mReadMessageQueen.mQueen);
+            mClient.onReceiveMessageClear();
+        }
     }
 
     //请不要去操作这个表的数据，只能读，不能增删改
-    public abstract void onReceive(BaseClient mClient,LinkedList<Message> mQueen);
+    public abstract void onReceiveMessages(BaseClient mClient, LinkedList<Message> mQueen);
 
 }

@@ -95,7 +95,7 @@ public class NioClientConnectionActivity extends Activity {
 	private BaseMessageProcessor mMessageProcessor =new BaseMessageProcessor() {
 
 		@Override
-		public void onReceive(BaseClient mClient, final LinkedList<Message> mQueen) {
+		public void onReceiveMessages(BaseClient mClient, final LinkedList<Message> mQueen) {
 			for (int i = 0 ;i< mQueen.size();i++) {
 				Message msg = mQueen.get(i);
 				final String s = new String(msg.data,0,msg.length);

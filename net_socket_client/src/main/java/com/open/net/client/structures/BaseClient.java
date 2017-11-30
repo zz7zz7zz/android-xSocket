@@ -34,7 +34,7 @@ public abstract class BaseClient {
         }
     }
     //--------------------------------------------------------------------------------------
-    public void onReceiveMessage(byte[] src , int offset , int length){
+    public void onReceiveData(byte[] src , int offset , int length){
         Message msg = mReadMessageQueen.build(src,offset,length);
         mReadMessageQueen.put(msg);
     }
