@@ -67,7 +67,7 @@ public final class SocketCrwProcessor implements Runnable {
 
     public void close(){
         if(state != STATE_CLOSE){
-            mClient.close();
+            mClient.onClose();
             state = STATE_CLOSE;
         }
     }
@@ -132,7 +132,7 @@ public final class SocketCrwProcessor implements Runnable {
 
                     }else if (key.isReadable()) {
                         BaseClient mClient = (BaseClient) key.attachment();
-                        boolean ret = mClient.read();
+                        boolean ret = mClient.onRead();
                         if(!ret){
                             isExit = true;
                             key.cancel();
@@ -142,7 +142,7 @@ public final class SocketCrwProcessor implements Runnable {
 
                     }else if (key.isWritable()) {
                         BaseClient mClient = (BaseClient) key.attachment();
-                        boolean ret = mClient.write();
+                        boolean ret = mClient.onWrite();
                         if(!ret){
                             isExit = true;
                             key.cancel();

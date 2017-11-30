@@ -64,7 +64,7 @@ public class SocketCrwProcessor implements Runnable {
         try {
             if(state!=STATE_CLOSE)
             {
-                mClient.close();
+                mClient.onClose();
 
                 try {
                     if(null!= mWriteThread && mWriteThread.isAlive())
@@ -146,7 +146,7 @@ public class SocketCrwProcessor implements Runnable {
         public void run() {
             try {
                 while( state == STATE_CONNECT_SUCCESS) {
-                    if(!mClient.write()){
+                    if(!mClient.onWrite()){
                         break;
                     }
                     synchronized (lock) {
@@ -157,7 +157,7 @@ public class SocketCrwProcessor implements Runnable {
                 e.printStackTrace();
             }
 
-            System.out.println("client close when write");
+            System.out.println("client onClose when onWrite");
 
             if(!isClosedByUser){
                 if(null != mConnectStatusListener){
@@ -169,9 +169,9 @@ public class SocketCrwProcessor implements Runnable {
 
     private class ReadRunnable implements Runnable{
         public void run() {
-            mClient.read();
+            mClient.onRead();
 
-            System.out.println("client close when read");
+            System.out.println("client onClose when onRead");
 
             if(!isClosedByUser){
                 if(null != mConnectStatusListener){

@@ -20,14 +20,7 @@ public abstract class BaseClient {
     public MessageWriteQueen mWriteMessageQueen  = new MessageWriteQueen();
 
     protected BaseMessageProcessor mMessageProcessor;
-    //--------------------------------------------------------------------------------------
-    public abstract void close();
 
-    public abstract boolean read();
-
-    public abstract boolean write();
-
-    //--------------------------------------------------------------------------------------
     //--------------------------------------------------------------------------------------
     public void init(BaseMessageProcessor mMessageProcessor) {
         this.mMessageProcessor = mMessageProcessor;
@@ -66,4 +59,13 @@ public abstract class BaseClient {
         mWriteMessageQueen.remove(msg);
     }
 
+    //--------------------------------------------------------------------------------------
+
+    public abstract void onCheckConnect();
+
+    public abstract void onClose();
+
+    public abstract boolean onRead();
+
+    public abstract boolean onWrite();
 }

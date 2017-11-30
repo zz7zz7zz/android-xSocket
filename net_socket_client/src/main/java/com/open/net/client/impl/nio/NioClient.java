@@ -20,6 +20,7 @@ public final class NioClient extends BaseClient{
 
     private final String TAG="NioClient";
 
+    //-------------------------------------------------------------------------------------------
     private NioConnector mConnector;
 
     public NioConnector getConnector() {
@@ -30,8 +31,8 @@ public final class NioClient extends BaseClient{
         this.mConnector = mConnector;
     }
 
-    public void addWriteMessage(Message msg) {
-        super.addWriteMessage(msg);
+    @Override
+    public void onCheckConnect() {
         mConnector.checkConnect();
     }
 
@@ -46,8 +47,9 @@ public final class NioClient extends BaseClient{
         this.mSocketChannel = socketChannel;
         this.mSelector = mSelector;
     }
+
     @Override
-    public void close() {
+    public void onClose() {
         if(null!= mSocketChannel)
         {
             try {
@@ -64,7 +66,7 @@ public final class NioClient extends BaseClient{
         }
     }
 
-    public boolean read() {
+    public boolean onRead() {
         boolean readRet = true;
         try{
             mReadByteBuffer.clear();
@@ -110,7 +112,7 @@ public final class NioClient extends BaseClient{
         return readRet;
     }
 
-    public boolean write() {
+    public boolean onWrite() {
         boolean writeRet = true;
         try {
             Message msg = pollWriteMessage();

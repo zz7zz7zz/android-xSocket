@@ -19,6 +19,7 @@ public class BioClient extends BaseClient{
 
 	private final String TAG = "BioClient";
 
+	//-------------------------------------------------------------------------------------------
 	private BioConnector mConnector;
 
 	public BioConnector getConnector() {
@@ -29,8 +30,8 @@ public class BioClient extends BaseClient{
 		this.mConnector = mBioConnector;
 	}
 
-	public void addWriteMessage(Message msg) {
-		super.addWriteMessage(msg);
+	@Override
+	public void onCheckConnect() {
 		mConnector.checkConnect();
 	}
 
@@ -46,7 +47,7 @@ public class BioClient extends BaseClient{
 		mInputStream 	= socket.getInputStream();
 	}
 
-	public void close(){
+	public void onClose(){
 		try {
 				try {
 					if(null!= mSocket)
@@ -85,7 +86,7 @@ public class BioClient extends BaseClient{
 		}
 	}
 
-	public boolean write(){
+	public boolean onWrite(){
 		boolean writeRet = false;
 		try{
 			Message msg= pollWriteMessage();
@@ -106,7 +107,7 @@ public class BioClient extends BaseClient{
 		return writeRet;
 	}
 
-	public boolean read(){
+	public boolean onRead(){
 		try {
 			int maximum_length = 8192;
 			byte[] bodyBytes=new byte[maximum_length];

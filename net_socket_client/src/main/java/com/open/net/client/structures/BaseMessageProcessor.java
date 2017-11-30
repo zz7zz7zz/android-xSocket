@@ -20,6 +20,7 @@ public abstract class BaseMessageProcessor {
     public final void send(BaseClient mClient,byte[] src , int offset , int length){
         Message msg = mClient.mWriteMessageQueen.build(src,offset,length);
         mClient.addWriteMessage(msg);
+        mClient.onCheckConnect();
     }
 
     //----------------------------------收数据------------------------------------------------
