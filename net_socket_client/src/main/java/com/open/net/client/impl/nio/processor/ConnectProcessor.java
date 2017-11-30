@@ -1,5 +1,6 @@
 package com.open.net.client.impl.nio.processor;
 
+import com.open.net.client.impl.nio.NioClient;
 import com.open.net.client.listener.IConnectStatusListener;
 import com.open.net.client.structures.BaseClient;
 
@@ -74,11 +75,16 @@ public class ConnectProcessor implements Runnable {
         }
     }
 
+    private void setConnectionTimeout(long timeout){
+        new Thread(new NioConnectStateWatcher(timeout)).start();
+    }
+
     private boolean finishConnection(SelectionKey key) throws IOException {
         boolean result;
         SocketChannel socketChannel = (SocketChannel) key.channel();
         result= socketChannel.finishConnect();//没有网络的时候也返回true
         if(result) {
+            ((NioClient)mClient).init(mSocketChannel,mSelector);
             key.interestOps(SelectionKey.OP_READ);
             state=STATE_CONNECT_SUCCESS;
             if(null != mConnectStatusListener){
@@ -86,10 +92,6 @@ public class ConnectProcessor implements Runnable {
             }
         }
         return result;
-    }
-
-    private void setConnectionTimeout(long timeout){
-        new Thread(new NioConnectStateWatcher(timeout)).start();
     }
 
     //-------------------------------------------------------------------------------------------

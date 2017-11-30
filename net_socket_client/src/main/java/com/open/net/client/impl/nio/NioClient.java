@@ -90,7 +90,7 @@ public class NioClient extends BaseClient{
         index++;
         if(index < tcpArray.length && index >= 0){
             stopConnect(false);
-            mConnectProcessor = new ConnectProcessor(this, tcpArray[index].ip,tcpArray[index].port, mConnectStatusListener, mMessageProcessor);
+            mConnectProcessor = new ConnectProcessor(this, tcpArray[index].ip,tcpArray[index].port, mConnectStatusListener);
             mConnectProcessorThread =new Thread(mConnectProcessor);
             mConnectProcessorThread.start();
         }else{
@@ -126,8 +126,9 @@ public class NioClient extends BaseClient{
     private ByteBuffer mReadByteBuffer  = ByteBuffer.allocate(256*1024);
     private ByteBuffer mWriteByteBuffer = ByteBuffer.allocate(256*1024);
 
-    public void init(SocketChannel socketChannel) throws IOException {
-
+    public void init(SocketChannel socketChannel,Selector   mSelector) {
+        this.mSocketChannel = socketChannel;
+        this.mSelector = mSelector;
     }
     @Override
     public void close() {
