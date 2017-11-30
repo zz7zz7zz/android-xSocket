@@ -13,14 +13,14 @@ import java.nio.channels.spi.SelectorProvider;
 import java.util.Iterator;
 
 /**
- * author       :   Administrator
+ * author       :   long
  * created on   :   2017/11/30
- * description  :
+ * description  :   连/读/写 处理器
  */
 
-public class ConnectProcessor implements Runnable {
+public class SocketCrwProcessor implements Runnable {
 
-    private final String TAG = "ConnectProcessor";
+    private final String TAG = "SocketCrwProcessor";
 
     private final int STATE_CLOSE           =   1<<1;//socket关闭
     private final int STATE_CONNECT_START   =   1<<2;//开始连接server
@@ -38,7 +38,7 @@ public class ConnectProcessor implements Runnable {
 
     private BaseClient mClient;
 
-    public ConnectProcessor(BaseClient mClient,String ip, int port, IConnectStatusListener mNioConnectionListener) {
+    public SocketCrwProcessor(BaseClient mClient, String ip, int port, IConnectStatusListener mNioConnectionListener) {
         this.mClient = mClient;
         this.ip = ip;
         this.port = port;
