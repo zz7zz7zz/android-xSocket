@@ -60,15 +60,15 @@ public class SocketCrwProcessor implements Runnable {
         this.isClosedByUser = isClosedByUser;
     }
 
-    public void close(){
+    public synchronized void close(){
         try {
-            if(state!=STATE_CLOSE)
-            {
+            if(state!=STATE_CLOSE) {
+                state = STATE_CLOSE;
+                wakeUp();
                 mClient.onClose();
 
                 try {
-                    if(null!= mWriteThread && mWriteThread.isAlive())
-                    {
+                    if(null!= mWriteThread && mWriteThread.isAlive()) {
                         mWriteThread.interrupt();
                     }
                 } catch (Exception e) {
@@ -78,8 +78,7 @@ public class SocketCrwProcessor implements Runnable {
                 }
 
                 try {
-                    if(null!= mReadThread && mReadThread.isAlive())
-                    {
+                    if(null!= mReadThread && mReadThread.isAlive()) {
                         mReadThread.interrupt();
                     }
                 } catch (Exception e) {
@@ -87,8 +86,6 @@ public class SocketCrwProcessor implements Runnable {
                 }finally{
                     mReadThread =null;
                 }
-
-                state=STATE_CLOSE;
             }
         } catch (Exception e) {
             e.printStackTrace();

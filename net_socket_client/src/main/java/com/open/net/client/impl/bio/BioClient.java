@@ -49,37 +49,33 @@ public class BioClient extends BaseClient{
 
 	public void onClose(){
 		try {
-				try {
-					if(null!= mSocket) {
-						mSocket.close();
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}finally{
-					mSocket =null;
-				}
-
-				try {
-					if(null!= mOutputStream) {
-						mOutputStream.close();
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}finally{
-					mOutputStream =null;
-				}
-
-				try {
-					if(null!= mInputStream) {
-						mInputStream.close();
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}finally{
-					mInputStream =null;
-				}
+			if(null!= mOutputStream) {
+				mOutputStream.close();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally{
+			mOutputStream =null;
+		}
+
+		try {
+			if(null!= mInputStream) {
+				mInputStream.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			mInputStream =null;
+		}
+
+		try {
+			if(null!= mSocket) {
+				mSocket.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally{
+			mSocket =null;
 		}
 	}
 
