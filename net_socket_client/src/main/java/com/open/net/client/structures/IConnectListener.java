@@ -6,10 +6,9 @@ package com.open.net.client.structures;
  * description  :   连接状态回调
  */
 
-public interface IConnectResultListener {
+public interface IConnectListener {
 
     void onConnectionSuccess();
 
     void onConnectionFailed();
-
 }

@@ -8,9 +8,10 @@ import android.widget.EditText;
 
 import com.open.net.client.impl.nio.NioClient;
 import com.open.net.client.impl.nio.NioConnector;
-import com.open.net.client.structures.IConnectResultListener;
+import com.open.net.client.impl.bio.IBioConnectListener;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;
+import com.open.net.client.structures.IConnectListener;
 import com.open.net.client.structures.TcpAddress;
 import com.open.net.client.structures.message.Message;
 
@@ -42,7 +43,7 @@ public class NioClientConnectionActivity extends Activity {
 		sendContent=(EditText) findViewById(R.id.sendContent);
 		recContent=(EditText) findViewById(R.id.recContent);
 		
-		ip.setText("192.168.123.1");
+		ip.setText("192.168.0.151");
 		port.setText("9999");
 
 		mClient = new NioClient(mMessageProcessor);
@@ -80,7 +81,7 @@ public class NioClientConnectionActivity extends Activity {
 		}
 	};
 
-	private IConnectResultListener mConnectResultListener = new IConnectResultListener() {
+	private IConnectListener mConnectResultListener = new IConnectListener() {
 		@Override
 		public void onConnectionSuccess() {
 
@@ -88,7 +89,7 @@ public class NioClientConnectionActivity extends Activity {
 
 		@Override
 		public void onConnectionFailed() {
-			mClient.getConnector().connect();//try to connect next ip port
+
 		}
 	};
 

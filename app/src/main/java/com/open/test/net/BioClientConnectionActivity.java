@@ -10,7 +10,8 @@ import com.open.net.client.impl.bio.BioClient;
 import com.open.net.client.impl.bio.BioConnector;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;
-import com.open.net.client.structures.IConnectResultListener;
+import com.open.net.client.impl.bio.IBioConnectListener;
+import com.open.net.client.structures.IConnectListener;
 import com.open.net.client.structures.message.Message;
 import com.open.net.client.structures.TcpAddress;
 
@@ -41,8 +42,8 @@ public class BioClientConnectionActivity extends Activity {
 		port=(EditText) findViewById(R.id.port);
 		sendContent=(EditText) findViewById(R.id.sendContent);
 		recContent=(EditText) findViewById(R.id.recContent);
-		
-		ip.setText("192.168.123.1");
+
+		ip.setText("192.168.0.151");
 		port.setText("9999");
 
 		mClient = new BioClient(mMessageProcessor);
@@ -80,7 +81,7 @@ public class BioClientConnectionActivity extends Activity {
 		}
 	};
 
-	private IConnectResultListener mConnectResultListener = new IConnectResultListener() {
+	private IConnectListener mConnectResultListener = new IConnectListener() {
 		@Override
 		public void onConnectionSuccess() {
 
