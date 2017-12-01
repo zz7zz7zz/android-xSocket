@@ -16,7 +16,7 @@ import java.nio.channels.SocketChannel;
  * description  :   NioClient
  */
 
-public final class NioClient extends BaseClient{
+public final class NioClient extends BaseClient {
 
     private final String TAG="NioClient";
 
@@ -63,6 +63,8 @@ public final class NioClient extends BaseClient{
                 e1.printStackTrace();
             }
         }
+        mSocketChannel = null;
+        mSelector = null;
     }
 
     public boolean onRead() {
