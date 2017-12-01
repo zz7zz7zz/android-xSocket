@@ -2,7 +2,6 @@ package com.open.net.client.impl.bio;
 
 import com.open.net.client.impl.bio.processor.SocketCrwProcessor;
 import com.open.net.client.structures.IConnectResultListener;
-import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.structures.TcpAddress;
 
 /**
@@ -21,13 +20,11 @@ public class BioConnector {
     private SocketCrwProcessor mConnectProcessor;
     private Thread 				mConnectProcessorThread =null;
 
-    private BaseMessageProcessor mMessageProcessor;
     private IConnectResultListener mConnectStatusListener = null;
 
-    public BioConnector(BioClient mClient , TcpAddress[] tcpArray , BaseMessageProcessor mMessageProcessor, IConnectResultListener mConnectStatusListener) {
+    public BioConnector(BioClient mClient , TcpAddress[] tcpArray , IConnectResultListener mConnectStatusListener) {
         this.mClient = mClient;
         this.tcpArray = tcpArray;
-        this.mMessageProcessor = mMessageProcessor;
         this.mConnectStatusListener = mConnectStatusListener;
     }
 
@@ -81,7 +78,7 @@ public class BioConnector {
         index++;
         if(index < tcpArray.length && index >= 0){
             stopConnect(false);
-            mConnectProcessor = new SocketCrwProcessor(mClient,tcpArray[index].ip,tcpArray[index].port, mConnectStatusListener,mMessageProcessor);
+            mConnectProcessor = new SocketCrwProcessor(mClient,tcpArray[index].ip,tcpArray[index].port, mConnectStatusListener);
             mConnectProcessorThread =new Thread(mConnectProcessor);
             mConnectProcessor.setConnectStart();
             mConnectProcessorThread.start();

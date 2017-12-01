@@ -21,11 +21,11 @@ public abstract class BaseClient {
 
     protected BaseMessageProcessor mMessageProcessor;
 
-    //--------------------------------------------------------------------------------------
-    public void init(BaseMessageProcessor mMessageProcessor) {
+    public BaseClient(BaseMessageProcessor mMessageProcessor) {
         this.mMessageProcessor = mMessageProcessor;
     }
 
+    //--------------------------------------------------------------------------------------
     public void clearUnreachableMessages(){
         Message msg = pollWriteMessage();
         while (null != msg) {

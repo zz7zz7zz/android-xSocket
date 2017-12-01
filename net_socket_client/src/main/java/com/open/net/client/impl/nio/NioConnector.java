@@ -2,7 +2,6 @@ package com.open.net.client.impl.nio;
 
 import com.open.net.client.impl.nio.processor.SocketCrwProcessor;
 import com.open.net.client.structures.IConnectResultListener;
-import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.structures.TcpAddress;
 
 /**
@@ -21,13 +20,11 @@ public final class NioConnector {
     private SocketCrwProcessor mConnectProcessor = null;
     private Thread mConnectProcessorThread = null;
 
-    private BaseMessageProcessor mMessageProcessor = null;
     private IConnectResultListener mConnectStatusListener = null;
 
-    public NioConnector(NioClient mClient, TcpAddress[] tcpArray, BaseMessageProcessor mMessageProcessor, IConnectResultListener mConnectStatusListener) {
+    public NioConnector(NioClient mClient, TcpAddress[] tcpArray, IConnectResultListener mConnectStatusListener) {
         this.mClient = mClient;
         this.tcpArray = tcpArray;
-        this.mMessageProcessor = mMessageProcessor;
         this.mConnectStatusListener = mConnectStatusListener;
     }
 
@@ -80,7 +77,7 @@ public final class NioConnector {
         index++;
         if(index < tcpArray.length && index >= 0){
             stopConnect(false);
-            mConnectProcessor = new SocketCrwProcessor(mClient, tcpArray[index].ip,tcpArray[index].port, mMessageProcessor,mConnectStatusListener);
+            mConnectProcessor = new SocketCrwProcessor(mClient, tcpArray[index].ip,tcpArray[index].port,mConnectStatusListener);
             mConnectProcessorThread =new Thread(mConnectProcessor);
             mConnectProcessor.setConnectStart();
             mConnectProcessorThread.start();

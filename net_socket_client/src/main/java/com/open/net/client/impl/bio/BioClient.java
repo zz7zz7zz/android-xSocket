@@ -19,6 +19,10 @@ public class BioClient extends BaseClient{
 
 	private final String TAG = "BioClient";
 
+	public BioClient(BaseMessageProcessor mMessageProcessor) {
+		super(mMessageProcessor);
+	}
+
 	//-------------------------------------------------------------------------------------------
 	private BioConnector mConnector;
 
@@ -35,8 +39,7 @@ public class BioClient extends BaseClient{
 	private OutputStream mOutputStream =null;
 	private InputStream mInputStream =null;
 
-	public void init(Socket socket,BaseMessageProcessor messageProcessor) throws IOException{
-		super.init(messageProcessor);
+	public void init(Socket socket) throws IOException{
 		mSocket    		= socket;
 		mOutputStream 	= socket.getOutputStream();
 		mInputStream 	= socket.getInputStream();

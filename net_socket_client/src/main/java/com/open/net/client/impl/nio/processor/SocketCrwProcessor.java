@@ -2,7 +2,6 @@ package com.open.net.client.impl.nio.processor;
 
 import com.open.net.client.impl.nio.NioClient;
 import com.open.net.client.structures.BaseClient;
-import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.structures.IConnectResultListener;
 
 import java.io.IOException;
@@ -35,17 +34,15 @@ public final class SocketCrwProcessor implements Runnable {
     private Selector mSelector;
     private int state= STATE_CLOSE;
 
-    private BaseMessageProcessor mMessageProcessor;
     private IConnectResultListener mConnectStatusListener;
     private boolean isClosedByUser = false;
 
     private BaseClient mClient;
 
-    public SocketCrwProcessor(BaseClient mClient, String ip, int port, BaseMessageProcessor mMessageProcessor, IConnectResultListener mNioConnectionListener) {
+    public SocketCrwProcessor(BaseClient mClient, String ip, int port, IConnectResultListener mNioConnectionListener) {
         this.mClient = mClient;
         this.ip = ip;
         this.port = port;
-        this.mMessageProcessor = mMessageProcessor;
         this.mConnectStatusListener = mNioConnectionListener;
     }
 
@@ -99,7 +96,7 @@ public final class SocketCrwProcessor implements Runnable {
             SocketChannel socketChannel = (SocketChannel) key.channel();
             result= socketChannel.finishConnect();//没有网络的时候也返回true;连不上的情况下会抛出java.net.ConnectException: Connection refused
             if(result) {
-                ((NioClient)mClient).init(mSocketChannel,mSelector,mMessageProcessor);
+                ((NioClient)mClient).init(mSocketChannel,mSelector);
                 key.interestOps(SelectionKey.OP_READ);
                 state=STATE_CONNECT_SUCCESS;
                 if(null != mConnectStatusListener){

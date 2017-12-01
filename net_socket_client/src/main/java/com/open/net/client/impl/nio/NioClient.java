@@ -20,6 +20,10 @@ public final class NioClient extends BaseClient {
 
     private final String TAG="NioClient";
 
+    public NioClient(BaseMessageProcessor mMessageProcessor) {
+        super(mMessageProcessor);
+    }
+
     //-------------------------------------------------------------------------------------------
     private NioConnector mConnector;
 
@@ -37,8 +41,7 @@ public final class NioClient extends BaseClient {
     private ByteBuffer mReadByteBuffer  = ByteBuffer.allocate(64*1024);
     private ByteBuffer mWriteByteBuffer = ByteBuffer.allocate(64*1024);
 
-    public void init(SocketChannel socketChannel,Selector   mSelector, BaseMessageProcessor mMessageProcessor) {
-        super.init(mMessageProcessor);
+    public void init(SocketChannel socketChannel,Selector   mSelector) {
         this.mSocketChannel = socketChannel;
         this.mSelector = mSelector;
     }

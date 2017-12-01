@@ -45,8 +45,8 @@ public class NioClientConnectionActivity extends Activity {
 		ip.setText("192.168.123.1");
 		port.setText("9999");
 
-		mClient = new NioClient();
-		mClient.setConnector(new NioConnector(mClient,new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))}, mMessageProcessor, mConnectResultListener));
+		mClient = new NioClient(mMessageProcessor);
+		mClient.setConnector(new NioConnector(mClient,new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))}, mConnectResultListener));
 	}
 
 	private OnClickListener listener=new OnClickListener() {

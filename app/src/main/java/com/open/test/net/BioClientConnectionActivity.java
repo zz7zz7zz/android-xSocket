@@ -45,8 +45,8 @@ public class BioClientConnectionActivity extends Activity {
 		ip.setText("192.168.123.1");
 		port.setText("9999");
 
-		mClient = new BioClient();
-		mClient.setConnector(new BioConnector(mClient,new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))}, mMessageProcessor, mConnectResultListener));
+		mClient = new BioClient(mMessageProcessor);
+		mClient.setConnector(new BioConnector(mClient,new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))}, mConnectResultListener));
 	}
 	
 	private OnClickListener listener=new OnClickListener() {
