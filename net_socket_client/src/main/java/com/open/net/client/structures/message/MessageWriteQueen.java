@@ -14,7 +14,8 @@ public final class MessageWriteQueen {
     public  LinkedList<Message> mQueen = new LinkedList<>();//真正的消息队列
 
     public Message build(byte[] src , int offset , int length){
-        return mWriteMessageBuffer.build(src,offset,length);
+        Message msg = mWriteMessageBuffer.build(src,offset,length);
+        return msg;
     }
 
     public void put(Message msg){
