@@ -2,7 +2,7 @@ android-socket-client / java-socket-client
 =====================
 ## 一、说明
 
-    java/android客户端聊天程序， 附完整Demo
+    java/android 客户端聊天程序， 附完整Demo
     
     a. 含bio实现
     b. 含nio实现
