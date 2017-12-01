@@ -6,26 +6,19 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_LOG_LEVEL" value="verbose" />
+    <option name="TOOL_WINDOW_LOG_LEVEL" value="error" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5fa108f9-ba8c-4821-9e54-e7acf7fcfef2" name="Default" comment="init project !">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/INioConnectListener.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/IConnectListener.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/processor/SocketCrwProcessor.java" afterPath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/processor/SocketProcessor.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/processor/SocketCrwProcessor.java" afterPath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/processor/SocketProcessor.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/IConnectResultListener.java" afterPath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/IBioConnectListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../android-socket-client.iml" afterPath="$PROJECT_DIR$/../android-socket-client.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.iml" afterPath="$PROJECT_DIR$/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/open/test/net/BioClientConnectionActivity.java" afterPath="$PROJECT_DIR$/src/main/java/com/open/test/net/BioClientConnectionActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/open/test/net/NioClientConnectionActivity.java" afterPath="$PROJECT_DIR$/src/main/java/com/open/test/net/NioClientConnectionActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/res/layout/net_socket_connection.xml" afterPath="$PROJECT_DIR$/src/main/res/layout/net_socket_connection.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/../build/intermediates/dex-cache/cache.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../local.properties" afterPath="$PROJECT_DIR$/../local.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../net_socket_client/net_socket_client.iml" afterPath="$PROJECT_DIR$/../net_socket_client/net_socket_client.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioClient.java" afterPath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioClient.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioConnector.java" afterPath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioConnector.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioClient.java" afterPath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioClient.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioConnector.java" afterPath="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioConnector.java" />
     </list>
     <ignored path="app.iws" />
@@ -58,28 +51,33 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SocketProcessor.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/processor/SocketProcessor.java">
+      <file leaf-file-name="BioClient.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="307">
-              <caret line="34" column="0" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
+            <state relative-caret-position="568">
+              <caret line="159" column="0" selection-start-line="159" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#start#0;class#SocketProcessor#0" expanded="false" />
-                <element signature="method#wakeUp#0;class#SocketProcessor#0" expanded="false" />
-                <element signature="method#onSocketExit#0;class#SocketProcessor#0" expanded="false" />
-                <element signature="class#ConnectRunnable#0;class#SocketProcessor#0" expanded="false" />
+                <element signature="method#onClose#0;class#BioClient#0" expanded="false" />
+                <element signature="method#onRead#0;class#BioClient#0" expanded="false" />
+                <element signature="method#onWrite#0;class#BioClient#0" expanded="false" />
+                <element signature="e#3940#3941#0" expanded="true" />
+                <element signature="e#3985#3986#0" expanded="true" />
+                <element signature="e#4010#4011#0" expanded="true" />
+                <element signature="e#4037#4038#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="INioConnectListener.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/INioConnectListener.java">
+      <file leaf-file-name="NioClient.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="17" column="18" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
-              <folding />
+            <state relative-caret-position="605">
+              <caret line="195" column="0" selection-start-line="195" selection-start-column="0" selection-end-line="195" selection-end-column="0" />
+              <folding>
+                <element signature="method#onClose#0;class#NioClient#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -90,8 +88,8 @@
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="31" column="35" selection-start-line="31" selection-start-column="35" selection-end-line="31" selection-end-column="35" />
+            <state relative-caret-position="62">
+              <caret line="16" column="45" selection-start-line="16" selection-start-column="45" selection-end-line="16" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -100,13 +98,10 @@
       <file leaf-file-name="NioConnector.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioConnector.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="103">
-              <caret line="34" column="88" selection-start-line="34" selection-start-column="88" selection-end-line="34" selection-end-column="88" />
+            <state relative-caret-position="571">
+              <caret line="115" column="0" selection-start-line="115" selection-start-column="0" selection-end-line="162" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#3019#3020#0" expanded="true" />
-                <element signature="e#3072#3073#0" expanded="true" />
-                <element signature="method#reconnect#0;class#NioConnector#0" expanded="false" />
                 <element signature="method#checkConnect#0;class#NioConnector#0" expanded="false" />
                 <element signature="method#startConnect#0;class#NioConnector#0" expanded="false" />
                 <element signature="method#stopConnect#0;class#NioConnector#0" expanded="false" />
@@ -115,17 +110,54 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SocketProcessor.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/processor/SocketProcessor.java">
+      <file leaf-file-name="NioClientConnectionActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/open/test/net/NioClientConnectionActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
+            <state relative-caret-position="367">
+              <caret line="50" column="137" selection-start-line="50" selection-start-column="137" selection-end-line="50" selection-end-column="137" />
+              <folding>
+                <element signature="e#1838#2567#0" expanded="true" />
+                <element signature="e#2566#2567#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BioConnector.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioConnector.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="118">
+              <caret line="99" column="0" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#close#0;class#SocketProcessor#0" expanded="false" />
-                <element signature="method#onSocketExit#0;class#SocketProcessor#0" expanded="false" />
-                <element signature="class#ReadRunnable#0;class#SocketProcessor#0" expanded="false" />
+                <element signature="e#3259#3260#0" expanded="true" />
+                <element signature="method#reconnect#0;class#BioConnector#0" expanded="false" />
+                <element signature="method#checkConnect#0;class#BioConnector#0" expanded="false" />
+                <element signature="method#stopConnect#0;class#BioConnector#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BioClientConnectionActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/open/test/net/BioClientConnectionActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="339">
+              <caret line="50" column="137" selection-start-line="50" selection-start-column="137" selection-end-line="50" selection-end-column="137" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="net_socket_connection.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/res/layout/net_socket_connection.xml">
+          <provider editor-type-id="android-designer2">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="28" column="40" selection-start-line="28" selection-start-column="29" selection-end-line="28" selection-end-column="40" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -2031,7 +2063,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/listener/IConnectReceiveListener.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/open/net/NioSocketConnectionActivity.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/open/net/BioSocketConnectionActivity.java" />
@@ -2058,9 +2089,7 @@
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/message/MessageReadQueen.java" />
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/BaseClient.java" />
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/BaseMessageProcessor.java" />
-        <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioClient.java" />
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/message/Message.java" />
-        <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioClient.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/open/net/NioClientConnectionActivity.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/open/net/BioClientConnectionActivity.java" />
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/UdpAddress.java" />
@@ -2072,15 +2101,18 @@
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/IConnectResultListener.java" />
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/IBioConnectListener.java" />
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/processor/SocketCrwProcessor.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/open/test/net/NioClientConnectionActivity.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/open/test/net/BioClientConnectionActivity.java" />
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/IConnectListener.java" />
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/IBioConnectListener.java" />
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/INioConnectListener.java" />
-        <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioConnector.java" />
-        <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioConnector.java" />
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/processor/SocketProcessor.java" />
         <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/processor/SocketProcessor.java" />
+        <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioConnector.java" />
+        <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioConnector.java" />
+        <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioClient.java" />
+        <option value="$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioClient.java" />
+        <option value="$PROJECT_DIR$/src/main/res/layout/net_socket_connection.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/open/test/net/BioClientConnectionActivity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/open/test/net/NioClientConnectionActivity.java" />
         <option value="$PROJECT_DIR$/src/main/AndroidManifest.xml" />
       </list>
     </option>
@@ -2123,140 +2155,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="android-socket-client" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-socket-client" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="net_socket_client" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="structures" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-socket-client" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="net_socket_client" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nio" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-socket-client" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="net_socket_client" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="nio" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="processor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-socket-client" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="net_socket_client" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bio" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android-socket-client" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="net_socket_client" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.NonAndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="client" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="impl" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="bio" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="processor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -2937,7 +2835,14 @@
       <option name="project" value="LOCAL" />
       <updated>1512048791050</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="init project !">
+      <created>1512150192511</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1512150192511</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -2950,7 +2855,8 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.51282054" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.51073986" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2541806" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -2971,38 +2877,7 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
     </layout>
-    <layout-to-restore>
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.51282054" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.398568" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34725538" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2541806" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32977587" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25244498" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6909308" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
-    </layout-to-restore>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -3058,7 +2933,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioClient.java</url>
-          <line>50</line>
+          <line>46</line>
           <properties />
           <option name="timeStamp" value="25" />
         </line-breakpoint>
@@ -3106,12 +2981,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioClient.java</url>
-          <line>85</line>
+          <line>81</line>
           <properties class="com.open.net.client.impl.bio.BioClient" />
           <option name="timeStamp" value="33" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioClient.java</url>
+          <line>48</line>
+          <properties class="com.open.net.client.impl.bio.BioClient" method="onClose" />
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="44" />
+      <option name="time" value="45" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -3196,16 +3077,6 @@
       </provider>
     </entry>
     <entry file="file://E:/android/Android-SDK/sources/android-25/java/lang/Runnable.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/res/layout/net_socket_connection.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/open/net/WeMessage.java" />
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
@@ -3344,71 +3215,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/open/test/net/NioClientConnectionActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="46" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/open/test/net/BioClientConnectionActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="64" column="50" selection-start-line="64" selection-start-column="50" selection-end-line="64" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1156">
-          <caret line="43" column="21" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="69" />
-          <folding>
-            <element signature="method#onClose#0;class#NioClient#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/structures/IConnectListener.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="3" selection-start-line="6" selection-start-column="3" selection-end-line="6" selection-end-column="3" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioConnector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1700">
-          <caret line="117" column="0" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#reconnect#0;class#BioConnector#0" expanded="false" />
-            <element signature="method#checkConnect#0;class#BioConnector#0" expanded="false" />
-            <element signature="method#startConnect#0;class#BioConnector#0" expanded="false" />
-            <element signature="method#stopConnect#0;class#BioConnector#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/IBioConnectListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="18" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3421,22 +3232,6 @@
             <element signature="method#close#0;class#SocketProcessor#0" expanded="false" />
             <element signature="method#onSocketExit#0;class#SocketProcessor#0" expanded="false" />
             <element signature="class#ReadRunnable#0;class#SocketProcessor#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioConnector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="103">
-          <caret line="34" column="88" selection-start-line="34" selection-start-column="88" selection-end-line="34" selection-end-column="88" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3019#3020#0" expanded="true" />
-            <element signature="e#3072#3073#0" expanded="true" />
-            <element signature="method#reconnect#0;class#NioConnector#0" expanded="false" />
-            <element signature="method#checkConnect#0;class#NioConnector#0" expanded="false" />
-            <element signature="method#startConnect#0;class#NioConnector#0" expanded="false" />
-            <element signature="method#stopConnect#0;class#NioConnector#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3463,13 +3258,107 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/IBioConnectListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="18" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="568">
+          <caret line="159" column="0" selection-start-line="159" selection-start-column="0" selection-end-line="159" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#onClose#0;class#BioClient#0" expanded="false" />
+            <element signature="method#onRead#0;class#BioClient#0" expanded="false" />
+            <element signature="method#onWrite#0;class#BioClient#0" expanded="false" />
+            <element signature="e#3940#3941#0" expanded="true" />
+            <element signature="e#3985#3986#0" expanded="true" />
+            <element signature="e#4010#4011#0" expanded="true" />
+            <element signature="e#4037#4038#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="605">
+          <caret line="195" column="0" selection-start-line="195" selection-start-column="0" selection-end-line="195" selection-end-column="0" />
+          <folding>
+            <element signature="method#onClose#0;class#NioClient#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/nio/NioConnector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="571">
+          <caret line="115" column="0" selection-start-line="115" selection-start-column="0" selection-end-line="162" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#checkConnect#0;class#NioConnector#0" expanded="false" />
+            <element signature="method#startConnect#0;class#NioConnector#0" expanded="false" />
+            <element signature="method#stopConnect#0;class#NioConnector#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../net_socket_client/src/main/java/com/open/net/client/impl/bio/BioConnector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="99" column="0" selection-start-line="99" selection-start-column="0" selection-end-line="99" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3259#3260#0" expanded="true" />
+            <element signature="method#reconnect#0;class#BioConnector#0" expanded="false" />
+            <element signature="method#checkConnect#0;class#BioConnector#0" expanded="false" />
+            <element signature="method#stopConnect#0;class#BioConnector#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/res/layout/net_socket_connection.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="28" column="40" selection-start-line="28" selection-start-column="29" selection-end-line="28" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/open/test/net/BioClientConnectionActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="339">
+          <caret line="50" column="137" selection-start-line="50" selection-start-column="137" selection-end-line="50" selection-end-column="137" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/open/test/net/NioClientConnectionActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="367">
+          <caret line="50" column="137" selection-start-line="50" selection-start-column="137" selection-end-line="50" selection-end-column="137" />
+          <folding>
+            <element signature="e#1838#2567#0" expanded="true" />
+            <element signature="e#2566#2567#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/AndroidManifest.xml">
       <provider editor-type-id="android-manifest">
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="35" selection-start-line="31" selection-start-column="35" selection-end-line="31" selection-end-column="35" />
+        <state relative-caret-position="62">
+          <caret line="16" column="45" selection-start-line="16" selection-start-column="45" selection-end-line="16" selection-end-column="45" />
           <folding />
         </state>
       </provider>

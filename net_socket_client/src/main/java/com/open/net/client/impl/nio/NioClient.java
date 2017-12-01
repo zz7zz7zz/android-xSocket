@@ -2,6 +2,8 @@ package com.open.net.client.impl.nio;
 
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;
+import com.open.net.client.structures.IConnectListener;
+import com.open.net.client.structures.TcpAddress;
 import com.open.net.client.structures.message.Message;
 
 import java.io.IOException;
@@ -20,20 +22,13 @@ public final class NioClient extends BaseClient {
 
     private final String TAG="NioClient";
 
-    public NioClient(BaseMessageProcessor mMessageProcessor) {
+    public NioClient(BaseMessageProcessor mMessageProcessor, IConnectListener mConnectListener) {
         super(mMessageProcessor);
+        mConnector = new NioConnector(this,mConnectListener);
     }
 
     //-------------------------------------------------------------------------------------------
     private NioConnector mConnector;
-
-    public NioConnector getConnector() {
-        return mConnector;
-    }
-
-    public void setConnector(NioConnector mConnector) {
-        this.mConnector = mConnector;
-    }
 
     //-------------------------------------------------------------------------------------------
     private SocketChannel mSocketChannel;
@@ -195,6 +190,19 @@ public final class NioClient extends BaseClient {
     }
 
     //-------------------------------------------------------------------------------------------
+    public void setConnectAddress(TcpAddress[] tcpArray ){
+        mConnector.setConnectAddress(tcpArray);
+    }
 
+    public void connect(){
+        mConnector.connect();
+    }
 
+    public void disconnect(){
+        mConnector.disconnect();
+    }
+
+    public void reconnect(){
+        mConnector.reconnect();
+    }
 }

@@ -25,6 +25,12 @@
 					        android:layout_weight="1.0"
 					        android:hint="Port:"/>
 			</LinearLayout>
+		<Button
+			android:id="@+id/set_ip_port"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="5.0dp"
+			android:text="设置ip和端口"/>
 			<Button
 		        android:id="@+id/open"
 		        android:layout_width="match_parent"

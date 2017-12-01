@@ -32,6 +32,7 @@ public class BioClientConnectionActivity extends Activity {
 	
 	private void initView()
 	{
+		findViewById(R.id.set_ip_port).setOnClickListener(listener);
 		findViewById(R.id.open).setOnClickListener(listener);
 		findViewById(R.id.close).setOnClickListener(listener);
 		findViewById(R.id.reconn).setOnClickListener(listener);
@@ -46,27 +47,31 @@ public class BioClientConnectionActivity extends Activity {
 		ip.setText("192.168.0.151");
 		port.setText("9999");
 
-		mClient = new BioClient(mMessageProcessor);
-		mClient.setConnector(new BioConnector(mClient,new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))}, mConnectResultListener));
+		mClient = new BioClient(mMessageProcessor,mConnectResultListener);
+		mClient.setConnectAddress(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
 	}
 	
 	private OnClickListener listener=new OnClickListener() {
 		
 		@Override
 		public void onClick(View v) {
-			mClient.getConnector().setConnectAddress(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
+
 			switch(v.getId())
 			{
+				case R.id.set_ip_port:
+					mClient.setConnectAddress(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
+					break;
+
 				case R.id.open:
-					mClient.getConnector().connect();
+					mClient.connect();
 					break;
 					
 				case R.id.close:
-					mClient.getConnector().disconnect();
+					mClient.disconnect();
 					break;
 					
 				case R.id.reconn:
-					mClient.getConnector().reconnect();
+					mClient.reconnect();
 					break;
 					
 				case R.id.send:
@@ -89,7 +94,7 @@ public class BioClientConnectionActivity extends Activity {
 
 		@Override
 		public void onConnectionFailed() {
-			mClient.getConnector().connect();//try to connect next ip port
+
 		}
 	};
 
@@ -113,6 +118,6 @@ public class BioClientConnectionActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		mClient.getConnector().disconnect();
+		mClient.disconnect();
 	}
 }

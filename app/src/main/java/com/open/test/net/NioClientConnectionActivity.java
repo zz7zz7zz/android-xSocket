@@ -32,6 +32,7 @@ public class NioClientConnectionActivity extends Activity {
 	
 	private void initView()
 	{
+        findViewById(R.id.set_ip_port).setOnClickListener(listener);
 		findViewById(R.id.open).setOnClickListener(listener);
 		findViewById(R.id.close).setOnClickListener(listener);
 		findViewById(R.id.reconn).setOnClickListener(listener);
@@ -46,27 +47,30 @@ public class NioClientConnectionActivity extends Activity {
 		ip.setText("192.168.0.151");
 		port.setText("9999");
 
-		mClient = new NioClient(mMessageProcessor);
-		mClient.setConnector(new NioConnector(mClient,new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))}, mConnectResultListener));
+		mClient = new NioClient(mMessageProcessor,mConnectResultListener);
+		mClient.setConnectAddress(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
 	}
 
 	private OnClickListener listener=new OnClickListener() {
 
 		@Override
 		public void onClick(View v) {
-			mClient.getConnector().setConnectAddress(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
 			switch(v.getId())
 			{
+                case R.id.set_ip_port:
+                    mClient.setConnectAddress(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
+                    break;
+
 				case R.id.open:
-					mClient.getConnector().connect();
+					mClient.connect();
 					break;
 					
 				case R.id.close:
-					mClient.getConnector().disconnect();
+					mClient.disconnect();
 					break;
 					
 				case R.id.reconn:
-					mClient.getConnector().reconnect();
+					mClient.reconnect();
 					break;
 					
 				case R.id.send:
@@ -114,6 +118,6 @@ public class NioClientConnectionActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		super.onBackPressed();
-		mClient.getConnector().disconnect();
+		mClient.disconnect();
 	}
 }

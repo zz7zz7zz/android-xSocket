@@ -72,9 +72,8 @@ public class BioConnector {
         }
     };
 
-    public BioConnector(BioClient mClient , TcpAddress[] tcpArray , IConnectListener mIConnectListener) {
+    public BioConnector(BioClient mClient ,IConnectListener mIConnectListener) {
         this.mClient = mClient;
-        this.tcpArray = tcpArray;
         this.mIConnectListener = mIConnectListener;
     }
 
@@ -115,6 +114,7 @@ public class BioConnector {
     }
 
     //-------------------------------------------------------------------------------------------
+
     public void checkConnect() {
         //1.没有连接,需要进行重连
         //2.在连接不成功，并且也不在重连中时，需要进行重连;

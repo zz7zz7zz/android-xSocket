@@ -72,13 +72,13 @@ public final class NioConnector {
         }
     };
 
-    public NioConnector(NioClient mClient, TcpAddress[] tcpArray, IConnectListener mConnectListener) {
+    public NioConnector(NioClient mClient, IConnectListener mConnectListener) {
         this.mClient = mClient;
-        this.tcpArray = tcpArray;
         this.mIConnectListener = mConnectListener;
     }
 
     public void setConnectAddress(TcpAddress[] tcpArray ){
+        this.index = -1;
         this.tcpArray = tcpArray;
     }
 
