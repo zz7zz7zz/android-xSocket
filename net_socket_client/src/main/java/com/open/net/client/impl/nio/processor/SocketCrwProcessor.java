@@ -80,6 +80,15 @@ public final class SocketCrwProcessor implements Runnable {
         }
     }
 
+    public void onSocketExit(int exit_code){
+        close();
+        if(!isClosedByUser){
+            if(null != mConnectStatusListener){
+                mConnectStatusListener.onConnectionFailed();
+            }
+        }
+    }
+
     private boolean finishConnection(SelectionKey key){
         boolean connectRet = true;
         try{
@@ -218,14 +227,8 @@ public final class SocketCrwProcessor implements Runnable {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }finally{
-
-            close();
-            if(!isClosedByUser){
-                if(null != mConnectStatusListener){
-                    mConnectStatusListener.onConnectionFailed();
-                }
-            }
         }
+
+        onSocketExit(1);
     }
 }
