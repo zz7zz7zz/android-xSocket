@@ -65,10 +65,11 @@ public final class SocketCrwProcessor implements Runnable {
         this.isClosedByUser = isClosedByUser;
     }
 
-    public void close(){
+    public synchronized void close(){
         if(state != STATE_CLOSE){
-            mClient.onClose();
             state = STATE_CLOSE;
+            wakeUp();
+            mClient.onClose();
         }
     }
 
@@ -165,44 +166,46 @@ public final class SocketCrwProcessor implements Runnable {
             //开始读写
             if(isConnectSuccess){
                 boolean isExit = false;
-                while(state != STATE_CLOSE && !isExit) {
+                while(!isExit) {
 
-                    mSelector.select();
-                    Iterator<SelectionKey> selectedKeys = mSelector.selectedKeys().iterator();
-                    while (selectedKeys.hasNext()) {
-                        SelectionKey key =  selectedKeys.next();
-                        selectedKeys.remove();
+                    int readKeys = mSelector.select();
+                    if(readKeys > 0){
+                        Iterator<SelectionKey> selectedKeys = mSelector.selectedKeys().iterator();
+                        while (selectedKeys.hasNext()) {
+                            SelectionKey key =  selectedKeys.next();
+                            selectedKeys.remove();
 
-                        if (!key.isValid()) {
-                            continue;
-                        }
-
-                        if (key.isReadable()) {
-                            BaseClient mClient = (BaseClient) key.attachment();
-                            boolean ret = mClient.onRead();
-                            if(!ret){
-                                isExit = true;
-                                key.cancel();
-                                key.attach(null);
-                                key.channel().close();
-                                break;
+                            if (!key.isValid()) {
+                                continue;
                             }
 
-                        }else if (key.isWritable()) {
-                            BaseClient mClient = (BaseClient) key.attachment();
-                            boolean ret = mClient.onWrite();
-                            if(!ret){
-                                isExit = true;
-                                key.cancel();
-                                key.attach(null);
-                                key.channel().close();
-                                break;
+                            if (key.isReadable()) {
+                                BaseClient mClient = (BaseClient) key.attachment();
+                                boolean ret = mClient.onRead();
+                                if(!ret){
+                                    isExit = true;
+                                    key.cancel();
+                                    key.attach(null);
+                                    key.channel().close();
+                                    break;
+                                }
+
+                            }else if (key.isWritable()) {
+                                BaseClient mClient = (BaseClient) key.attachment();
+                                boolean ret = mClient.onWrite();
+                                if(!ret){
+                                    isExit = true;
+                                    key.cancel();
+                                    key.attach(null);
+                                    key.channel().close();
+                                    break;
+                                }
+                                key.interestOps(SelectionKey.OP_READ);
                             }
-                            key.interestOps(SelectionKey.OP_READ);
                         }
                     }
 
-                    if(isExit){
+                    if(isExit || state == STATE_CLOSE){
                         break;
                     }
 
