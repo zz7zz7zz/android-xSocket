@@ -98,7 +98,10 @@ public class SocketCrwProcessor implements Runnable {
         }
     }
 
-    public synchronized void onSocketExit(int exit_code , boolean isWriterReaderExit){
+    public synchronized void onSocketExit(int exit_code , SocketConnectToken mSocketConnectToken){
+
+        mSocketConnectToken.onSocketExit();
+        boolean isWriterReaderExit = mSocketConnectToken.isWriterReaderExit();
 
         System.out.println("client onClose when " + (exit_code == 1 ? "onWrite" : "onRead") + " isWriterReaderExit " + isWriterReaderExit);
 
@@ -175,8 +178,7 @@ public class SocketCrwProcessor implements Runnable {
                 e.printStackTrace();
             }
 
-            mSocketConnectToken.onSocketExit();
-            onSocketExit(1,mSocketConnectToken.isWriterReaderExit());
+            onSocketExit(1,mSocketConnectToken);
         }
     }
 
@@ -191,8 +193,7 @@ public class SocketCrwProcessor implements Runnable {
         public void run() {
             mClient.onRead();
 
-            mSocketConnectToken.onSocketExit();
-            onSocketExit(2,mSocketConnectToken.isWriterReaderExit());
+            onSocketExit(2,mSocketConnectToken);
         }
     }
 
@@ -200,12 +201,12 @@ public class SocketCrwProcessor implements Runnable {
         private int count = 2;//读写线程
 
         //当返回值等于0,说明完全退出
-        public synchronized int onSocketExit(){
+        public int onSocketExit(){
             count -- ;
             return count;
         }
 
-        public synchronized boolean isWriterReaderExit(){
+        public boolean isWriterReaderExit(){
             return count == 0;
         }
     }
