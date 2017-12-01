@@ -22,8 +22,8 @@ public final class MessageBuffer {
 
     //块数量
     private static int block_size_small  = 5;
-    private static int block_size_middle = 1;
-    private static int block_size_large  = 1;
+    private static int block_size_middle = 2;
+    private static int block_size_large  = 0;
 
     //buffer依赖的数组
     private byte[] buffer_small  ;
@@ -36,7 +36,7 @@ public final class MessageBuffer {
     private MessageBufferTracker buffer_large_tracker;
 
     //临时可缓存对象
-    private final int MAX_QUEEN_SIZE = 10;
+    private final int MAX_QUEEN_SIZE = 8;
     private LinkedList<byte[]> mLimitQueen = new LinkedList<>();
 
 
@@ -157,11 +157,16 @@ public final class MessageBuffer {
             buffer_large_tracker.release(msg.block_index);
             MessagePool.put(msg);
         }else{
-            while (MAX_QUEEN_SIZE>0 && mLimitQueen.size() >= MAX_QUEEN_SIZE){
-                mLimitQueen.poll();
+            if(MAX_QUEEN_SIZE>0){
+                while (mLimitQueen.size() >= MAX_QUEEN_SIZE){
+                    mLimitQueen.poll();
+                }
+                mLimitQueen.add(msg.data);
+                msg.reset();
+            }else{
+                mLimitQueen.clear();
+                msg.reset();
             }
-            mLimitQueen.add(msg.data);
-            msg.reset();
         }
     }
 

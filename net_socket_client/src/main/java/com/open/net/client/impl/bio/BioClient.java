@@ -86,7 +86,7 @@ public class BioClient extends BaseClient{
 	public boolean onRead(){
 		boolean readRet = false;
 		try {
-			int maximum_length = 8192;
+			int maximum_length = 64*1024;
 			byte[] bodyBytes=new byte[maximum_length];
 			int numRead;
 

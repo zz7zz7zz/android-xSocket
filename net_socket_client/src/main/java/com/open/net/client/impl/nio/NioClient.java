@@ -34,8 +34,8 @@ public final class NioClient extends BaseClient{
     //-------------------------------------------------------------------------------------------
     private SocketChannel mSocketChannel;
     private Selector   mSelector;
-    private ByteBuffer mReadByteBuffer  = ByteBuffer.allocate(256*1024);
-    private ByteBuffer mWriteByteBuffer = ByteBuffer.allocate(256*1024);
+    private ByteBuffer mReadByteBuffer  = ByteBuffer.allocate(64*1024);
+    private ByteBuffer mWriteByteBuffer = ByteBuffer.allocate(64*1024);
 
     public void init(SocketChannel socketChannel,Selector   mSelector, BaseMessageProcessor mMessageProcessor) {
         super.init(mMessageProcessor);
