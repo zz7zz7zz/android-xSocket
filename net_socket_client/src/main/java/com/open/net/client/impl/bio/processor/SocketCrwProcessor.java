@@ -92,12 +92,26 @@ public class SocketCrwProcessor implements Runnable {
         }
     }
 
-    //-------------------------------------------------------------------------------------------
     public void wakeUp(){
         if(null != mWriteProcessor){
             mWriteProcessor.wakeup();
         }
     }
+
+    public synchronized void onSocketExit(int exit_code , boolean isWriterReaderExit){
+
+        System.out.println("client onClose when " + (exit_code == 1 ? "onWrite" : "onRead") + " isWriterReaderExit " + isWriterReaderExit);
+
+        if(isWriterReaderExit){
+            close();
+            if(!isClosedByUser){
+                if(null != mConnectStatusListener){
+                    mConnectStatusListener.onConnectionFailed();
+                }
+            }
+        }
+    }
+    //-------------------------------------------------------------------------------------------
 
     public void run() {
         try {
@@ -108,10 +122,11 @@ public class SocketCrwProcessor implements Runnable {
             ((BioClient)mClient).init(mSocket,mMessageProcessor);
             state=STATE_CONNECT_SUCCESS;
 
-            mWriteProcessor = new WriteRunnable();
+            SocketConnectToken mSocketConnectToken = new SocketConnectToken();
+            mWriteProcessor = new WriteRunnable(mSocketConnectToken);
             mWriteThread =new Thread(mWriteProcessor);
             mWriteThread.start();
-            mReadThread =new Thread(new ReadRunnable());
+            mReadThread =new Thread(new ReadRunnable(mSocketConnectToken));
             mReadThread.start();
 
             if(null != mConnectStatusListener){
@@ -130,9 +145,15 @@ public class SocketCrwProcessor implements Runnable {
         }
     }
 
+    //-------------------------------------------------------------------------------------------
     private class WriteRunnable implements Runnable {
 
         private final Object lock=new Object();
+        private SocketConnectToken mSocketConnectToken;
+
+        public WriteRunnable(SocketConnectToken mSocketConnectToken) {
+            this.mSocketConnectToken = mSocketConnectToken;
+        }
 
         public void wakeup(){
             synchronized (lock) {
@@ -154,28 +175,38 @@ public class SocketCrwProcessor implements Runnable {
                 e.printStackTrace();
             }
 
-            System.out.println("client onClose when onWrite");
-
-            if(!isClosedByUser){
-                if(null != mConnectStatusListener){
-                    mConnectStatusListener.onConnectionFailed();
-                }
-            }
+            mSocketConnectToken.onSocketExit();
+            onSocketExit(1,mSocketConnectToken.isWriterReaderExit());
         }
     }
 
     private class ReadRunnable implements Runnable{
+
+        private SocketConnectToken mSocketConnectToken;
+
+        public ReadRunnable(SocketConnectToken mSocketConnectToken) {
+            this.mSocketConnectToken = mSocketConnectToken;
+        }
+
         public void run() {
             mClient.onRead();
 
-            System.out.println("client onClose when onRead");
-
-            if(!isClosedByUser){
-                if(null != mConnectStatusListener){
-                    mConnectStatusListener.onConnectionFailed();
-                }
-            }
+            mSocketConnectToken.onSocketExit();
+            onSocketExit(2,mSocketConnectToken.isWriterReaderExit());
         }
     }
 
+    public class SocketConnectToken {
+        private int count = 2;//读写线程
+
+        //当返回值等于0,说明完全退出
+        public synchronized int onSocketExit(){
+            count -- ;
+            return count;
+        }
+
+        public synchronized boolean isWriterReaderExit(){
+            return count == 0;
+        }
+    }
 }
