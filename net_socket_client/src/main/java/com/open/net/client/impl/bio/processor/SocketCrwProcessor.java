@@ -44,16 +44,20 @@ public class SocketCrwProcessor implements Runnable {
         this.mMessageProcessor = mMessageProcessor;
     }
 
-    public boolean isClosed(){
-        return state == STATE_CLOSE;
-    }
-
     public boolean isConnected(){
         return state == STATE_CONNECT_SUCCESS;
     }
 
     public boolean isConnecting(){
         return state == STATE_CONNECT_START;
+    }
+
+    public boolean isClosed(){
+        return state == STATE_CLOSE;
+    }
+
+    public void setConnectStart(){
+        state = STATE_CONNECT_START;
     }
 
     public void setCloseByUser(boolean isClosedByUser){
@@ -117,11 +121,11 @@ public class SocketCrwProcessor implements Runnable {
     public void run() {
         try {
             isClosedByUser = false;
-            state=STATE_CONNECT_START;
+
             Socket mSocket =new Socket();
             mSocket.connect(new InetSocketAddress(mIp, mPort), 15*1000);
             ((BioClient)mClient).init(mSocket,mMessageProcessor);
-            state=STATE_CONNECT_SUCCESS;
+            state = STATE_CONNECT_SUCCESS;
 
             SocketConnectToken mSocketConnectToken = new SocketConnectToken();
             mWriteProcessor = new WriteRunnable(mSocketConnectToken);
@@ -195,7 +199,7 @@ public class SocketCrwProcessor implements Runnable {
         }
     }
 
-    public class SocketConnectToken {
+    private class SocketConnectToken {
         private int count = 2;//读写线程
 
         //当返回值等于0,说明完全退出

@@ -61,6 +61,10 @@ public final class SocketCrwProcessor implements Runnable {
         return state == STATE_CONNECT_START;
     }
 
+    public void setConnectStart(){
+        state = STATE_CONNECT_START;
+    }
+
     public void setCloseByUser(boolean isClosedByUser){
         this.isClosedByUser = isClosedByUser;
     }
@@ -73,7 +77,6 @@ public final class SocketCrwProcessor implements Runnable {
         }
     }
 
-    //-------------------------------------------------------------------------------------------
     public void wakeUp(){
         if(null != mSelector){
             mSelector.wakeup();
@@ -161,6 +164,7 @@ public final class SocketCrwProcessor implements Runnable {
     public void run() {
         try {
             state = STATE_CONNECT_START;
+
             mSelector = SelectorProvider.provider().openSelector();
             mSocketChannel = SocketChannel.open();
             mSocketChannel.configureBlocking(false);
@@ -171,6 +175,7 @@ public final class SocketCrwProcessor implements Runnable {
 
             //处理连接
             boolean isConnectSuccess = connect(10000);
+            state = isConnectSuccess ? STATE_CONNECT_SUCCESS : STATE_CONNECT_FAILED;
 
             //开始读写
             if(isConnectSuccess){

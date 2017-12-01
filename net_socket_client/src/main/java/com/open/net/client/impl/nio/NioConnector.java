@@ -82,6 +82,7 @@ public final class NioConnector {
             stopConnect(false);
             mConnectProcessor = new SocketCrwProcessor(mClient, tcpArray[index].ip,tcpArray[index].port, mMessageProcessor,mConnectStatusListener);
             mConnectProcessorThread =new Thread(mConnectProcessor);
+            mConnectProcessor.setConnectStart();
             mConnectProcessorThread.start();
         }else{
             index = -1;
