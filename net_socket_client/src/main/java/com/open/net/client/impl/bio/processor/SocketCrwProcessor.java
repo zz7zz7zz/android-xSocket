@@ -102,11 +102,9 @@ public class SocketCrwProcessor implements Runnable {
 
         mSocketConnectToken.onSocketExit();
         boolean isWriterReaderExit = mSocketConnectToken.isWriterReaderExit();
-
         System.out.println("client onClose when " + (exit_code == 1 ? "onWrite" : "onRead") + " isWriterReaderExit " + isWriterReaderExit);
-
+        close();
         if(isWriterReaderExit){
-            close();
             if(!isClosedByUser){
                 if(null != mConnectStatusListener){
                     mConnectStatusListener.onConnectionFailed();
