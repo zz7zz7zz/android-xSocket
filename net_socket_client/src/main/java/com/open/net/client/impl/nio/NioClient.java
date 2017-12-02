@@ -22,13 +22,13 @@ public final class NioClient extends BaseClient {
 
     private final String TAG="NioClient";
 
+    //-------------------------------------------------------------------------------------------
+    private NioConnector mConnector;
+
     public NioClient(BaseMessageProcessor mMessageProcessor, IConnectListener mConnectListener) {
         super(mMessageProcessor);
         mConnector = new NioConnector(this,mConnectListener);
     }
-
-    //-------------------------------------------------------------------------------------------
-    private NioConnector mConnector;
 
     //-------------------------------------------------------------------------------------------
     private SocketChannel mSocketChannel;

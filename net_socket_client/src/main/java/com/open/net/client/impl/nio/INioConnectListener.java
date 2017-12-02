@@ -1,7 +1,8 @@
 package com.open.net.client.impl.nio;
 
+import com.open.net.client.impl.nio.processor.SocketProcessor;
+
 import java.io.IOException;
-import java.net.Socket;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
@@ -13,8 +14,8 @@ import java.nio.channels.SocketChannel;
 
 public interface INioConnectListener {
 
-    void onConnectSuccess(long connect_token , SocketChannel socketChannel, Selector mSelector) throws IOException;
+    void onConnectSuccess(SocketProcessor mSocketProcessor, SocketChannel socketChannel, Selector mSelector) throws IOException;
 
-    void onConnectFailed(long connect_token);
+    void onConnectFailed(SocketProcessor mSocketProcessor);
 
 }

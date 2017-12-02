@@ -25,20 +25,18 @@ public final class SocketProcessor {
     private String  mIp ="192.168.1.1";
     private int     mPort =9999;
 
+    private BaseClient mClient;
+    private INioConnectListener mNioConnectListener;
+
     private ConnectRunnable mConnectProcessor;
     private Thread mConnectThread =null;
 
-    private long connect_token;
-    private INioConnectListener mNioConnectListener;
-
-    private BaseClient mClient;
     private boolean closed = false;
 
-    public SocketProcessor(long connect_token,BaseClient mClient, String mIp, int mPort, INioConnectListener mNioConnectListener) {
-        this.connect_token = connect_token;
-        this.mClient = mClient;
+    public SocketProcessor(String mIp, int mPort, BaseClient mClient,INioConnectListener mNioConnectListener) {
         this.mIp = mIp;
         this.mPort = mPort;
+        this.mClient = mClient;
         this.mNioConnectListener = mNioConnectListener;
     }
 
@@ -62,7 +60,7 @@ public final class SocketProcessor {
     public void onSocketExit(int exit_code){
         close();
         if(null != mNioConnectListener){
-            mNioConnectListener.onConnectFailed(connect_token);
+            mNioConnectListener.onConnectFailed(SocketProcessor.this);
         }
     }
 
@@ -209,7 +207,7 @@ public final class SocketProcessor {
                     ((NioClient)mClient).init(mSocketChannel,mSelector);
                     key.interestOps(SelectionKey.OP_READ);
                     if(null != mNioConnectListener){
-                        mNioConnectListener.onConnectSuccess(connect_token,mSocketChannel,mSelector);
+                        mNioConnectListener.onConnectSuccess(SocketProcessor.this,mSocketChannel,mSelector);
                     }
                 }
             }catch (Exception e){

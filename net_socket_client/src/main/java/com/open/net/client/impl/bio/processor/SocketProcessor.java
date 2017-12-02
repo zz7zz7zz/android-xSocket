@@ -17,7 +17,7 @@ public class SocketProcessor {
     private String mIp    = "192.168.1.1";
     private int    mPort  = 9999;
 
-    private long connect_token;
+    private BaseClient mClient;
     private IBioConnectListener mConnectStatusListener;
 
     private ConnectRunnable mConnectProcessor;
@@ -30,13 +30,10 @@ public class SocketProcessor {
 
     private int r_w_count = 2;//读写线程是否都退出了
 
-    private BaseClient mClient;
-
-    public SocketProcessor(long connect_token ,BaseClient mClient , String mIp, int mPort, IBioConnectListener mConnectionStatusListener) {
-        this.connect_token = connect_token;
-        this.mClient = mClient;
+    public SocketProcessor(String mIp, int mPort, BaseClient mClient,IBioConnectListener mConnectionStatusListener) {
         this.mIp = mIp;
         this.mPort = mPort;
+        this.mClient = mClient;
         this.mConnectStatusListener = mConnectionStatusListener;
     }
 
@@ -47,6 +44,7 @@ public class SocketProcessor {
     }
 
     public synchronized void close(){
+
         wakeUp();
 
         try {
@@ -84,7 +82,7 @@ public class SocketProcessor {
         close();
         if(isWriterReaderExit){
             if(null != mConnectStatusListener){
-                mConnectStatusListener.onConnectFailed(connect_token);
+                mConnectStatusListener.onConnectFailed(SocketProcessor.this);
             }
         }
     }
@@ -110,7 +108,7 @@ public class SocketProcessor {
                 mReadThread.start();
 
                 if(null != mConnectStatusListener){
-                    mConnectStatusListener.onConnectSuccess(connect_token,mSocket);
+                    mConnectStatusListener.onConnectSuccess(SocketProcessor.this,mSocket);
                 }
                 connectRet = true;
             } catch (Exception e) {
@@ -119,7 +117,7 @@ public class SocketProcessor {
 
             if(!connectRet){
                 if(null != mConnectStatusListener){
-                    mConnectStatusListener.onConnectFailed(connect_token);
+                    mConnectStatusListener.onConnectFailed(SocketProcessor.this);
                 }
             }
         }

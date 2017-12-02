@@ -22,13 +22,13 @@ public class BioClient extends BaseClient{
 
 	private final String TAG = "BioClient";
 
+	//-------------------------------------------------------------------------------------------
+	private BioConnector mConnector;
+
 	public BioClient(BaseMessageProcessor mMessageProcessor, IConnectListener mConnectListener) {
 		super(mMessageProcessor);
 		mConnector = new BioConnector(this,mConnectListener);
 	}
-
-	//-------------------------------------------------------------------------------------------
-	private BioConnector mConnector;
 
 	//-------------------------------------------------------------------------------------------
 	private Socket mSocket =null;

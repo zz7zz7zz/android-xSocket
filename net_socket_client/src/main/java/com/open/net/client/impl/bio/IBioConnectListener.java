@@ -1,5 +1,7 @@
 package com.open.net.client.impl.bio;
 
+import com.open.net.client.impl.bio.processor.SocketProcessor;
+
 import java.io.IOException;
 import java.net.Socket;
 
@@ -11,8 +13,8 @@ import java.net.Socket;
 
 public interface IBioConnectListener {
 
-    void onConnectSuccess(long connect_token, Socket mSocket) throws IOException;
+    void onConnectSuccess(SocketProcessor mSocketProcessor, Socket mSocket) throws IOException;
 
-    void onConnectFailed(long connect_token);
+    void onConnectFailed(SocketProcessor mSocketProcessor);
 
 }

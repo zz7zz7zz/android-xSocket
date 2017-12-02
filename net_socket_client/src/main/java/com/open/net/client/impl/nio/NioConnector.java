@@ -7,7 +7,6 @@ import com.open.net.client.structures.TcpAddress;
 import java.io.IOException;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
-import java.util.HashMap;
 
 /**
  * author       :   long
@@ -22,24 +21,21 @@ public final class NioConnector {
     private final int STATE_CONNECT_SUCCESS	= 1<<3;//连接成功
     private final int STATE_CONNECT_FAILED	= 1<<4;//连接失败
 
-    private NioClient mClient;
-    private TcpAddress[] tcpArray   = null;
-    private int          index      = -1;
+    private NioClient       mClient;
+    private TcpAddress[]    tcpArray   = null;
+    private int             index      = -1;
 
-    private int state = STATE_CLOSE;
+    private int state       = STATE_CLOSE;
     private SocketProcessor mSocketProcessor;
     private IConnectListener mIConnectListener;
-    private HashMap<Long,SocketProcessor> connects = new HashMap<>();
-    private long connect_token;
 
     private INioConnectListener mProxyConnectStatusListener = new INioConnectListener() {
         @Override
-        public synchronized void onConnectSuccess(long connect_token , SocketChannel socketChannel, Selector mSelector) throws IOException {
-            if(connect_token != NioConnector.this.connect_token){//两个请求都不是同一个，说明是之前连接了，现在重连了
-                SocketProcessor dropProcessor = connects.get(connect_token);
+        public synchronized void onConnectSuccess(SocketProcessor mSocketProcessor, SocketChannel socketChannel, Selector mSelector) throws IOException {
+            if(mSocketProcessor != NioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
+                SocketProcessor dropProcessor = mSocketProcessor;
                 if(null != dropProcessor){
                     dropProcessor.close();
-                    connects.remove(connect_token);
                 }
                 return;
             }
@@ -53,12 +49,11 @@ public final class NioConnector {
         }
 
         @Override
-        public synchronized void onConnectFailed(long connect_token) {
-            if(connect_token != NioConnector.this.connect_token){//两个请求都不是同一个，说明是之前连接了，现在重连了
-                SocketProcessor dropProcessor = connects.get(connect_token);
+        public synchronized void onConnectFailed(SocketProcessor mSocketProcessor) {
+            if(mSocketProcessor != NioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
+                SocketProcessor dropProcessor = mSocketProcessor;
                 if(null != dropProcessor){
                     dropProcessor.close();
-                    connects.remove(connect_token);
                 }
                 return;
             }
@@ -139,9 +134,7 @@ public final class NioConnector {
         index++;
         if(index < tcpArray.length && index >= 0){
             state = STATE_CONNECT_START;
-            connect_token = System.currentTimeMillis();
-            mSocketProcessor = new SocketProcessor(connect_token,mClient,tcpArray[index].ip,tcpArray[index].port, mProxyConnectStatusListener);
-            connects.put(connect_token,mSocketProcessor);
+            mSocketProcessor = new SocketProcessor(tcpArray[index].ip,tcpArray[index].port, mClient,mProxyConnectStatusListener);
             mSocketProcessor.start();
         }else{
             index = -1;
@@ -152,7 +145,6 @@ public final class NioConnector {
     }
 
     private void stopConnect() {
-        connect_token = -1;
         state = STATE_CLOSE;
         mClient.onClose();
 
