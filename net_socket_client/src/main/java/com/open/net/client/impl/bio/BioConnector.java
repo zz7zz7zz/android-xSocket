@@ -23,6 +23,7 @@ public class BioConnector {
     private BioClient       mClient;
     private TcpAddress[] 	tcpArray 	= null;
     private int 			index 		= -1;
+    private long            connect_timeout = 10000;
 
     private int state = STATE_CLOSE;
     private SocketProcessor mSocketProcessor;
@@ -75,6 +76,10 @@ public class BioConnector {
     public void setConnectAddress(TcpAddress[] tcpArray ){
         this.index = -1;
         this.tcpArray = tcpArray;
+    }
+
+    public void setConnectTimeout(long connect_timeout ){
+        this.connect_timeout = connect_timeout;
     }
 
     //-------------------------------------------------------------------------------------------
@@ -135,7 +140,7 @@ public class BioConnector {
         index++;
         if(index < tcpArray.length && index >= 0){
             state = STATE_CONNECT_START;
-            mSocketProcessor = new SocketProcessor(tcpArray[index].ip,tcpArray[index].port, mClient,mProxyConnectStatusListener);
+            mSocketProcessor = new SocketProcessor(tcpArray[index].ip,tcpArray[index].port, connect_timeout,mClient,mProxyConnectStatusListener);
             mSocketProcessor.start();
         }else{
             index = -1;

@@ -24,6 +24,7 @@ public final class SocketProcessor {
 
     private String  mIp ="192.168.1.1";
     private int     mPort =9999;
+    private long   connect_timeout = 10000;
 
     private BaseClient mClient;
     private INioConnectListener mNioConnectListener;
@@ -33,9 +34,10 @@ public final class SocketProcessor {
 
     private boolean closed = false;
 
-    public SocketProcessor(String mIp, int mPort, BaseClient mClient,INioConnectListener mNioConnectListener) {
+    public SocketProcessor(String mIp, int mPort,long   connect_timeout , BaseClient mClient,INioConnectListener mNioConnectListener) {
         this.mIp = mIp;
         this.mPort = mPort;
+        this.connect_timeout = connect_timeout;
         this.mClient = mClient;
         this.mNioConnectListener = mNioConnectListener;
     }
@@ -88,7 +90,7 @@ public final class SocketProcessor {
                 mSocketChannel.register(mSelector, SelectionKey.OP_CONNECT,mClient);
 
                 //处理连接
-                boolean isConnectSuccess = connect(10000);
+                boolean isConnectSuccess = connect(connect_timeout);
 
                 //开始读写
                 if(isConnectSuccess){
@@ -150,7 +152,7 @@ public final class SocketProcessor {
             onSocketExit(1);
         }
 
-        private boolean connect(int connect_timeout) throws IOException {
+        private boolean connect(long connect_timeout) throws IOException {
             boolean isConnectSuccess = false;
             //连接
             int connectReady = 0;

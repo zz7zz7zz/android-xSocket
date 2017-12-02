@@ -16,6 +16,7 @@ public class SocketProcessor {
 
     private String mIp    = "192.168.1.1";
     private int    mPort  = 9999;
+    private long   connect_timeout = 10000;
 
     private BaseClient mClient;
     private IBioConnectListener mConnectStatusListener;
@@ -30,9 +31,10 @@ public class SocketProcessor {
 
     private int r_w_count = 2;//读写线程是否都退出了
 
-    public SocketProcessor(String mIp, int mPort, BaseClient mClient,IBioConnectListener mConnectionStatusListener) {
+    public SocketProcessor(String mIp, int mPort,long   connect_timeout, BaseClient mClient,IBioConnectListener mConnectionStatusListener) {
         this.mIp = mIp;
         this.mPort = mPort;
+        this.connect_timeout = connect_timeout;
         this.mClient = mClient;
         this.mConnectStatusListener = mConnectionStatusListener;
     }
@@ -96,7 +98,7 @@ public class SocketProcessor {
             try {
 
                 Socket mSocket  =new Socket();
-                mSocket.connect(new InetSocketAddress(mIp, mPort), 15*1000);
+                mSocket.connect(new InetSocketAddress(mIp, mPort), (int) connect_timeout);
 
                 mWriteProcessor = new WriteRunnable();
                 mReadProcessor = new ReadRunnable();
