@@ -1,6 +1,5 @@
 package com.open.net.client.impl.bio;
 
-import com.open.net.client.impl.nio.NioConnector;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.structures.IConnectListener;
