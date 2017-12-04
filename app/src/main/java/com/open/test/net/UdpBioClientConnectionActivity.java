@@ -42,7 +42,7 @@ public class UdpBioClientConnectionActivity extends Activity {
 		sendContent=(EditText) findViewById(R.id.sendContent);
 		recContent=(EditText) findViewById(R.id.recContent);
 
-		ip.setText("192.168.123.1");
+		ip.setText("192.168.0.151");
 		port.setText("9999");
 
 		mClient = new UDPBioClient(mMessageProcessor,mConnectResultListener);
