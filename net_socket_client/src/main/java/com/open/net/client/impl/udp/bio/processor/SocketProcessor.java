@@ -24,6 +24,8 @@ public class SocketProcessor {
     private BaseClient mClient;
     private IUdpBioConnectListener mConnectStatusListener;
 
+    private DatagramSocket mSocket;
+
     private ConnectRunnable mConnectProcessor;
     private WriteRunnable mWriteProcessor;
     private ReadRunnable mReadProcessor;
@@ -50,6 +52,10 @@ public class SocketProcessor {
     public synchronized void close(){
 
         wakeUp();
+
+        if(null != mSocket){
+            mSocket.close();
+        }
 
         try {
             if(null!= mConnectThread && mConnectThread.isAlive()) {
@@ -110,7 +116,7 @@ public class SocketProcessor {
 
             boolean connectRet;
             try {
-                DatagramSocket mSocket = new DatagramSocket();  //创建套接字
+                mSocket = new DatagramSocket();  //创建套接字
                 InetAddress address = InetAddress.getByName(mIp);//服务器地址
                 DatagramPacket mWriteDatagramPacket = new DatagramPacket(mWriteBuff, mWriteBuff.length, address, mPort);//创建发送方的数据报信息
                 DatagramPacket mReadDatagramPacket  = new DatagramPacket(mReadBuff, mReadBuff.length);//创建发送方的数据报信息

@@ -61,9 +61,7 @@ public class UDPBioClient extends BaseClient{
 
     @Override
     public void onClose() {
-        if(null != mSocket){
-            mSocket.close();
-        }
+        mSocket = null;
     }
 
     @Override
