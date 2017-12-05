@@ -42,8 +42,8 @@ public class TcpNioClientConnectionActivity extends Activity {
 		port=(EditText) findViewById(R.id.port);
 		sendContent=(EditText) findViewById(R.id.sendContent);
 		recContent=(EditText) findViewById(R.id.recContent);
-		
-		ip.setText("192.168.0.151");
+
+		ip.setText("192.168.123.1");
 		port.setText("9999");
 
 		mClient = new NioClient(mMessageProcessor,mConnectResultListener);

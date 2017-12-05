@@ -20,14 +20,18 @@ import java.util.Iterator;
 
 public final class SocketProcessor {
 
-    private final String TAG = "SocketProcessor";
+    private static int G_SOCKET_ID = 0;
 
+    private int mSocketId;
     private String  mIp ="192.168.1.1";
     private int     mPort =9999;
     private long   connect_timeout = 10000;
 
     private BaseClient mClient;
     private INioConnectListener mNioConnectListener;
+
+    private SocketChannel mSocketChannel;
+    private Selector   mSelector;
 
     private ConnectRunnable mConnectProcessor;
     private Thread mConnectThread =null;
@@ -40,6 +44,8 @@ public final class SocketProcessor {
         this.connect_timeout = connect_timeout;
         this.mClient = mClient;
         this.mNioConnectListener = mNioConnectListener;
+        G_SOCKET_ID++;
+        mSocketId = G_SOCKET_ID;
     }
 
     public void start(){
@@ -50,6 +56,23 @@ public final class SocketProcessor {
 
     public synchronized void close(){
         closed = true;
+
+        if(null!= mSocketChannel) {
+            try {
+                SelectionKey key = mSocketChannel.keyFor(mSelector);
+                if(null != key){
+                    key.cancel();
+                }
+                mSelector.close();
+                mSocketChannel.socket().close();
+                mSocketChannel.close();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+        mSocketChannel = null;
+        mSelector = null;
+
         wakeUp();
     }
 
@@ -61,15 +84,13 @@ public final class SocketProcessor {
 
     public void onSocketExit(int exit_code){
         close();
+        System.out.println("client mSocketId " + mSocketId);
         if(null != mNioConnectListener){
             mNioConnectListener.onConnectFailed(SocketProcessor.this);
         }
     }
 
     private class ConnectRunnable implements Runnable {
-
-        private SocketChannel mSocketChannel;
-        private Selector mSelector;
 
         public void wakeUp(){
             if(null != mSelector){
@@ -206,10 +227,10 @@ public final class SocketProcessor {
                 SocketChannel socketChannel = (SocketChannel) key.channel();
                 result= socketChannel.finishConnect();//没有网络的时候也返回true;连不上的情况下会抛出java.net.ConnectException: Connection refused
                 if(result) {
-                    ((NioClient)mClient).init(mSocketChannel,mSelector);
+                    ((NioClient)mClient).init(mSocketChannel);
                     key.interestOps(SelectionKey.OP_READ);
                     if(null != mNioConnectListener){
-                        mNioConnectListener.onConnectSuccess(SocketProcessor.this,mSocketChannel,mSelector);
+                        mNioConnectListener.onConnectSuccess(SocketProcessor.this,mSocketChannel);
                     }
                 }
             }catch (Exception e){

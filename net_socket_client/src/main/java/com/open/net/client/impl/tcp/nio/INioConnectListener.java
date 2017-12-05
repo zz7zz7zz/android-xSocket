@@ -3,7 +3,6 @@ package com.open.net.client.impl.tcp.nio;
 import com.open.net.client.impl.tcp.nio.processor.SocketProcessor;
 
 import java.io.IOException;
-import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
 /**
@@ -14,7 +13,7 @@ import java.nio.channels.SocketChannel;
 
 public interface INioConnectListener {
 
-    void onConnectSuccess(SocketProcessor mSocketProcessor, SocketChannel socketChannel, Selector mSelector) throws IOException;
+    void onConnectSuccess(SocketProcessor mSocketProcessor, SocketChannel socketChannel) throws IOException;
 
     void onConnectFailed(SocketProcessor mSocketProcessor);
 

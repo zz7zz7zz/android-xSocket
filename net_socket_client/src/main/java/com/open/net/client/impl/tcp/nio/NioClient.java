@@ -8,8 +8,6 @@ import com.open.net.client.structures.message.Message;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
 /**
@@ -32,13 +30,11 @@ public final class NioClient extends BaseClient {
 
     //-------------------------------------------------------------------------------------------
     private SocketChannel mSocketChannel;
-    private Selector   mSelector;
     private ByteBuffer mReadByteBuffer  = ByteBuffer.allocate(64*1024);
     private ByteBuffer mWriteByteBuffer = ByteBuffer.allocate(64*1024);
 
-    public void init(SocketChannel socketChannel,Selector   mSelector) {
+    public void init(SocketChannel socketChannel) {
         this.mSocketChannel = socketChannel;
-        this.mSelector = mSelector;
     }
 
     @Override
@@ -48,21 +44,7 @@ public final class NioClient extends BaseClient {
 
     @Override
     public void onClose() {
-        if(null!= mSocketChannel) {
-            try {
-                SelectionKey key = mSocketChannel.keyFor(mSelector);
-                if(null != key){
-                    key.cancel();
-                }
-                mSelector.close();
-                mSocketChannel.socket().close();
-                mSocketChannel.close();
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        }
         mSocketChannel = null;
-        mSelector = null;
     }
 
     public boolean onRead() {

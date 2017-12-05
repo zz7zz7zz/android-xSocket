@@ -46,7 +46,9 @@ public class BioClient extends BaseClient{
 	}
 
 	public void onClose(){
-
+		mSocket = null;
+		mOutputStream = null;
+		mInputStream = null;
 	}
 
 	public boolean onRead(){

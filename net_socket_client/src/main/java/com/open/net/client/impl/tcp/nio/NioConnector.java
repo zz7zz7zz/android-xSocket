@@ -5,7 +5,6 @@ import com.open.net.client.structures.IConnectListener;
 import com.open.net.client.structures.TcpAddress;
 
 import java.io.IOException;
-import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
 /**
@@ -32,7 +31,7 @@ public final class NioConnector {
 
     private INioConnectListener mProxyConnectStatusListener = new INioConnectListener() {
         @Override
-        public synchronized void onConnectSuccess(SocketProcessor mSocketProcessor, SocketChannel socketChannel, Selector mSelector) throws IOException {
+        public synchronized void onConnectSuccess(SocketProcessor mSocketProcessor, SocketChannel socketChannel) throws IOException {
             if(mSocketProcessor != NioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
                 SocketProcessor dropProcessor = mSocketProcessor;
                 if(null != dropProcessor){
@@ -41,7 +40,7 @@ public final class NioConnector {
                 return;
             }
 
-            mClient.init(socketChannel,mSelector);
+            mClient.init(socketChannel);
             state = STATE_CONNECT_SUCCESS;
 
             if(null != mIConnectListener ){
@@ -59,7 +58,7 @@ public final class NioConnector {
                 return;
             }
 
-            state = STATE_CONNECT_FAILED;
+            state = STATE_CLOSE;
             connect();//try to connect next ip port
 
             if(null !=mIConnectListener ){
