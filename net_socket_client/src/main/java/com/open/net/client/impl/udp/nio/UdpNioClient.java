@@ -51,38 +51,23 @@ public final class UdpNioClient extends BaseClient {
         boolean readRet = true;
         try{
             mReadByteBuffer.clear();
-            int readTotalLength = 0;
-            int readReceiveLength = 0;
             while (true){
                 int readLength = mSocketChannel.read(mReadByteBuffer);//客户端关闭连接后，此处将抛出异常/或者返回-1
                 if(readLength == -1){
                     readRet = false;
                     break;
                 }
-                readReceiveLength += readLength;
-                //如果一次性读满了，则先回调一次，然后接着读剩下的，目的是为了一次性读完单个通道的数据
-                if(readReceiveLength == mReadByteBuffer.capacity()){
-                    mReadByteBuffer.flip();
-                    if(mReadByteBuffer.remaining() > 0){
-                        this.mMessageProcessor.onReceiveData(this, mReadByteBuffer.array(), 0 , mReadByteBuffer.remaining());
-                    }
-                    mReadByteBuffer.clear();
-                    readReceiveLength = 0;
-                }
 
-                if(readLength > 0){
-                    readTotalLength += readLength;
-                }else {
+                mReadByteBuffer.flip();
+                if(mReadByteBuffer.remaining() > 0){
+                    this.mMessageProcessor.onReceiveData(this, mReadByteBuffer.array(), 0 , mReadByteBuffer.remaining());
+                }
+                mReadByteBuffer.clear();
+
+                if(readLength == 0){
                     break;
                 }
             }
-
-            mReadByteBuffer.flip();
-            if(mReadByteBuffer.remaining() > 0){
-                this.mMessageProcessor.onReceiveData(this, mReadByteBuffer.array(), 0 , mReadByteBuffer.remaining());
-            }
-            mReadByteBuffer.clear();
-
         }catch (Exception e){
             e.printStackTrace();
             readRet = false;
