@@ -24,6 +24,7 @@
 		<activity android:name="com.open.test.net.TcpBioClientConnectionActivity" android:screenOrientation="portrait" />
 		<activity android:name="com.open.test.net.TcpNioClientConnectionActivity" android:screenOrientation="portrait" />
 		<activity android:name="com.open.test.net.UdpBioClientConnectionActivity" android:screenOrientation="portrait" />
+		<activity android:name="com.open.test.net.UdpNioClientConnectionActivity" android:screenOrientation="portrait" />
 
     </application>
 

@@ -46,6 +46,7 @@ public class NetMainActivity extends Activity {
                     break;
 
                 case R.id.net_ucp_nio:
+                    startActivity(new Intent(getApplicationContext(),UdpNioClientConnectionActivity.class));
                     break;
             }
         }

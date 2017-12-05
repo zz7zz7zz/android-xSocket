@@ -134,7 +134,7 @@ public final class NioClient extends BaseClient {
                         }
                     }
                 }else{
-                    mWriteByteBuffer.put(msg.data,0,msg.length);
+                    mWriteByteBuffer.put(msg.data,msg.offset,msg.length);
                     mWriteByteBuffer.flip();
 
                     int writtenLength      = mSocketChannel.write(mWriteByteBuffer);//客户端关闭连接后，此处将抛出异常
