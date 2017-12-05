@@ -23,8 +23,9 @@ public class UdpBioClientConnectionActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.net_socket_connection);
+		setContentView(R.layout.net_socket);
 		initView();
+		setTitle("java-socket-udp-bio");
 	}
 	 
 	

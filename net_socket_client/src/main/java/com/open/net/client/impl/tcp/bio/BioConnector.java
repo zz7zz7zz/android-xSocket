@@ -63,7 +63,7 @@ public class BioConnector {
                 mIConnectListener.onConnectionFailed();
             }
 
-            state = STATE_CONNECT_FAILED;
+            state = STATE_CLOSE;
             connect();//try to connect next ip port
         }
     };

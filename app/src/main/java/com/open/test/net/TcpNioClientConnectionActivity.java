@@ -15,7 +15,7 @@ import com.open.net.client.structures.message.Message;
 
 import java.util.LinkedList;
 
-public class NioClientConnectionActivity extends Activity {
+public class TcpNioClientConnectionActivity extends Activity {
 
 	private NioClient mClient =null;
 	private EditText ip,port,sendContent,recContent;
@@ -23,8 +23,9 @@ public class NioClientConnectionActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.net_socket_connection);
+		setContentView(R.layout.net_socket);
 		initView();
+		setTitle("java-socket-tcp-nio");
 	}
 	 
 	
