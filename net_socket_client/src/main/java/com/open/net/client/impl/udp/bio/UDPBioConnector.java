@@ -2,7 +2,7 @@ package com.open.net.client.impl.udp.bio;
 
 import com.open.net.client.impl.udp.bio.processor.SocketProcessor;
 import com.open.net.client.structures.IConnectListener;
-import com.open.net.client.structures.TcpAddress;
+import com.open.net.client.structures.UdpAddress;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -21,7 +21,7 @@ public class UDPBioConnector {
     private final int STATE_CONNECT_FAILED	= 1<<4;//连接失败
 
     private UDPBioClient mClient;
-    private TcpAddress[]    tcpArray   = null;
+    private UdpAddress[]    tcpArray   = null;
     private int             index      = -1;
 
     private int state       = STATE_CLOSE;
@@ -72,7 +72,7 @@ public class UDPBioConnector {
         this.mIConnectListener = mIConnectListener;
     }
 
-    public void setConnectAddress(TcpAddress[] tcpArray ){
+    public void setConnectAddress(UdpAddress[] tcpArray ){
         this.index = -1;
         this.tcpArray = tcpArray;
     }

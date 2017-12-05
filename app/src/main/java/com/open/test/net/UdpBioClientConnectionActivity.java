@@ -10,7 +10,7 @@ import com.open.net.client.impl.udp.bio.UDPBioClient;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.structures.IConnectListener;
-import com.open.net.client.structures.TcpAddress;
+import com.open.net.client.structures.UdpAddress;
 import com.open.net.client.structures.message.Message;
 
 import java.util.LinkedList;
@@ -47,7 +47,7 @@ public class UdpBioClientConnectionActivity extends Activity {
 		port.setText("9999");
 
 		mClient = new UDPBioClient(mMessageProcessor,mConnectResultListener);
-		mClient.setConnectAddress(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
+		mClient.setConnectAddress(new UdpAddress[]{new UdpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
 	}
 	
 	private OnClickListener listener=new OnClickListener() {
@@ -58,7 +58,7 @@ public class UdpBioClientConnectionActivity extends Activity {
 			switch(v.getId())
 			{
 				case R.id.set_ip_port:
-					mClient.setConnectAddress(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
+					mClient.setConnectAddress(new UdpAddress[]{new UdpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
 					break;
 
 				case R.id.open:

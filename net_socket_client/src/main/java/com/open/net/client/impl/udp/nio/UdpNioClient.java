@@ -3,7 +3,7 @@ package com.open.net.client.impl.udp.nio;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.structures.IConnectListener;
-import com.open.net.client.structures.TcpAddress;
+import com.open.net.client.structures.UdpAddress;
 import com.open.net.client.structures.message.Message;
 
 import java.io.IOException;
@@ -157,7 +157,7 @@ public final class UdpNioClient extends BaseClient {
     }
 
     //-------------------------------------------------------------------------------------------
-    public void setConnectAddress(TcpAddress[] tcpArray ){
+    public void setConnectAddress(UdpAddress[] tcpArray ){
         mConnector.setConnectAddress(tcpArray);
     }
 

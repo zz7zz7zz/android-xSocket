@@ -2,7 +2,7 @@ package com.open.net.client.impl.udp.nio;
 
 import com.open.net.client.impl.udp.nio.processor.SocketProcessor;
 import com.open.net.client.structures.IConnectListener;
-import com.open.net.client.structures.TcpAddress;
+import com.open.net.client.structures.UdpAddress;
 
 import java.io.IOException;
 import java.nio.channels.DatagramChannel;
@@ -21,7 +21,7 @@ public final class UdpNioConnector {
     private final int STATE_CONNECT_FAILED	= 1<<4;//连接失败
 
     private UdpNioClient       mClient;
-    private TcpAddress[]    tcpArray   = null;
+    private UdpAddress[]    tcpArray   = null;
     private int             index      = -1;
     private long            connect_timeout = 10000;
 
@@ -72,7 +72,7 @@ public final class UdpNioConnector {
         this.mIConnectListener = mConnectListener;
     }
 
-    public void setConnectAddress(TcpAddress[] tcpArray ){
+    public void setConnectAddress(UdpAddress[] tcpArray ){
         this.index = -1;
         this.tcpArray = tcpArray;
     }
