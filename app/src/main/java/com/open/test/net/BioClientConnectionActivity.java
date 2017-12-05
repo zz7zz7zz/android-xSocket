@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 
-import com.open.net.client.impl.bio.BioClient;
+import com.open.net.client.impl.tcp.bio.BioClient;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.structures.IConnectListener;

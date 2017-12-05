@@ -1,6 +1,6 @@
-package com.open.net.client.impl.bio;
+package com.open.net.client.impl.tcp.bio;
 
-import com.open.net.client.impl.bio.processor.SocketProcessor;
+import com.open.net.client.impl.tcp.bio.processor.SocketProcessor;
 
 import java.io.IOException;
 import java.net.Socket;

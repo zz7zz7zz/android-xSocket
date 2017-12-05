@@ -1,6 +1,6 @@
-package com.open.net.client.impl.nio;
+package com.open.net.client.impl.tcp.nio;
 
-import com.open.net.client.impl.nio.processor.SocketProcessor;
+import com.open.net.client.impl.tcp.nio.processor.SocketProcessor;
 
 import java.io.IOException;
 import java.nio.channels.Selector;

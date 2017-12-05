@@ -1,6 +1,6 @@
-package com.open.net.client.impl.udpbio;
+package com.open.net.client.impl.udp.bio;
 
-import com.open.net.client.impl.udpbio.processor.SocketProcessor;
+import com.open.net.client.impl.udp.bio.processor.SocketProcessor;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;

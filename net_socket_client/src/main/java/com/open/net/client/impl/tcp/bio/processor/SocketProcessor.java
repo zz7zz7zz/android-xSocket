@@ -1,42 +1,40 @@
-package com.open.net.client.impl.udpbio.processor;
+package com.open.net.client.impl.tcp.bio.processor;
 
-import com.open.net.client.impl.udpbio.IUdpBioConnectListener;
-import com.open.net.client.impl.udpbio.UDPBioClient;
 import com.open.net.client.structures.BaseClient;
+import com.open.net.client.impl.tcp.bio.IBioConnectListener;
 
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 /**
- * author       :   Administrator
- * created on   :   2017/12/4
- * description  :
+ * author       :   long
+ * created on   :   2017/11/30
+ * description  :   连/读/写 处理器
  */
 
 public class SocketProcessor {
 
     private String mIp    = "192.168.1.1";
     private int    mPort  = 9999;
+    private long   connect_timeout = 10000;
 
     private BaseClient mClient;
-    private IUdpBioConnectListener mConnectStatusListener;
+    private IBioConnectListener mConnectStatusListener;
 
     private ConnectRunnable mConnectProcessor;
     private WriteRunnable mWriteProcessor;
     private ReadRunnable mReadProcessor;
 
-    private Thread       mConnectThread =null;
-    private Thread       mWriteThread =null;
-    private Thread       mReadThread =null;
+    private Thread mConnectThread =null;
+    private Thread mWriteThread =null;
+    private Thread mReadThread =null;
 
     private int r_w_count = 2;//读写线程是否都退出了
 
-    public SocketProcessor(String mIp, int mPort, BaseClient mClient,IUdpBioConnectListener mConnectionStatusListener) {
+    public SocketProcessor(String mIp, int mPort,long   connect_timeout, BaseClient mClient,IBioConnectListener mConnectionStatusListener) {
         this.mIp = mIp;
         this.mPort = mPort;
+        this.connect_timeout = connect_timeout;
         this.mClient = mClient;
         this.mConnectStatusListener = mConnectionStatusListener;
     }
@@ -50,16 +48,6 @@ public class SocketProcessor {
     public synchronized void close(){
 
         wakeUp();
-
-        try {
-            if(null!= mConnectThread && mConnectThread.isAlive()) {
-                mConnectThread.interrupt();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally{
-            mConnectThread =null;
-        }
 
         try {
             if(null!= mWriteThread && mWriteThread.isAlive()) {
@@ -101,24 +89,16 @@ public class SocketProcessor {
         }
     }
 
+    //-------------------------------------------------------------------------------------------
     private class ConnectRunnable implements Runnable{
 
         @Override
         public void run() {
-            byte[] mWriteBuff  = ((UDPBioClient)mClient).mWriteBuff;
-            byte[] mReadBuff  = ((UDPBioClient)mClient).mReadBuff;
-
-            boolean connectRet;
+            boolean connectRet = false;
             try {
-                DatagramSocket mSocket = new DatagramSocket();  //创建套接字
-                InetAddress address = InetAddress.getByName(mIp);//服务器地址
-                DatagramPacket mWriteDatagramPacket = new DatagramPacket(mWriteBuff, mWriteBuff.length, address, mPort);//创建发送方的数据报信息
-                DatagramPacket mReadDatagramPacket  = new DatagramPacket(mReadBuff, mReadBuff.length);//创建发送方的数据报信息
 
-                if(null != mConnectStatusListener){
-                    mConnectStatusListener.onConnectSuccess(SocketProcessor.this,mSocket,mWriteDatagramPacket,mReadDatagramPacket);
-                }
-                connectRet = true;
+                Socket mSocket  =new Socket();
+                mSocket.connect(new InetSocketAddress(mIp, mPort), (int) connect_timeout);
 
                 mWriteProcessor = new WriteRunnable();
                 mReadProcessor = new ReadRunnable();
@@ -129,12 +109,12 @@ public class SocketProcessor {
                 mWriteThread.start();
                 mReadThread.start();
 
-            } catch (UnknownHostException e) {
+                if(null != mConnectStatusListener){
+                    mConnectStatusListener.onConnectSuccess(SocketProcessor.this,mSocket);
+                }
+                connectRet = true;
+            } catch (Exception e) {
                 e.printStackTrace();
-                connectRet = false;
-            } catch (SocketException e) {
-                e.printStackTrace();
-                connectRet = false;
             }
 
             if(!connectRet){
@@ -177,6 +157,7 @@ public class SocketProcessor {
 
         public void run() {
             mClient.onRead();
+
             onSocketExit(2);
         }
     }

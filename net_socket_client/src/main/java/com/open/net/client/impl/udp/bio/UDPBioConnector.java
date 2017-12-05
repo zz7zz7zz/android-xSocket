@@ -1,39 +1,38 @@
-package com.open.net.client.impl.nio;
+package com.open.net.client.impl.udp.bio;
 
-import com.open.net.client.impl.nio.processor.SocketProcessor;
+import com.open.net.client.impl.udp.bio.processor.SocketProcessor;
 import com.open.net.client.structures.IConnectListener;
 import com.open.net.client.structures.TcpAddress;
 
-import java.io.IOException;
-import java.nio.channels.Selector;
-import java.nio.channels.SocketChannel;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 
 /**
- * author       :   long
- * created on   :   2017/11/30
- * description  :   连接器
+ * author       :   Administrator
+ * created on   :   2017/12/4
+ * description  :
  */
 
-public final class NioConnector {
+public class UDPBioConnector {
 
     private final int STATE_CLOSE			= 1<<1;//socket关闭
     private final int STATE_CONNECT_START	= 1<<2;//开始连接server
     private final int STATE_CONNECT_SUCCESS	= 1<<3;//连接成功
     private final int STATE_CONNECT_FAILED	= 1<<4;//连接失败
 
-    private NioClient       mClient;
+    private UDPBioClient mClient;
     private TcpAddress[]    tcpArray   = null;
     private int             index      = -1;
-    private long            connect_timeout = 10000;
 
     private int state       = STATE_CLOSE;
     private SocketProcessor mSocketProcessor;
     private IConnectListener mIConnectListener;
 
-    private INioConnectListener mProxyConnectStatusListener = new INioConnectListener() {
+    private IUdpBioConnectListener mProxyConnectStatusListener = new IUdpBioConnectListener() {
+
         @Override
-        public synchronized void onConnectSuccess(SocketProcessor mSocketProcessor, SocketChannel socketChannel, Selector mSelector) throws IOException {
-            if(mSocketProcessor != NioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
+        public void onConnectSuccess(SocketProcessor mSocketProcessor, DatagramSocket mSocket, DatagramPacket mWriteDatagramPacket, DatagramPacket mReadDatagramPacket) {
+            if(mSocketProcessor != UDPBioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
                 SocketProcessor dropProcessor = mSocketProcessor;
                 if(null != dropProcessor){
                     dropProcessor.close();
@@ -41,17 +40,17 @@ public final class NioConnector {
                 return;
             }
 
-            mClient.init(socketChannel,mSelector);
-            state = STATE_CONNECT_SUCCESS;
-
-            if(null != mIConnectListener ){
+            if(null !=mIConnectListener ){
                 mIConnectListener.onConnectionSuccess();
             }
+
+            mClient.init(mSocket,mWriteDatagramPacket,mReadDatagramPacket);
+            state = STATE_CONNECT_SUCCESS;
         }
 
         @Override
         public synchronized void onConnectFailed(SocketProcessor mSocketProcessor) {
-            if(mSocketProcessor != NioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
+            if(mSocketProcessor != UDPBioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
                 SocketProcessor dropProcessor = mSocketProcessor;
                 if(null != dropProcessor){
                     dropProcessor.close();
@@ -59,27 +58,23 @@ public final class NioConnector {
                 return;
             }
 
-            state = STATE_CONNECT_FAILED;
-            connect();//try to connect next ip port
-
             if(null !=mIConnectListener ){
                 mIConnectListener.onConnectionFailed();
             }
+
+            state = STATE_CONNECT_FAILED;
+            connect();//try to connect next ip port
         }
     };
 
-    public NioConnector(NioClient mClient, IConnectListener mConnectListener) {
+    public UDPBioConnector(UDPBioClient mClient, IConnectListener mIConnectListener) {
         this.mClient = mClient;
-        this.mIConnectListener = mConnectListener;
+        this.mIConnectListener = mIConnectListener;
     }
 
     public void setConnectAddress(TcpAddress[] tcpArray ){
         this.index = -1;
         this.tcpArray = tcpArray;
-    }
-
-    public void setConnectTimeout(long connect_timeout ){
-        this.connect_timeout = connect_timeout;
     }
 
     //-------------------------------------------------------------------------------------------
@@ -139,7 +134,7 @@ public final class NioConnector {
         index++;
         if(index < tcpArray.length && index >= 0){
             state = STATE_CONNECT_START;
-            mSocketProcessor = new SocketProcessor(tcpArray[index].ip,tcpArray[index].port, connect_timeout,mClient,mProxyConnectStatusListener);
+            mSocketProcessor = new SocketProcessor(tcpArray[index].ip,tcpArray[index].port,mClient,mProxyConnectStatusListener);
             mSocketProcessor.start();
         }else{
             index = -1;

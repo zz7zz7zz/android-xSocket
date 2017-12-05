@@ -1,4 +1,4 @@
-package com.open.net.client.impl.udpbio;
+package com.open.net.client.impl.udp.bio;
 
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;

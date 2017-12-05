@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 
-import com.open.net.client.impl.udpbio.UDPBioClient;
+import com.open.net.client.impl.udp.bio.UDPBioClient;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.structures.IConnectListener;

@@ -1,4 +1,4 @@
-package com.open.net.client.impl.bio;
+package com.open.net.client.impl.tcp.bio;
 
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;

@@ -3,12 +3,12 @@
 
     <item
         is-multidex="false"
-        jar="/Users/long/AndroidStudioProjects/android-socket-client/net_socket_client/build/libs/net_socket_client.jar"
+        jar="E:\android-studio-workspace\android-socket-client\net_socket_client\build\libs\net_socket_client.jar"
         jumboMode="false"
         optimize="true"
         revision="26.0.0"
-        sha1="bb1ba7c4a51891b0fd21d26ca05ddc80fd4348c9">
-        <dex dex="/Users/long/AndroidStudioProjects/android-socket-client/app/build/intermediates/pre-dexed/debug/net_socket_client_709a5a74af02ff764bdbef3c873c76aabfb692d2.jar" />
+        sha1="ccbbd267b643e01e4908082fd4df836e25f4054d">
+        <dex dex="E:\android-studio-workspace\android-socket-client\app\build\intermediates\pre-dexed\debug\net_socket_client_076d8dc1beaa7406e88aa80bc123f0698b1a3150.jar" />
     </item>
 
 </items>
