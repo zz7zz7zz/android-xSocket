@@ -7,8 +7,6 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 import com.open.net.client.impl.nio.NioClient;
-import com.open.net.client.impl.nio.NioConnector;
-import com.open.net.client.impl.bio.IBioConnectListener;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.structures.IConnectListener;
@@ -103,7 +101,7 @@ public class NioClientConnectionActivity extends Activity {
 		public void onReceiveMessages(BaseClient mClient, final LinkedList<Message> mQueen) {
 			for (int i = 0 ;i< mQueen.size();i++) {
 				Message msg = mQueen.get(i);
-				final String s = new String(msg.data,0,msg.length);
+				final String s = new String(msg.data,msg.offset,msg.length);
 				runOnUiThread(new Runnable() {
 					public void run() {
 

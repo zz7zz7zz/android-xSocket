@@ -102,7 +102,7 @@ public class UdpBioClientConnectionActivity extends Activity {
 		public void onReceiveMessages(BaseClient mClient, final LinkedList<Message> mQueen) {
 			for (int i = 0 ;i< mQueen.size();i++) {
 				Message msg = mQueen.get(i);
-				final String s = new String(msg.data,0,msg.length);
+				final String s = new String(msg.data,msg.offset,msg.length);
 				runOnUiThread(new Runnable() {
 					public void run() {
 
