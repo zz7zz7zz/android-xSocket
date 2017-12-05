@@ -65,7 +65,7 @@ public final class MessageBuffer {
 
     public Message build(byte[] src,int offset, int length){
         Message msg = build(length);
-        System.arraycopy(src,offset,msg.data,0,length);
+        System.arraycopy(src,offset,msg.data,msg.offset,length);
         msg.length = length;
         return msg;
     }
