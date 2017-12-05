@@ -5,6 +5,8 @@ import com.open.net.client.structures.IConnectListener;
 import com.open.net.client.structures.TcpAddress;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 
 /**
@@ -31,7 +33,7 @@ public class BioConnector {
 
     private IBioConnectListener mProxyConnectStatusListener = new IBioConnectListener() {
         @Override
-        public synchronized void onConnectSuccess(SocketProcessor mSocketProcessor , Socket mSocket) throws IOException {
+        public synchronized void onConnectSuccess(SocketProcessor mSocketProcessor , Socket mSocket, OutputStream mOutputStream , InputStream mInputStream) throws IOException {
             if(mSocketProcessor != BioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
                 SocketProcessor dropProcessor = mSocketProcessor;
                 if(null != dropProcessor){
@@ -44,7 +46,7 @@ public class BioConnector {
                 mIConnectListener.onConnectionSuccess();
             }
 
-            mClient.init(mSocket);
+            mClient.init(mSocket, mOutputStream, mInputStream);
             state = STATE_CONNECT_SUCCESS;
 
         }

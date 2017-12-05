@@ -3,6 +3,8 @@ package com.open.net.client.impl.tcp.bio.processor;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.impl.tcp.bio.IBioConnectListener;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -14,12 +16,19 @@ import java.net.Socket;
 
 public class SocketProcessor {
 
+    private static int G_SOCKET_ID = 0;
+
+    private int mSocketId;
     private String mIp    = "192.168.1.1";
     private int    mPort  = 9999;
     private long   connect_timeout = 10000;
 
     private BaseClient mClient;
     private IBioConnectListener mConnectStatusListener;
+
+    private Socket mSocket =null;
+    private OutputStream mOutputStream =null;
+    private InputStream mInputStream =null;
 
     private ConnectRunnable mConnectProcessor;
     private WriteRunnable mWriteProcessor;
@@ -37,6 +46,8 @@ public class SocketProcessor {
         this.connect_timeout = connect_timeout;
         this.mClient = mClient;
         this.mConnectStatusListener = mConnectionStatusListener;
+        G_SOCKET_ID++;
+        mSocketId = G_SOCKET_ID;
     }
 
     public void start(){
@@ -48,6 +59,36 @@ public class SocketProcessor {
     public synchronized void close(){
 
         wakeUp();
+
+        try {
+            if(null!= mOutputStream) {
+                mOutputStream.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            mOutputStream =null;
+        }
+
+        try {
+            if(null!= mInputStream) {
+                mInputStream.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            mInputStream =null;
+        }
+
+        try {
+            if(null!= mSocket) {
+                mSocket.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            mSocket =null;
+        }
 
         try {
             if(null!= mWriteThread && mWriteThread.isAlive()) {
@@ -80,7 +121,7 @@ public class SocketProcessor {
 
         --r_w_count;
         boolean isWriterReaderExit = (r_w_count <= 0);
-        System.out.println("client onClose when " + (exit_code == 1 ? "onWrite" : "onRead") + " isWriterReaderExit " + isWriterReaderExit);
+        System.out.println("client mSocketId " + mSocketId + " onClose when " + (exit_code == 1 ? "onWrite" : "onRead") + " isWriterReaderExit " + isWriterReaderExit);
         close();
         if(isWriterReaderExit){
             if(null != mConnectStatusListener){
@@ -97,8 +138,11 @@ public class SocketProcessor {
             boolean connectRet = false;
             try {
 
-                Socket mSocket  =new Socket();
+                mSocket  =new Socket();
                 mSocket.connect(new InetSocketAddress(mIp, mPort), (int) connect_timeout);
+
+                mOutputStream 	= mSocket.getOutputStream();
+                mInputStream 	= mSocket.getInputStream();
 
                 mWriteProcessor = new WriteRunnable();
                 mReadProcessor = new ReadRunnable();
@@ -110,7 +154,7 @@ public class SocketProcessor {
                 mReadThread.start();
 
                 if(null != mConnectStatusListener){
-                    mConnectStatusListener.onConnectSuccess(SocketProcessor.this,mSocket);
+                    mConnectStatusListener.onConnectSuccess(SocketProcessor.this,mSocket,mOutputStream,mInputStream);
                 }
                 connectRet = true;
             } catch (Exception e) {

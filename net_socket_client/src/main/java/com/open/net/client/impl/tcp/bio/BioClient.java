@@ -34,10 +34,10 @@ public class BioClient extends BaseClient{
 	private OutputStream mOutputStream =null;
 	private InputStream mInputStream =null;
 
-	public void init(Socket socket) throws IOException{
-		mSocket    		= socket;
-		mOutputStream 	= socket.getOutputStream();
-		mInputStream 	= socket.getInputStream();
+	public void init(Socket mSocket , OutputStream mOutputStream , InputStream mInputStream) throws IOException{
+		this.mSocket    = mSocket;
+		this.mOutputStream 	= mOutputStream;
+		this.mInputStream 	= mInputStream;
 	}
 
 	@Override
@@ -46,35 +46,7 @@ public class BioClient extends BaseClient{
 	}
 
 	public void onClose(){
-		try {
-			if(null!= mOutputStream) {
-				mOutputStream.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally{
-			mOutputStream =null;
-		}
 
-		try {
-			if(null!= mInputStream) {
-				mInputStream.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally{
-			mInputStream =null;
-		}
-
-		try {
-			if(null!= mSocket) {
-				mSocket.close();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally{
-			mSocket =null;
-		}
 	}
 
 	public boolean onRead(){

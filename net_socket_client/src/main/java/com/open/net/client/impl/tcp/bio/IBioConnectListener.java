@@ -3,6 +3,8 @@ package com.open.net.client.impl.tcp.bio;
 import com.open.net.client.impl.tcp.bio.processor.SocketProcessor;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 
 /**
@@ -13,7 +15,7 @@ import java.net.Socket;
 
 public interface IBioConnectListener {
 
-    void onConnectSuccess(SocketProcessor mSocketProcessor, Socket mSocket) throws IOException;
+    void onConnectSuccess(SocketProcessor mSocketProcessor, Socket mSocket, OutputStream mOutputStream , InputStream mInputStream) throws IOException;
 
     void onConnectFailed(SocketProcessor mSocketProcessor);
 
