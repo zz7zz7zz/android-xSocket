@@ -46,7 +46,6 @@ public class UDPBioClient extends BaseClient{
     private DatagramPacket mWriteDatagramPacket ;
     private DatagramPacket mReadDatagramPacket ;
     public byte[] mWriteBuff  = new byte[65500];
-    public byte[] mReadBuff  = new byte[65500];
 
     public void init(DatagramSocket mSocket, DatagramPacket mWriteDatagramPacket, DatagramPacket mReadDatagramPacket){
         this.mSocket = mSocket;
@@ -72,9 +71,8 @@ public class UDPBioClient extends BaseClient{
                 if(null!= mMessageProcessor) {
                     mMessageProcessor.onReceiveData(this, mReadDatagramPacket.getData(),mReadDatagramPacket.getOffset(),mReadDatagramPacket.getLength());
                     mMessageProcessor.onReceiveMessages(this);
-
-                    mReadDatagramPacket.setLength(mReadDatagramPacket.getData().length);
                 }
+                mReadDatagramPacket.setLength(mReadDatagramPacket.getData().length);
             }
         } catch (Exception e) {
             e.printStackTrace();

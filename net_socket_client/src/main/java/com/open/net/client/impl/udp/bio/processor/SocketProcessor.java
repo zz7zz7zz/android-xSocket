@@ -112,7 +112,7 @@ public class SocketProcessor {
         @Override
         public void run() {
             byte[] mWriteBuff  = ((UDPBioClient)mClient).mWriteBuff;
-            byte[] mReadBuff  = ((UDPBioClient)mClient).mReadBuff;
+            byte[] mReadBuff  = new byte[1];
 
             boolean connectRet;
             try {
