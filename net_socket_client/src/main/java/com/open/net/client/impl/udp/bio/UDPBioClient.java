@@ -46,6 +46,7 @@ public class UDPBioClient extends BaseClient{
     private DatagramPacket mWriteDatagramPacket ;
     private DatagramPacket mReadDatagramPacket ;
     public byte[] mWriteBuff  = new byte[65500];
+    public byte[] mReadBuff   = new byte[65500];
 
     public void init(DatagramSocket mSocket, DatagramPacket mWriteDatagramPacket, DatagramPacket mReadDatagramPacket){
         this.mSocket = mSocket;
