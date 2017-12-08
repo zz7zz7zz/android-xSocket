@@ -159,7 +159,7 @@ public final class SocketProcessor {
                             break;
                         }
 
-                        if(!mClient.mWriteMessageQueen.mQueen.isEmpty()) {
+                        if(!mClient.mWriteMessageQueen.mWriteQueen.isEmpty()) {
                             SelectionKey key= mSocketChannel.keyFor(mSelector);
                             key.interestOps(SelectionKey.OP_WRITE);
                         }
