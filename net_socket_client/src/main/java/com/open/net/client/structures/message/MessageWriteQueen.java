@@ -11,7 +11,7 @@ import java.util.LinkedList;
 public final class MessageWriteQueen {
 
     private MessageBuffer       mWriteMessageBuffer = new MessageBuffer();
-    public  LinkedList<Message> mWriteQueen = new LinkedList<>();//真正的消息队列
+    public  LinkedList<Message> mWriteQueen         = new LinkedList<>();//真正的消息队列
 
     public Message build(byte[] src , int offset , int length){
         Message msg = mWriteMessageBuffer.build(src,offset,length);

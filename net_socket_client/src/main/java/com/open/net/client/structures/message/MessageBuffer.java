@@ -14,8 +14,8 @@ public final class MessageBuffer {
 
     //----------------------------------------------------------------------------------------
     //单元大小
-    private static final int KB = 1024;
-    private static final int MB = 1024*KB;
+    public static final int KB = 1024;
+    public static final int MB = 1024*KB;
 
     //定义单块消息体内存大小
     private static int capacity_small   = 8   * KB;
@@ -39,7 +39,7 @@ public final class MessageBuffer {
 
     //----------------------------------------------------------------------------------------
     //临时可缓存对象
-    private final int MAX_TEMPORARY_CACHE_SIZE = 5;
+    private static int max_temporary_cache_size = 2;
     private LinkedList<byte[]> mTemporaryCacheList = new LinkedList<>();
 
     //----------------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ public final class MessageBuffer {
 
     //----------------------------------------------------------------------------------------
     public static void init (int capacity_small ,int capacity_middle, int capacity_large,
-                             int size_small, int size_middle, int size_large) {
+                             int size_small, int size_middle, int size_large , int max_temporary_cache_size) {
 
         MessageBuffer.capacity_small    = capacity_small;
         MessageBuffer.capacity_middle   = capacity_middle;
@@ -60,6 +60,7 @@ public final class MessageBuffer {
         MessageBuffer.size_small        = size_small;
         MessageBuffer.size_middle       = size_middle;
         MessageBuffer.size_large        = size_large;
+        MessageBuffer.max_temporary_cache_size = max_temporary_cache_size;
     }
 
     public MessageBuffer() {
@@ -166,8 +167,8 @@ public final class MessageBuffer {
             tracker_buffer_large.release(msg.block_index);
             MessagePool.put(msg);
         }else if(msg.dst_reuse_type == REUSE_TEMP){
-            if(MAX_TEMPORARY_CACHE_SIZE >0){
-                while (mTemporaryCacheList.size() >= MAX_TEMPORARY_CACHE_SIZE){
+            if(max_temporary_cache_size >0){
+                while (mTemporaryCacheList.size() >= max_temporary_cache_size){
                     mTemporaryCacheList.poll();
                 }
                 mTemporaryCacheList.add(msg.data);

@@ -14,8 +14,7 @@ public final class MessagePool {
 
     public static ConcurrentLinkedQueue<Message> mQueen = new ConcurrentLinkedQueue();
 
-    public static final void init(){
-        int msg_max_size = 5;
+    public static final void init(int msg_max_size){
         for (int i = 0;i< msg_max_size;i++){
             mQueen.add(new Message());
         }

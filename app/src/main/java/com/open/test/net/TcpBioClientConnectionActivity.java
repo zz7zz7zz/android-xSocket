@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 
+import com.open.net.client.GClient;
 import com.open.net.client.impl.tcp.bio.BioClient;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;
@@ -46,6 +47,7 @@ public class TcpBioClientConnectionActivity extends Activity {
 		ip.setText("192.168.123.1");
 		port.setText("9999");
 
+		GClient.init();
 		mClient = new BioClient(mMessageProcessor,mConnectResultListener);
 		mClient.setConnectAddress(new TcpAddress[]{new TcpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
 	}
