@@ -42,8 +42,8 @@ public final class SocketProcessor {
 
     public SocketProcessor(String mIp, int mPort,long   connect_timeout , BaseClient mClient,ITcpNioConnectListener mNioConnectListener) {
         G_SOCKET_ID++;
-        mSocketId = G_SOCKET_ID;
 
+        this.mSocketId = G_SOCKET_ID;
         this.mIp = mIp;
         this.mPort = mPort;
         this.connect_timeout = connect_timeout;

@@ -18,6 +18,9 @@ import java.net.UnknownHostException;
 
 public class SocketProcessor {
 
+    private static int G_SOCKET_ID = 0;
+
+    private int     mSocketId;
     private String mIp    = "192.168.1.1";
     private int    mPort  = 9999;
 
@@ -37,6 +40,9 @@ public class SocketProcessor {
     private int r_w_count = 2;//读写线程是否都退出了
 
     public SocketProcessor(String mIp, int mPort, BaseClient mClient,IUdpBioConnectListener mConnectionStatusListener) {
+        G_SOCKET_ID++;
+
+        this.mSocketId = G_SOCKET_ID;
         this.mIp = mIp;
         this.mPort = mPort;
         this.mClient = mClient;

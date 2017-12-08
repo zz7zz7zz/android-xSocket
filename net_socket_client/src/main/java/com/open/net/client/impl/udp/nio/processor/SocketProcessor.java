@@ -24,7 +24,6 @@ public final class SocketProcessor {
     private int mSocketId;
     private String  mIp ="192.168.1.1";
     private int     mPort =9999;
-    private long   connect_timeout = 10000;
 
     private BaseClient mClient;
     private IUdpNioConnectListener mNioConnectListener;
@@ -37,14 +36,14 @@ public final class SocketProcessor {
 
     private boolean closed = false;
 
-    public SocketProcessor(String mIp, int mPort, long   connect_timeout , BaseClient mClient, IUdpNioConnectListener mNioConnectListener) {
+    public SocketProcessor(String mIp, int mPort , BaseClient mClient, IUdpNioConnectListener mNioConnectListener) {
+        G_SOCKET_ID++;
+        
+        this.mSocketId = G_SOCKET_ID;
         this.mIp = mIp;
         this.mPort = mPort;
-        this.connect_timeout = connect_timeout;
         this.mClient = mClient;
         this.mNioConnectListener = mNioConnectListener;
-        G_SOCKET_ID++;
-        mSocketId = G_SOCKET_ID;
     }
 
     public void start(){

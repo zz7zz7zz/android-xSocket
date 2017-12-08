@@ -23,14 +23,28 @@ public final class UdpNioClient extends BaseClient {
         GClient.init();
     }
 
-    private final String TAG="TcpNioClient";
-
-    //-------------------------------------------------------------------------------------------
     private UdpNioConnector mConnector;
 
     public UdpNioClient(BaseMessageProcessor mMessageProcessor, IConnectListener mConnectListener) {
         super(mMessageProcessor);
         mConnector = new UdpNioConnector(this,mConnectListener);
+    }
+
+    //-------------------------------------------------------------------------------------------
+    public void setConnectAddress(UdpAddress[] tcpArray ){
+        mConnector.setConnectAddress(tcpArray);
+    }
+
+    public void connect(){
+        mConnector.connect();
+    }
+
+    public void disconnect(){
+        mConnector.disconnect();
+    }
+
+    public void reconnect(){
+        mConnector.reconnect();
     }
 
     //-------------------------------------------------------------------------------------------
@@ -159,26 +173,5 @@ public final class UdpNioClient extends BaseClient {
         }
 
         return writeRet;
-    }
-
-    //-------------------------------------------------------------------------------------------
-    public void setConnectAddress(UdpAddress[] tcpArray ){
-        mConnector.setConnectAddress(tcpArray);
-    }
-
-    public void setConnectTimeout(long connect_timeout ){
-        mConnector.setConnectTimeout(connect_timeout);
-    }
-
-    public void connect(){
-        mConnector.connect();
-    }
-
-    public void disconnect(){
-        mConnector.disconnect();
-    }
-
-    public void reconnect(){
-        mConnector.reconnect();
     }
 }

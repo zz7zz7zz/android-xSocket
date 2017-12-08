@@ -23,8 +23,6 @@ public final class TcpNioClient extends BaseClient {
         GClient.init();
     }
 
-    private final String TAG="TcpNioClient";
-
     //-------------------------------------------------------------------------------------------
     private TcpNioConnector mConnector;
 

@@ -15,19 +15,17 @@ import java.nio.channels.DatagramChannel;
 
 public final class UdpNioConnector {
 
-    private final int STATE_CLOSE			= 1<<1;//socket关闭
-    private final int STATE_CONNECT_START	= 1<<2;//开始连接server
-    private final int STATE_CONNECT_SUCCESS	= 1<<3;//连接成功
-    private final int STATE_CONNECT_FAILED	= 1<<4;//连接失败
+    private final int STATE_CLOSE			= 0x1;//连接关闭
+    private final int STATE_CONNECT_START	= 0x2;//连接开始
+    private final int STATE_CONNECT_SUCCESS	= 0x3;//连接成功
 
-    private UdpNioClient       mClient;
-    private UdpAddress[]    tcpArray   = null;
-    private int             index      = -1;
-    private long            connect_timeout = 10000;
+    private UdpAddress[]    mAddress = null;
+    private int             mConnectIndex = -1;
+    private int             state = STATE_CLOSE;
 
-    private int state       = STATE_CLOSE;
-    private SocketProcessor mSocketProcessor;
-    private IConnectListener mIConnectListener;
+    private UdpNioClient      mClient;
+    private IConnectListener  mIConnectListener;
+    private SocketProcessor   mSocketProcessor;
 
     private IUdpNioConnectListener mProxyConnectStatusListener = new IUdpNioConnectListener() {
         @Override
@@ -40,12 +38,12 @@ public final class UdpNioConnector {
                 return;
             }
 
-            mClient.init(socketChannel);
-            state = STATE_CONNECT_SUCCESS;
-
             if(null != mIConnectListener ){
                 mIConnectListener.onConnectionSuccess();
             }
+
+            state = STATE_CONNECT_SUCCESS;
+            mClient.init(socketChannel);
         }
 
         @Override
@@ -58,12 +56,12 @@ public final class UdpNioConnector {
                 return;
             }
 
-            state = STATE_CLOSE;
-            connect();//try to connect next ip port
-
             if(null !=mIConnectListener ){
                 mIConnectListener.onConnectionFailed();
             }
+
+            state = STATE_CLOSE;
+            connect();//try to connect next ip port
         }
     };
 
@@ -72,38 +70,34 @@ public final class UdpNioConnector {
         this.mIConnectListener = mConnectListener;
     }
 
-    public void setConnectAddress(UdpAddress[] tcpArray ){
-        this.index = -1;
-        this.tcpArray = tcpArray;
-    }
-
-    public void setConnectTimeout(long connect_timeout ){
-        this.connect_timeout = connect_timeout;
-    }
-
     //-------------------------------------------------------------------------------------------
-    public boolean isConnected(){
+    private boolean isConnected(){
         return state == STATE_CONNECT_SUCCESS;
     }
 
-    public boolean isConnecting(){
+    private boolean isConnecting(){
         return state == STATE_CONNECT_START;
     }
 
-    public boolean isClosed(){
+    private boolean isClosed(){
         return state == STATE_CLOSE;
     }
 
     //-------------------------------------------------------------------------------------------
+    public void setConnectAddress(UdpAddress[] tcpArray ){
+        this.mConnectIndex = -1;
+        this.mAddress = tcpArray;
+    }
+
     public synchronized void connect() {
         startConnect();
     }
 
     public synchronized void reconnect(){
         stopConnect();
-        //reset the ip/port index of tcpArray
-        if(index+1 >= tcpArray.length || index+1 < 0){
-            index = -1;
+        //reset the ip/port mConnectIndex of mAddress
+        if(mConnectIndex +1 >= mAddress.length || mConnectIndex +1 < 0){
+            mConnectIndex = -1;
         }
         startConnect();
     }
@@ -135,13 +129,13 @@ public final class UdpNioConnector {
             return;
         }
 
-        index++;
-        if(index < tcpArray.length && index >= 0){
+        mConnectIndex++;
+        if(mConnectIndex < mAddress.length && mConnectIndex >= 0){
             state = STATE_CONNECT_START;
-            mSocketProcessor = new SocketProcessor(tcpArray[index].ip,tcpArray[index].port, connect_timeout,mClient,mProxyConnectStatusListener);
+            mSocketProcessor = new SocketProcessor(mAddress[mConnectIndex].ip, mAddress[mConnectIndex].port,mClient,mProxyConnectStatusListener);
             mSocketProcessor.start();
         }else{
-            index = -1;
+            mConnectIndex = -1;
 
             //循环连接了一遍还没有连接上，说明网络连接不成功，此时清空消息队列，防止队列堆积
             mClient.clearUnreachableMessages();
@@ -154,8 +148,8 @@ public final class UdpNioConnector {
 
         if(null != mSocketProcessor) {
             mSocketProcessor.close();
+            mSocketProcessor = null;
         }
-        mSocketProcessor = null;
     }
 
 }
