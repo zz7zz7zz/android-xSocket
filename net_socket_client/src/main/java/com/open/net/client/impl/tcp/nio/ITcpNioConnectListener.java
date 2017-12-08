@@ -11,7 +11,7 @@ import java.nio.channels.SocketChannel;
  * description  :   连接状态回调
  */
 
-public interface INioConnectListener {
+public interface ITcpNioConnectListener {
 
     void onConnectSuccess(SocketProcessor mSocketProcessor, SocketChannel socketChannel) throws IOException;
 

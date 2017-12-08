@@ -13,14 +13,14 @@ import java.nio.channels.SocketChannel;
  * description  :   连接器
  */
 
-public final class NioConnector {
+public final class TcpNioConnector {
 
     private final int STATE_CLOSE			= 1<<1;//socket关闭
     private final int STATE_CONNECT_START	= 1<<2;//开始连接server
     private final int STATE_CONNECT_SUCCESS	= 1<<3;//连接成功
     private final int STATE_CONNECT_FAILED	= 1<<4;//连接失败
 
-    private NioClient       mClient;
+    private TcpNioClient mClient;
     private TcpAddress[]    tcpArray   = null;
     private int             index      = -1;
     private long            connect_timeout = 10000;
@@ -29,10 +29,10 @@ public final class NioConnector {
     private SocketProcessor mSocketProcessor;
     private IConnectListener mIConnectListener;
 
-    private INioConnectListener mProxyConnectStatusListener = new INioConnectListener() {
+    private ITcpNioConnectListener mProxyConnectStatusListener = new ITcpNioConnectListener() {
         @Override
         public synchronized void onConnectSuccess(SocketProcessor mSocketProcessor, SocketChannel socketChannel) throws IOException {
-            if(mSocketProcessor != NioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
+            if(mSocketProcessor != TcpNioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
                 SocketProcessor dropProcessor = mSocketProcessor;
                 if(null != dropProcessor){
                     dropProcessor.close();
@@ -50,7 +50,7 @@ public final class NioConnector {
 
         @Override
         public synchronized void onConnectFailed(SocketProcessor mSocketProcessor) {
-            if(mSocketProcessor != NioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
+            if(mSocketProcessor != TcpNioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
                 SocketProcessor dropProcessor = mSocketProcessor;
                 if(null != dropProcessor){
                     dropProcessor.close();
@@ -67,7 +67,7 @@ public final class NioConnector {
         }
     };
 
-    public NioConnector(NioClient mClient, IConnectListener mConnectListener) {
+    public TcpNioConnector(TcpNioClient mClient, IConnectListener mConnectListener) {
         this.mClient = mClient;
         this.mIConnectListener = mConnectListener;
     }

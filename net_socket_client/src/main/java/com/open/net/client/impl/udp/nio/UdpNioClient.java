@@ -1,5 +1,6 @@
 package com.open.net.client.impl.udp.nio;
 
+import com.open.net.client.GClient;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.structures.IConnectListener;
@@ -13,12 +14,16 @@ import java.nio.channels.DatagramChannel;
 /**
  * author       :   long
  * created on   :   2017/11/30
- * description  :   NioClient
+ * description  :   TcpNioClient
  */
 
 public final class UdpNioClient extends BaseClient {
 
-    private final String TAG="NioClient";
+    static {
+        GClient.init();
+    }
+
+    private final String TAG="TcpNioClient";
 
     //-------------------------------------------------------------------------------------------
     private UdpNioConnector mConnector;

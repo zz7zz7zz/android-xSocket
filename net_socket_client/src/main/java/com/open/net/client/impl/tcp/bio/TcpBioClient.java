@@ -19,6 +19,10 @@ import java.net.SocketException;
  */
 public class TcpBioClient extends BaseClient{
 
+	static {
+		GClient.init();
+	}
+
 	private final String TAG = "TcpBioClient";
 
 	//-------------------------------------------------------------------------------------------
@@ -26,7 +30,6 @@ public class TcpBioClient extends BaseClient{
 
 	public TcpBioClient(BaseMessageProcessor mMessageProcessor, IConnectListener mConnectListener) {
 		super(mMessageProcessor);
-		GClient.init();
 		mConnector = new TcpBioConnector(this,mConnectListener);
 	}
 
