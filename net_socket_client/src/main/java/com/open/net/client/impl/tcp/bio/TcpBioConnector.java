@@ -21,7 +21,7 @@ public class TcpBioConnector {
     private final int STATE_CONNECT_SUCCESS	= 0x3;//连接成功
 
     private long            connect_timeout = 10000;
-    private TcpAddress[]    mTcpAddress = null;
+    private TcpAddress[]    mAddress = null;
     private int             mConnectIndex = -1;
     private int             state = STATE_CLOSE;
 
@@ -88,7 +88,7 @@ public class TcpBioConnector {
     //-------------------------------------------------------------------------------------------
     public void setConnectAddress(TcpAddress[] tcpArray ){
         this.mConnectIndex = -1;
-        this.mTcpAddress = tcpArray;
+        this.mAddress = tcpArray;
     }
 
     public void setConnectTimeout(long connect_timeout ){
@@ -101,8 +101,8 @@ public class TcpBioConnector {
 
     public synchronized void reconnect(){
         stopConnect();
-        //reset the ip/port mConnectIndex of mTcpAddress
-        if(mConnectIndex +1 >= mTcpAddress.length || mConnectIndex +1 < 0){
+        //reset the ip/port mConnectIndex of mAddress
+        if(mConnectIndex +1 >= mAddress.length || mConnectIndex +1 < 0){
             mConnectIndex = -1;
         }
         startConnect();
@@ -136,9 +136,9 @@ public class TcpBioConnector {
         }
 
         mConnectIndex++;
-        if(mConnectIndex < mTcpAddress.length && mConnectIndex >= 0){
+        if(mConnectIndex < mAddress.length && mConnectIndex >= 0){
             state = STATE_CONNECT_START;
-            mSocketProcessor = new SocketProcessor(mTcpAddress[mConnectIndex].ip, mTcpAddress[mConnectIndex].port, connect_timeout,mClient, mProxyConnectStatusListener);
+            mSocketProcessor = new SocketProcessor(mAddress[mConnectIndex].ip, mAddress[mConnectIndex].port, connect_timeout,mClient, mProxyConnectStatusListener);
             mSocketProcessor.start();
         }else{
             mConnectIndex = -1;

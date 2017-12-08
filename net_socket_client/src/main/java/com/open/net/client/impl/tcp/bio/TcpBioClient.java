@@ -26,17 +26,9 @@ public class TcpBioClient extends BaseClient{
 	//-------------------------------------------------------------------------------------------
 	private TcpBioConnector mConnector;
 
-	private OutputStream mOutputStream =null;
-	private InputStream  mInputStream =null;
-
 	public TcpBioClient(BaseMessageProcessor mMessageProcessor, IConnectListener mConnectListener) {
 		super(mMessageProcessor);
 		mConnector = new TcpBioConnector(this,mConnectListener);
-	}
-
-	public void init(OutputStream mOutputStream , InputStream mInputStream) throws IOException{
-		this.mOutputStream 	= mOutputStream;
-		this.mInputStream 	= mInputStream;
 	}
 
 	//-------------------------------------------------------------------------------------------
@@ -61,6 +53,14 @@ public class TcpBioClient extends BaseClient{
 	}
 
 	//-------------------------------------------------------------------------------------------
+	private OutputStream mOutputStream =null;
+	private InputStream  mInputStream =null;
+
+    public void init(OutputStream mOutputStream , InputStream mInputStream) throws IOException{
+        this.mOutputStream 	= mOutputStream;
+        this.mInputStream 	= mInputStream;
+    }
+
 	@Override
 	public void onCheckConnect() {
 		mConnector.checkConnect();

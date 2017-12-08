@@ -34,6 +34,27 @@ public final class TcpNioClient extends BaseClient {
     }
 
     //-------------------------------------------------------------------------------------------
+    public void setConnectAddress(TcpAddress[] tcpArray ){
+        mConnector.setConnectAddress(tcpArray);
+    }
+
+    public void setConnectTimeout(long connect_timeout ){
+        mConnector.setConnectTimeout(connect_timeout);
+    }
+
+    public void connect(){
+        mConnector.connect();
+    }
+
+    public void disconnect(){
+        mConnector.disconnect();
+    }
+
+    public void reconnect(){
+        mConnector.reconnect();
+    }
+
+    //-------------------------------------------------------------------------------------------
     private SocketChannel mSocketChannel;
     private ByteBuffer mReadByteBuffer  = ByteBuffer.allocate(64*1024);
     private ByteBuffer mWriteByteBuffer = ByteBuffer.allocate(64*1024);
@@ -174,26 +195,5 @@ public final class TcpNioClient extends BaseClient {
         }
 
         return writeRet;
-    }
-
-    //-------------------------------------------------------------------------------------------
-    public void setConnectAddress(TcpAddress[] tcpArray ){
-        mConnector.setConnectAddress(tcpArray);
-    }
-
-    public void setConnectTimeout(long connect_timeout ){
-        mConnector.setConnectTimeout(connect_timeout);
-    }
-
-    public void connect(){
-        mConnector.connect();
-    }
-
-    public void disconnect(){
-        mConnector.disconnect();
-    }
-
-    public void reconnect(){
-        mConnector.reconnect();
     }
 }
