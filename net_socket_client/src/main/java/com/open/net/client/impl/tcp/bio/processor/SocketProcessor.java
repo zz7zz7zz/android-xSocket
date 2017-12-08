@@ -1,7 +1,7 @@
 package com.open.net.client.impl.tcp.bio.processor;
 
 import com.open.net.client.structures.BaseClient;
-import com.open.net.client.impl.tcp.bio.IBioConnectListener;
+import com.open.net.client.impl.tcp.bio.ITcpBioConnectListener;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -24,7 +24,7 @@ public class SocketProcessor {
     private long   connect_timeout = 10000;
 
     private BaseClient mClient;
-    private IBioConnectListener mConnectStatusListener;
+    private ITcpBioConnectListener mConnectStatusListener;
 
     private Socket mSocket =null;
     private OutputStream mOutputStream =null;
@@ -40,7 +40,7 @@ public class SocketProcessor {
 
     private int r_w_count = 2;//读写线程是否都退出了
 
-    public SocketProcessor(String mIp, int mPort,long   connect_timeout, BaseClient mClient,IBioConnectListener mConnectionStatusListener) {
+    public SocketProcessor(String mIp, int mPort,long   connect_timeout, BaseClient mClient,ITcpBioConnectListener mConnectionStatusListener) {
         this.mIp = mIp;
         this.mPort = mPort;
         this.connect_timeout = connect_timeout;
@@ -154,7 +154,7 @@ public class SocketProcessor {
                 mReadThread.start();
 
                 if(null != mConnectStatusListener){
-                    mConnectStatusListener.onConnectSuccess(SocketProcessor.this,mSocket,mOutputStream,mInputStream);
+                    mConnectStatusListener.onConnectSuccess(SocketProcessor.this,mOutputStream,mInputStream);
                 }
                 connectRet = true;
             } catch (Exception e) {
