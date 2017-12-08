@@ -20,10 +20,10 @@ public class SocketProcessor {
 
     private static int G_SOCKET_ID = 0;
 
-    private int    mSocketId;
-    private String mIp    = "192.168.1.1";
-    private int    mPort  = 9999;
-    private long   connect_timeout = 10000;
+    private int     mSocketId;
+    private String  mIp             = "192.168.1.1";
+    private int     mPort           = 9999;
+    private long    connect_timeout = 10000;
 
     private BaseClient mClient;
     private ITcpBioConnectListener mConnectStatusListener;

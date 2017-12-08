@@ -24,9 +24,9 @@ public final class TcpNioConnector {
     private int          mConnectIndex = -1;
     private int          state = STATE_CLOSE;
 
-    private TcpNioClient mClient;
+    private TcpNioClient     mClient;
     private IConnectListener mIConnectListener;
-    private SocketProcessor mSocketProcessor;
+    private SocketProcessor  mSocketProcessor;
 
     private ITcpNioConnectListener mProxyConnectStatusListener = new ITcpNioConnectListener() {
         @Override
@@ -72,6 +72,19 @@ public final class TcpNioConnector {
     }
 
     //-------------------------------------------------------------------------------------------
+    private boolean isConnected(){
+        return state == STATE_CONNECT_SUCCESS;
+    }
+
+    private boolean isConnecting(){
+        return state == STATE_CONNECT_START;
+    }
+
+    private boolean isClosed(){
+        return state == STATE_CLOSE;
+    }
+
+    //-------------------------------------------------------------------------------------------
     public void setConnectAddress(TcpAddress[] tcpArray ){
         this.mConnectIndex = -1;
         this.mTcpAddress = tcpArray;
@@ -81,20 +94,6 @@ public final class TcpNioConnector {
         this.connect_timeout = connect_timeout;
     }
 
-    //-------------------------------------------------------------------------------------------
-    public boolean isConnected(){
-        return state == STATE_CONNECT_SUCCESS;
-    }
-
-    public boolean isConnecting(){
-        return state == STATE_CONNECT_START;
-    }
-
-    public boolean isClosed(){
-        return state == STATE_CLOSE;
-    }
-
-    //-------------------------------------------------------------------------------------------
     public synchronized void connect() {
         startConnect();
     }
