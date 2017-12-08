@@ -23,25 +23,44 @@ public class TcpBioClient extends BaseClient{
 		GClient.init();
 	}
 
-	private final String TAG = "TcpBioClient";
-
 	//-------------------------------------------------------------------------------------------
 	private TcpBioConnector mConnector;
+
+	private OutputStream mOutputStream =null;
+	private InputStream  mInputStream =null;
 
 	public TcpBioClient(BaseMessageProcessor mMessageProcessor, IConnectListener mConnectListener) {
 		super(mMessageProcessor);
 		mConnector = new TcpBioConnector(this,mConnectListener);
 	}
 
-	//-------------------------------------------------------------------------------------------
-	private OutputStream mOutputStream =null;
-	private InputStream  mInputStream =null;
-
 	public void init(OutputStream mOutputStream , InputStream mInputStream) throws IOException{
 		this.mOutputStream 	= mOutputStream;
 		this.mInputStream 	= mInputStream;
 	}
 
+	//-------------------------------------------------------------------------------------------
+	public void setConnectAddress(TcpAddress[] tcpArray ){
+		mConnector.setConnectAddress(tcpArray);
+	}
+
+	public void setConnectTimeout(long connect_timeout ){
+		mConnector.setConnectTimeout(connect_timeout);
+	}
+
+	public void connect(){
+		mConnector.connect();
+	}
+
+	public void disconnect(){
+		mConnector.disconnect();
+	}
+
+	public void reconnect(){
+		mConnector.reconnect();
+	}
+
+	//-------------------------------------------------------------------------------------------
 	@Override
 	public void onCheckConnect() {
 		mConnector.checkConnect();
@@ -127,26 +146,5 @@ public class TcpBioClient extends BaseClient{
 		}
 
 		return writeRet;
-	}
-
-	//-------------------------------------------------------------------------------------------
-	public void setConnectAddress(TcpAddress[] tcpArray ){
-		mConnector.setConnectAddress(tcpArray);
-	}
-
-	public void setConnectTimeout(long connect_timeout ){
-		mConnector.setConnectTimeout(connect_timeout);
-	}
-
-	public void connect(){
-		mConnector.connect();
-	}
-
-	public void disconnect(){
-		mConnector.disconnect();
-	}
-
-	public void reconnect(){
-		mConnector.reconnect();
 	}
 }

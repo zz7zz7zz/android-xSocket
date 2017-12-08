@@ -73,6 +73,19 @@ public class TcpBioConnector {
     }
 
     //-------------------------------------------------------------------------------------------
+    private boolean isConnected(){
+        return state == STATE_CONNECT_SUCCESS;
+    }
+
+    private boolean isConnecting(){
+        return state == STATE_CONNECT_START;
+    }
+
+    private boolean isClosed(){
+        return state == STATE_CLOSE;
+    }
+
+    //-------------------------------------------------------------------------------------------
     public void setConnectAddress(TcpAddress[] tcpArray ){
         this.mConnectIndex = -1;
         this.mTcpAddress = tcpArray;
@@ -82,20 +95,6 @@ public class TcpBioConnector {
         this.connect_timeout = connect_timeout;
     }
 
-    //-------------------------------------------------------------------------------------------
-    public boolean isConnected(){
-        return state == STATE_CONNECT_SUCCESS;
-    }
-
-    public boolean isConnecting(){
-        return state == STATE_CONNECT_START;
-    }
-
-    public boolean isClosed(){
-        return state == STATE_CLOSE;
-    }
-
-    //-------------------------------------------------------------------------------------------
     public synchronized void connect() {
         startConnect();
     }
