@@ -13,7 +13,7 @@ import java.net.DatagramSocket;
  * description  :
  */
 
-public class UDPBioConnector {
+public class UdpBioConnector {
 
     private final int STATE_CLOSE			= 0x1;//连接关闭
     private final int STATE_CONNECT_START	= 0x2;//连接开始
@@ -23,7 +23,7 @@ public class UDPBioConnector {
     private int             mConnectIndex = -1;
     private int             state = STATE_CLOSE;
 
-    private UDPBioClient     mClient;
+    private UdpBioClient mClient;
     private IConnectListener mIConnectListener;
     private SocketProcessor  mSocketProcessor;
 
@@ -31,7 +31,7 @@ public class UDPBioConnector {
 
         @Override
         public void onConnectSuccess(SocketProcessor mSocketProcessor, DatagramSocket mSocket, DatagramPacket mWriteDatagramPacket, DatagramPacket mReadDatagramPacket) {
-            if(mSocketProcessor != UDPBioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
+            if(mSocketProcessor != UdpBioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
                 SocketProcessor dropProcessor = mSocketProcessor;
                 if(null != dropProcessor){
                     dropProcessor.close();
@@ -49,7 +49,7 @@ public class UDPBioConnector {
 
         @Override
         public synchronized void onConnectFailed(SocketProcessor mSocketProcessor) {
-            if(mSocketProcessor != UDPBioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
+            if(mSocketProcessor != UdpBioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
                 SocketProcessor dropProcessor = mSocketProcessor;
                 if(null != dropProcessor){
                     dropProcessor.close();
@@ -66,7 +66,7 @@ public class UDPBioConnector {
         }
     };
 
-    public UDPBioConnector(UDPBioClient mClient, IConnectListener mIConnectListener) {
+    public UdpBioConnector(UdpBioClient mClient, IConnectListener mIConnectListener) {
         this.mClient = mClient;
         this.mIConnectListener = mIConnectListener;
     }

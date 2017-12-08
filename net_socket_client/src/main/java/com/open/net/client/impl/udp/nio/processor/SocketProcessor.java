@@ -19,6 +19,8 @@ import java.util.Iterator;
 
 public final class SocketProcessor {
 
+    private String TAG = "SocketProcessor";
+
     private static int G_SOCKET_ID = 0;
 
     private int mSocketId;
@@ -38,7 +40,7 @@ public final class SocketProcessor {
 
     public SocketProcessor(String mIp, int mPort , BaseClient mClient, IUdpNioConnectListener mNioConnectListener) {
         G_SOCKET_ID++;
-        
+
         this.mSocketId = G_SOCKET_ID;
         this.mIp = mIp;
         this.mPort = mPort;
@@ -82,7 +84,7 @@ public final class SocketProcessor {
 
     public void onSocketExit(int exit_code){
         close();
-        System.out.println("client mSocketId " + mSocketId);
+        System.out.println(TAG + "onSocketExit mSocketId " + mSocketId + " exit_code " + exit_code);
         if(null != mNioConnectListener){
             mNioConnectListener.onConnectFailed(SocketProcessor.this);
         }

@@ -86,7 +86,7 @@ public final class SocketProcessor {
     }
 
     public void onSocketExit(int exit_code){
-        System.out.println(TAG + "client mSocketId " + mSocketId + " exit_code " + exit_code);
+        System.out.println(TAG + "onSocketExit mSocketId " + mSocketId + " exit_code " + exit_code);
 
         close();
         if(null != mNioConnectListener){

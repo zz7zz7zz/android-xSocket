@@ -16,18 +16,18 @@ import java.net.DatagramSocket;
  * description  :   UDP 客户端
  */
 
-public class UDPBioClient extends BaseClient{
+public class UdpBioClient extends BaseClient{
 
     static {
         GClient.init();
     }
 
     //-------------------------------------------------------------------------------------------
-    private UDPBioConnector mConnector;
+    private UdpBioConnector mConnector;
 
-    public UDPBioClient(BaseMessageProcessor mMessageProcessor, IConnectListener mConnectListener) {
+    public UdpBioClient(BaseMessageProcessor mMessageProcessor, IConnectListener mConnectListener) {
         super(mMessageProcessor);
-        mConnector = new UDPBioConnector(this,mConnectListener);
+        mConnector = new UdpBioConnector(this,mConnectListener);
     }
     //-------------------------------------------------------------------------------------------
     public void setConnectAddress(UdpAddress[] tcpArray ){

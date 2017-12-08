@@ -1,7 +1,7 @@
 package com.open.net.client.impl.udp.bio.processor;
 
 import com.open.net.client.impl.udp.bio.IUdpBioConnectListener;
-import com.open.net.client.impl.udp.bio.UDPBioClient;
+import com.open.net.client.impl.udp.bio.UdpBioClient;
 import com.open.net.client.structures.BaseClient;
 
 import java.net.DatagramPacket;
@@ -17,6 +17,8 @@ import java.net.UnknownHostException;
  */
 
 public class SocketProcessor {
+
+    private String TAG = "SocketProcessor";
 
     private static int G_SOCKET_ID = 0;
 
@@ -104,7 +106,7 @@ public class SocketProcessor {
 
         --r_w_count;
         boolean isWriterReaderExit = (r_w_count <= 0);
-        System.out.println("client onClose when " + (exit_code == 1 ? "onWrite" : "onRead") + " isWriterReaderExit " + isWriterReaderExit);
+        System.out.println(TAG + "onSocketExit mSocketId " + mSocketId + " exit_code " + exit_code + (exit_code == 1 ? " onWrite" : " onRead")+ " isWriterReaderExit " + isWriterReaderExit);
         close();
         if(isWriterReaderExit){
             if(null != mConnectStatusListener){
@@ -117,8 +119,8 @@ public class SocketProcessor {
 
         @Override
         public void run() {
-            byte[] mWriteBuff  = ((UDPBioClient)mClient).mWriteBuff;
-            byte[] mReadBuff   = ((UDPBioClient)mClient).mReadBuff;
+            byte[] mWriteBuff  = ((UdpBioClient)mClient).mWriteBuff;
+            byte[] mReadBuff   = ((UdpBioClient)mClient).mReadBuff;
 
             boolean connectRet;
             try {

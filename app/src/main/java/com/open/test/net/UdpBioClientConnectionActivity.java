@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 
-import com.open.net.client.impl.udp.bio.UDPBioClient;
+import com.open.net.client.impl.udp.bio.UdpBioClient;
 import com.open.net.client.structures.BaseClient;
 import com.open.net.client.structures.BaseMessageProcessor;
 import com.open.net.client.structures.IConnectListener;
@@ -17,7 +17,7 @@ import java.util.LinkedList;
 
 public class UdpBioClientConnectionActivity extends Activity {
 
-	private UDPBioClient mClient =null;
+	private UdpBioClient mClient =null;
 	private EditText ip,port,sendContent,recContent;
 	
 	@Override
@@ -46,7 +46,7 @@ public class UdpBioClientConnectionActivity extends Activity {
 		ip.setText("192.168.123.1");
 		port.setText("9995");
 
-		mClient = new UDPBioClient(mMessageProcessor,mConnectResultListener);
+		mClient = new UdpBioClient(mMessageProcessor,mConnectResultListener);
 		mClient.setConnectAddress(new UdpAddress[]{new UdpAddress(ip.getText().toString(), Integer.valueOf(port.getText().toString()))});
 	}
 	
