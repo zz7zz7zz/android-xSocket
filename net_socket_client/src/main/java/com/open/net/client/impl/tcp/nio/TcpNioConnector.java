@@ -15,19 +15,18 @@ import java.nio.channels.SocketChannel;
 
 public final class TcpNioConnector {
 
-    private final int STATE_CLOSE			= 1<<1;//socket关闭
-    private final int STATE_CONNECT_START	= 1<<2;//开始连接server
-    private final int STATE_CONNECT_SUCCESS	= 1<<3;//连接成功
-    private final int STATE_CONNECT_FAILED	= 1<<4;//连接失败
+    private final int STATE_CLOSE			= 0x1;//连接关闭
+    private final int STATE_CONNECT_START	= 0x2;//连接开始
+    private final int STATE_CONNECT_SUCCESS	= 0x3;//连接成功
+
+    private long         connect_timeout = 10000;
+    private TcpAddress[] mTcpAddress = null;
+    private int          mConnectIndex = -1;
+    private int          state = STATE_CLOSE;
 
     private TcpNioClient mClient;
-    private TcpAddress[]    tcpArray   = null;
-    private int             index      = -1;
-    private long            connect_timeout = 10000;
-
-    private int state       = STATE_CLOSE;
-    private SocketProcessor mSocketProcessor;
     private IConnectListener mIConnectListener;
+    private SocketProcessor mSocketProcessor;
 
     private ITcpNioConnectListener mProxyConnectStatusListener = new ITcpNioConnectListener() {
         @Override
@@ -40,8 +39,8 @@ public final class TcpNioConnector {
                 return;
             }
 
-            mClient.init(socketChannel);
             state = STATE_CONNECT_SUCCESS;
+            mClient.init(socketChannel);
 
             if(null != mIConnectListener ){
                 mIConnectListener.onConnectionSuccess();
@@ -72,9 +71,10 @@ public final class TcpNioConnector {
         this.mIConnectListener = mConnectListener;
     }
 
+    //-------------------------------------------------------------------------------------------
     public void setConnectAddress(TcpAddress[] tcpArray ){
-        this.index = -1;
-        this.tcpArray = tcpArray;
+        this.mConnectIndex = -1;
+        this.mTcpAddress = tcpArray;
     }
 
     public void setConnectTimeout(long connect_timeout ){
@@ -101,9 +101,9 @@ public final class TcpNioConnector {
 
     public synchronized void reconnect(){
         stopConnect();
-        //reset the ip/port index of tcpArray
-        if(index+1 >= tcpArray.length || index+1 < 0){
-            index = -1;
+        //reset the ip/port mConnectIndex of mTcpAddress
+        if(mConnectIndex +1 >= mTcpAddress.length || mConnectIndex +1 < 0){
+            mConnectIndex = -1;
         }
         startConnect();
     }
@@ -135,13 +135,13 @@ public final class TcpNioConnector {
             return;
         }
 
-        index++;
-        if(index < tcpArray.length && index >= 0){
+        mConnectIndex++;
+        if(mConnectIndex < mTcpAddress.length && mConnectIndex >= 0){
             state = STATE_CONNECT_START;
-            mSocketProcessor = new SocketProcessor(tcpArray[index].ip,tcpArray[index].port, connect_timeout,mClient,mProxyConnectStatusListener);
+            mSocketProcessor = new SocketProcessor(mTcpAddress[mConnectIndex].ip, mTcpAddress[mConnectIndex].port, connect_timeout,mClient,mProxyConnectStatusListener);
             mSocketProcessor.start();
         }else{
-            index = -1;
+            mConnectIndex = -1;
 
             //循环连接了一遍还没有连接上，说明网络连接不成功，此时清空消息队列，防止队列堆积
             mClient.clearUnreachableMessages();
@@ -154,8 +154,8 @@ public final class TcpNioConnector {
 
         if(null != mSocketProcessor) {
             mSocketProcessor.close();
+            mSocketProcessor = null;
         }
-        mSocketProcessor = null;
     }
 
 }
