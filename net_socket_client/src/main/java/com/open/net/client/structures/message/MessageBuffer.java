@@ -39,7 +39,7 @@ public final class MessageBuffer {
 
     //----------------------------------------------------------------------------------------
     //临时可缓存对象
-    private static int max_temporary_cache_size = 2;
+    private static int max_size_temporary_cache = 2;
     private LinkedList<byte[]> mTemporaryCacheList = new LinkedList<>();
 
     //----------------------------------------------------------------------------------------
@@ -60,7 +60,7 @@ public final class MessageBuffer {
         MessageBuffer.size_small        = size_small;
         MessageBuffer.size_middle       = size_middle;
         MessageBuffer.size_large        = size_large;
-        MessageBuffer.max_temporary_cache_size = max_temporary_cache_size;
+        MessageBuffer.max_size_temporary_cache = max_temporary_cache_size;
     }
 
     public MessageBuffer() {
@@ -167,8 +167,8 @@ public final class MessageBuffer {
             tracker_buffer_large.release(msg.block_index);
             MessagePool.put(msg);
         }else if(msg.dst_reuse_type == REUSE_TEMP){
-            if(max_temporary_cache_size >0){
-                while (mTemporaryCacheList.size() >= max_temporary_cache_size){
+            if(max_size_temporary_cache >0){
+                while (mTemporaryCacheList.size() >= max_size_temporary_cache){
                     mTemporaryCacheList.poll();
                 }
                 mTemporaryCacheList.add(msg.data);
