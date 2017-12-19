@@ -82,7 +82,7 @@ public class TcpBioClient extends BaseClient{
 				if(numRead > 0){
 					if(null != mMessageProcessor) {
 						mMessageProcessor.onReceiveData(this, bodyBytes,0,numRead);
-						mMessageProcessor.onReceiveMessages(this);
+						mMessageProcessor.onReceiveDataCompleted(this);
 					}
 				}
 			}
@@ -98,7 +98,7 @@ public class TcpBioClient extends BaseClient{
 		}
 
 		if(null != mMessageProcessor){
-			mMessageProcessor.onReceiveMessages(this);
+			mMessageProcessor.onReceiveDataCompleted(this);
 		}
 
 		//退出客户端的时候需要把要该客户端要写出去的数据清空

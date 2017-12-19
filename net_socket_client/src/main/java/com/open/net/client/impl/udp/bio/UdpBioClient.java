@@ -76,7 +76,7 @@ public class UdpBioClient extends BaseClient{
                 mSocket.receive(mReadDatagramPacket);
                 if(null!= mMessageProcessor) {
                     mMessageProcessor.onReceiveData(this, mReadDatagramPacket.getData(),mReadDatagramPacket.getOffset(),mReadDatagramPacket.getLength());
-                    mMessageProcessor.onReceiveMessages(this);
+                    mMessageProcessor.onReceiveDataCompleted(this);
                 }
                 mReadDatagramPacket.setLength(mReadDatagramPacket.getData().length);
             }
@@ -85,7 +85,7 @@ public class UdpBioClient extends BaseClient{
         }
 
         if(null!= mMessageProcessor) {
-            mMessageProcessor.onReceiveMessages(this);
+            mMessageProcessor.onReceiveDataCompleted(this);
         }
 
         return true;
