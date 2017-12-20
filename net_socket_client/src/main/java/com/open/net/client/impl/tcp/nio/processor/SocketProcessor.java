@@ -66,15 +66,22 @@ public final class SocketProcessor {
                 if(null != key){
                     key.cancel();
                 }
-                mSelector.close();
                 mSocketChannel.socket().close();
                 mSocketChannel.close();
+                mSocketChannel = null;
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
         }
-        mSocketChannel = null;
-        mSelector = null;
+
+        if(null != mSelector){
+            try {
+                mSelector.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mSelector = null;
+        }
 
         wakeUp();
     }
