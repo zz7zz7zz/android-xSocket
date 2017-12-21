@@ -1,6 +1,6 @@
 package com.open.net.client.impl.udp.nio;
 
-import com.open.net.client.impl.udp.nio.processor.SocketProcessor;
+import com.open.net.client.impl.udp.nio.processor.UdpNioReadWriteProcessor;
 import com.open.net.client.structures.IConnectListener;
 import com.open.net.client.structures.UdpAddress;
 
@@ -25,13 +25,13 @@ public final class UdpNioConnector {
 
     private UdpNioClient      mClient;
     private IConnectListener  mIConnectListener;
-    private SocketProcessor   mSocketProcessor;
+    private UdpNioReadWriteProcessor mSocketProcessor;
 
-    private IUdpNioConnectListener mProxyConnectStatusListener = new IUdpNioConnectListener() {
+    private UdpNioConnectListener mProxyConnectStatusListener = new UdpNioConnectListener() {
         @Override
-        public synchronized void onConnectSuccess(SocketProcessor mSocketProcessor, DatagramChannel socketChannel) throws IOException {
+        public synchronized void onConnectSuccess(UdpNioReadWriteProcessor mSocketProcessor, DatagramChannel socketChannel) throws IOException {
             if(mSocketProcessor != UdpNioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
-                SocketProcessor dropProcessor = mSocketProcessor;
+                UdpNioReadWriteProcessor dropProcessor = mSocketProcessor;
                 if(null != dropProcessor){
                     dropProcessor.close();
                 }
@@ -47,9 +47,9 @@ public final class UdpNioConnector {
         }
 
         @Override
-        public synchronized void onConnectFailed(SocketProcessor mSocketProcessor) {
+        public synchronized void onConnectFailed(UdpNioReadWriteProcessor mSocketProcessor) {
             if(mSocketProcessor != UdpNioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
-                SocketProcessor dropProcessor = mSocketProcessor;
+                UdpNioReadWriteProcessor dropProcessor = mSocketProcessor;
                 if(null != dropProcessor){
                     dropProcessor.close();
                 }
@@ -132,7 +132,7 @@ public final class UdpNioConnector {
         mConnectIndex++;
         if(mConnectIndex < mAddress.length && mConnectIndex >= 0){
             state = STATE_CONNECT_START;
-            mSocketProcessor = new SocketProcessor(mAddress[mConnectIndex].ip, mAddress[mConnectIndex].port,mClient,mProxyConnectStatusListener);
+            mSocketProcessor = new UdpNioReadWriteProcessor(mAddress[mConnectIndex].ip, mAddress[mConnectIndex].port,mClient,mProxyConnectStatusListener);
             mSocketProcessor.start();
         }else{
             mConnectIndex = -1;

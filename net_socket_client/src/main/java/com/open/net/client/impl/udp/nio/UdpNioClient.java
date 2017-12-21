@@ -14,7 +14,7 @@ import java.nio.channels.DatagramChannel;
 /**
  * author       :   long
  * created on   :   2017/11/30
- * description  :   TcpNioClient
+ * description  :   UdpNioClient
  */
 
 public final class UdpNioClient extends BaseClient {

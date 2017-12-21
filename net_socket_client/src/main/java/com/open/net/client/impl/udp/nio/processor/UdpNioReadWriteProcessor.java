@@ -1,6 +1,6 @@
 package com.open.net.client.impl.udp.nio.processor;
 
-import com.open.net.client.impl.udp.nio.IUdpNioConnectListener;
+import com.open.net.client.impl.udp.nio.UdpNioConnectListener;
 import com.open.net.client.impl.udp.nio.UdpNioClient;
 import com.open.net.client.structures.BaseClient;
 
@@ -17,9 +17,9 @@ import java.util.Iterator;
  * description  :   连/读/写 处理器
  */
 
-public final class SocketProcessor {
+public final class UdpNioReadWriteProcessor {
 
-    private String TAG = "SocketProcessor";
+    private String TAG = "UdpNioReadWriteProcessor";
 
     private static int G_SOCKET_ID = 0;
 
@@ -28,7 +28,7 @@ public final class SocketProcessor {
     private int     mPort =9999;
 
     private BaseClient mClient;
-    private IUdpNioConnectListener mNioConnectListener;
+    private UdpNioConnectListener mNioConnectListener;
 
     private DatagramChannel mSocketChannel;
     private Selector   mSelector;
@@ -38,7 +38,7 @@ public final class SocketProcessor {
 
     private boolean closed = false;
 
-    public SocketProcessor(String mIp, int mPort , BaseClient mClient, IUdpNioConnectListener mNioConnectListener) {
+    public UdpNioReadWriteProcessor(String mIp, int mPort , BaseClient mClient, UdpNioConnectListener mNioConnectListener) {
         G_SOCKET_ID++;
 
         this.mSocketId = G_SOCKET_ID;
@@ -86,7 +86,7 @@ public final class SocketProcessor {
         close();
         System.out.println(TAG + "onSocketExit mSocketId " + mSocketId + " exit_code " + exit_code);
         if(null != mNioConnectListener){
-            mNioConnectListener.onConnectFailed(SocketProcessor.this);
+            mNioConnectListener.onConnectFailed(UdpNioReadWriteProcessor.this);
         }
     }
 
@@ -113,7 +113,7 @@ public final class SocketProcessor {
 
                 ((UdpNioClient)mClient).init(mSocketChannel);
                 if(null != mNioConnectListener){
-                    mNioConnectListener.onConnectSuccess(SocketProcessor.this,mSocketChannel);
+                    mNioConnectListener.onConnectSuccess(UdpNioReadWriteProcessor.this,mSocketChannel);
                 }
 
                 //开始读写

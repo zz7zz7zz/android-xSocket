@@ -1,6 +1,6 @@
 package com.open.net.client.impl.udp.bio;
 
-import com.open.net.client.impl.udp.bio.processor.SocketProcessor;
+import com.open.net.client.impl.udp.bio.processor.UdpBioReadWriteProcessor;
 import com.open.net.client.structures.IConnectListener;
 import com.open.net.client.structures.UdpAddress;
 
@@ -25,14 +25,14 @@ public class UdpBioConnector {
 
     private UdpBioClient mClient;
     private IConnectListener mIConnectListener;
-    private SocketProcessor  mSocketProcessor;
+    private UdpBioReadWriteProcessor mSocketProcessor;
 
-    private IUdpBioConnectListener mProxyConnectStatusListener = new IUdpBioConnectListener() {
+    private UdpBioConnectListener mProxyConnectStatusListener = new UdpBioConnectListener() {
 
         @Override
-        public void onConnectSuccess(SocketProcessor mSocketProcessor, DatagramSocket mSocket, DatagramPacket mWriteDatagramPacket, DatagramPacket mReadDatagramPacket) {
+        public void onConnectSuccess(UdpBioReadWriteProcessor mSocketProcessor, DatagramSocket mSocket, DatagramPacket mWriteDatagramPacket, DatagramPacket mReadDatagramPacket) {
             if(mSocketProcessor != UdpBioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
-                SocketProcessor dropProcessor = mSocketProcessor;
+                UdpBioReadWriteProcessor dropProcessor = mSocketProcessor;
                 if(null != dropProcessor){
                     dropProcessor.close();
                 }
@@ -48,9 +48,9 @@ public class UdpBioConnector {
         }
 
         @Override
-        public synchronized void onConnectFailed(SocketProcessor mSocketProcessor) {
+        public synchronized void onConnectFailed(UdpBioReadWriteProcessor mSocketProcessor) {
             if(mSocketProcessor != UdpBioConnector.this.mSocketProcessor){//两个请求都不是同一个，说明是之前连接了，现在重连了
-                SocketProcessor dropProcessor = mSocketProcessor;
+                UdpBioReadWriteProcessor dropProcessor = mSocketProcessor;
                 if(null != dropProcessor){
                     dropProcessor.close();
                 }
@@ -133,7 +133,7 @@ public class UdpBioConnector {
         mConnectIndex++;
         if(mConnectIndex < mAddress.length && mConnectIndex >= 0){
             state = STATE_CONNECT_START;
-            mSocketProcessor = new SocketProcessor(mAddress[mConnectIndex].ip, mAddress[mConnectIndex].port,mClient,mProxyConnectStatusListener);
+            mSocketProcessor = new UdpBioReadWriteProcessor(mAddress[mConnectIndex].ip, mAddress[mConnectIndex].port,mClient,mProxyConnectStatusListener);
             mSocketProcessor.start();
         }else{
             mConnectIndex = -1;

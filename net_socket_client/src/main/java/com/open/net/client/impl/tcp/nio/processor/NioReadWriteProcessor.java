@@ -1,6 +1,6 @@
 package com.open.net.client.impl.tcp.nio.processor;
 
-import com.open.net.client.impl.tcp.nio.ITcpNioConnectListener;
+import com.open.net.client.impl.tcp.nio.NioConnectListener;
 import com.open.net.client.structures.BaseClient;
 
 import java.io.IOException;
@@ -17,9 +17,9 @@ import java.util.Iterator;
  * description  :   连/读/写 处理器
  */
 
-public final class SocketProcessor {
+public final class NioReadWriteProcessor {
 
-    private String TAG = "SocketProcessor";
+    private String TAG = "NioReadWriteProcessor";
 
     private static int G_SOCKET_ID = 0;
 
@@ -29,7 +29,7 @@ public final class SocketProcessor {
     private long    connect_timeout = 10000;
 
     private BaseClient mClient;
-    private ITcpNioConnectListener mNioConnectListener;
+    private NioConnectListener mNioConnectListener;
 
     //------------------------------------------------------------------------------------------
     private SocketChannel mSocketChannel;
@@ -40,7 +40,7 @@ public final class SocketProcessor {
 
     private boolean closed = false;
 
-    public SocketProcessor(String mIp, int mPort,long   connect_timeout , BaseClient mClient,ITcpNioConnectListener mNioConnectListener) {
+    public NioReadWriteProcessor(String mIp, int mPort, long   connect_timeout , BaseClient mClient, NioConnectListener mNioConnectListener) {
         G_SOCKET_ID++;
 
         this.mSocketId = G_SOCKET_ID;
@@ -97,7 +97,7 @@ public final class SocketProcessor {
 
         close();
         if(null != mNioConnectListener){
-            mNioConnectListener.onConnectFailed(SocketProcessor.this);
+            mNioConnectListener.onConnectFailed(NioReadWriteProcessor.this);
         }
     }
 
@@ -240,7 +240,7 @@ public final class SocketProcessor {
                 if(result) {
                     key.interestOps(SelectionKey.OP_READ);
                     if(null != mNioConnectListener){
-                        mNioConnectListener.onConnectSuccess(SocketProcessor.this,mSocketChannel);
+                        mNioConnectListener.onConnectSuccess(NioReadWriteProcessor.this,mSocketChannel);
                     }
                 }
             }catch (Exception e){

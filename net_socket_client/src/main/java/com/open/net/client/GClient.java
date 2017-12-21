@@ -16,7 +16,7 @@ public final class GClient {
     public static final void init(){
         if(!isInitialized){
             MessagePool.init(6);
-            MessageBuffer.init(8 * MessageBuffer.KB, 128*MessageBuffer.KB, 1* MessageBuffer.MB, 5 , 2 , 0, 2);
+            MessageBuffer.init(8 * MessageBuffer.KB, 64*MessageBuffer.KB, 1* MessageBuffer.MB, 5 , 2 , 0, 2);
             isInitialized = true;
         }
     }

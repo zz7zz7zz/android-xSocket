@@ -14,21 +14,21 @@ import java.nio.channels.SocketChannel;
 /**
  * author       :   long
  * created on   :   2017/11/30
- * description  :   TcpNioClient
+ * description  :   NioClient
  */
 
-public final class TcpNioClient extends BaseClient {
+public final class NioClient extends BaseClient {
 
     static {
         GClient.init();
     }
 
     //-------------------------------------------------------------------------------------------
-    private TcpNioConnector mConnector;
+    private NioConnector mConnector;
 
-    public TcpNioClient(BaseMessageProcessor mMessageProcessor, IConnectListener mConnectListener) {
+    public NioClient(BaseMessageProcessor mMessageProcessor, IConnectListener mConnectListener) {
         super(mMessageProcessor);
-        mConnector = new TcpNioConnector(this,mConnectListener);
+        mConnector = new NioConnector(this,mConnectListener);
     }
 
     //-------------------------------------------------------------------------------------------

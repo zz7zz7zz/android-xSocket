@@ -15,20 +15,20 @@ import java.net.SocketException;
 /**
  * author       :   long
  * created on   :   2017/11/30
- * description  :   TcpBioClient
+ * description  :   BioClient
  */
-public class TcpBioClient extends BaseClient{
+public class BioClient extends BaseClient{
 
 	static {
 		GClient.init();
 	}
 
 	//-------------------------------------------------------------------------------------------
-	private TcpBioConnector mConnector;
+	private BioConnector mConnector;
 
-	public TcpBioClient(BaseMessageProcessor mMessageProcessor, IConnectListener mConnectListener) {
+	public BioClient(BaseMessageProcessor mMessageProcessor, IConnectListener mConnectListener) {
 		super(mMessageProcessor);
-		mConnector = new TcpBioConnector(this,mConnectListener);
+		mConnector = new BioConnector(this,mConnectListener);
 	}
 
 	//-------------------------------------------------------------------------------------------

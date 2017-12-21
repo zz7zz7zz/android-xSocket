@@ -1,7 +1,7 @@
 package com.open.net.client.impl.tcp.bio.processor;
 
 import com.open.net.client.structures.BaseClient;
-import com.open.net.client.impl.tcp.bio.ITcpBioConnectListener;
+import com.open.net.client.impl.tcp.bio.BioConnectListener;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,9 +14,9 @@ import java.net.Socket;
  * description  :   连/读/写 处理器
  */
 
-public class SocketProcessor {
+public class BioReadWriteProcessor {
 
-    private String TAG = "SocketProcessor";
+    private String TAG = "BioReadWriteProcessor";
 
     private static int G_SOCKET_ID = 0;
 
@@ -26,7 +26,7 @@ public class SocketProcessor {
     private long    connect_timeout = 10000;
 
     private BaseClient mClient;
-    private ITcpBioConnectListener mConnectStatusListener;
+    private BioConnectListener mConnectStatusListener;
 
     //------------------------------------------------------------------------------------------
     private Socket mSocket =null;
@@ -43,7 +43,7 @@ public class SocketProcessor {
 
     private int r_w_count = 2;//读写线程是否都退出了
 
-    public SocketProcessor(String mIp, int mPort,long   connect_timeout, BaseClient mClient,ITcpBioConnectListener mConnectionStatusListener) {
+    public BioReadWriteProcessor(String mIp, int mPort, long   connect_timeout, BaseClient mClient, BioConnectListener mConnectionStatusListener) {
         G_SOCKET_ID++;
 
         this.mSocketId = G_SOCKET_ID;
@@ -130,7 +130,7 @@ public class SocketProcessor {
         close();
         if(isWriterReaderExit){
             if(null != mConnectStatusListener){
-                mConnectStatusListener.onConnectFailed(SocketProcessor.this);
+                mConnectStatusListener.onConnectFailed(BioReadWriteProcessor.this);
             }
         }
     }
@@ -159,7 +159,7 @@ public class SocketProcessor {
                 mReadThread.start();
 
                 if(null != mConnectStatusListener){
-                    mConnectStatusListener.onConnectSuccess(SocketProcessor.this,mOutputStream,mInputStream);
+                    mConnectStatusListener.onConnectSuccess(BioReadWriteProcessor.this,mOutputStream,mInputStream);
                 }
                 connectRet = true;
             } catch (Exception e) {
@@ -168,7 +168,7 @@ public class SocketProcessor {
 
             if(!connectRet){
                 if(null != mConnectStatusListener){
-                    mConnectStatusListener.onConnectFailed(SocketProcessor.this);
+                    mConnectStatusListener.onConnectFailed(BioReadWriteProcessor.this);
                 }
             }
         }

@@ -1,6 +1,6 @@
 package com.open.net.client.impl.udp.bio.processor;
 
-import com.open.net.client.impl.udp.bio.IUdpBioConnectListener;
+import com.open.net.client.impl.udp.bio.UdpBioConnectListener;
 import com.open.net.client.impl.udp.bio.UdpBioClient;
 import com.open.net.client.structures.BaseClient;
 
@@ -16,9 +16,9 @@ import java.net.UnknownHostException;
  * description  :
  */
 
-public class SocketProcessor {
+public class UdpBioReadWriteProcessor {
 
-    private String TAG = "SocketProcessor";
+    private String TAG = "UdpBioReadWriteProcessor";
 
     private static int G_SOCKET_ID = 0;
 
@@ -27,7 +27,7 @@ public class SocketProcessor {
     private int    mPort  = 9999;
 
     private BaseClient mClient;
-    private IUdpBioConnectListener mConnectStatusListener;
+    private UdpBioConnectListener mConnectStatusListener;
 
     private DatagramSocket mSocket;
 
@@ -41,7 +41,7 @@ public class SocketProcessor {
 
     private int r_w_count = 2;//读写线程是否都退出了
 
-    public SocketProcessor(String mIp, int mPort, BaseClient mClient,IUdpBioConnectListener mConnectionStatusListener) {
+    public UdpBioReadWriteProcessor(String mIp, int mPort, BaseClient mClient, UdpBioConnectListener mConnectionStatusListener) {
         G_SOCKET_ID++;
 
         this.mSocketId = G_SOCKET_ID;
@@ -110,7 +110,7 @@ public class SocketProcessor {
         close();
         if(isWriterReaderExit){
             if(null != mConnectStatusListener){
-                mConnectStatusListener.onConnectFailed(SocketProcessor.this);
+                mConnectStatusListener.onConnectFailed(UdpBioReadWriteProcessor.this);
             }
         }
     }
@@ -130,7 +130,7 @@ public class SocketProcessor {
                 DatagramPacket mReadDatagramPacket  = new DatagramPacket(mReadBuff, mReadBuff.length);//创建发送方的数据报信息
 
                 if(null != mConnectStatusListener){
-                    mConnectStatusListener.onConnectSuccess(SocketProcessor.this,mSocket,mWriteDatagramPacket,mReadDatagramPacket);
+                    mConnectStatusListener.onConnectSuccess(UdpBioReadWriteProcessor.this,mSocket,mWriteDatagramPacket,mReadDatagramPacket);
                 }
                 connectRet = true;
 
@@ -153,7 +153,7 @@ public class SocketProcessor {
 
             if(!connectRet){
                 if(null != mConnectStatusListener){
-                    mConnectStatusListener.onConnectFailed(SocketProcessor.this);
+                    mConnectStatusListener.onConnectFailed(UdpBioReadWriteProcessor.this);
                 }
             }
         }
