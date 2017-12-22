@@ -4,8 +4,13 @@ android-socket-client / java-socket-client
 
     java/android 客户端聊天程序， 附完整Demo
     
-    a. 含bio实现
-    b. 含nio实现
+    a. 含TCP bio实现
+    
+    b. 含TCP nio实现
+    
+    c. 含UDP bio实现
+    
+    d. 含UDP nio实现
 
 
 ## 二、效果展示 
