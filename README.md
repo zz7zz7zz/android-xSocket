@@ -6,7 +6,7 @@ android-socket-client / java-socket-client
     
     a. 含TCP bio实现
     b. 含TCP nio实现
-    c. 含UDP bio实现
+    c. 含UDP bio实现
     d. 含UDP nio实现
 
 
