@@ -39,12 +39,12 @@ public class UdpBioConnector {
                 return;
             }
 
+            state = STATE_CONNECT_SUCCESS;
+            mClient.init(mSocket,mWriteDatagramPacket,mReadDatagramPacket);
+            
             if(null !=mIConnectListener ){
                 mIConnectListener.onConnectionSuccess();
             }
-
-            state = STATE_CONNECT_SUCCESS;
-            mClient.init(mSocket,mWriteDatagramPacket,mReadDatagramPacket);
         }
 
         @Override
@@ -57,12 +57,12 @@ public class UdpBioConnector {
                 return;
             }
 
-            if(null !=mIConnectListener ){
-                mIConnectListener.onConnectionFailed();
-            }
-
             state = STATE_CLOSE;
             connect();//try to connect next ip port
+            
+//            if(null !=mIConnectListener ){
+//                mIConnectListener.onConnectionFailed();
+//            }
         }
     };
 
@@ -138,8 +138,9 @@ public class UdpBioConnector {
         }else{
             mConnectIndex = -1;
 
-            //循环连接了一遍还没有连接上，说明网络连接不成功，此时清空消息队列，防止队列堆积
-            mClient.clearUnreachableMessages();
+            if(null !=mIConnectListener ){
+                mIConnectListener.onConnectionFailed();
+            }
         }
     }
 

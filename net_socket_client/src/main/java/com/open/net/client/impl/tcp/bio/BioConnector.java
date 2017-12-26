@@ -40,12 +40,12 @@ public class BioConnector {
                 return;
             }
 
+            state = STATE_CONNECT_SUCCESS;
+            mClient.init(mOutputStream, mInputStream);
+            
             if(null != mIConnectListener ){
                 mIConnectListener.onConnectionSuccess();
             }
-
-            state = STATE_CONNECT_SUCCESS;
-            mClient.init(mOutputStream, mInputStream);
         }
 
         @Override
@@ -58,12 +58,12 @@ public class BioConnector {
                 return;
             }
 
-            if(null != mIConnectListener ){
-                mIConnectListener.onConnectionFailed();
-            }
-
             state = STATE_CLOSE;
             connect();//try to connect next ip port
+            
+//            if(null != mIConnectListener ){
+//                mIConnectListener.onConnectionFailed();
+//            }
         }
     };
 
@@ -142,9 +142,10 @@ public class BioConnector {
             mSocketProcessor.start();
         }else{
             mConnectIndex = -1;
-
-            //循环连接了一遍还没有连接上，说明网络连接不成功，此时清空消息队列，防止消息堆积
-            mClient.clearUnreachableMessages();
+            
+	        if(null != mIConnectListener ){
+	        	mIConnectListener.onConnectionFailed();
+	        }
         }
     }
 
