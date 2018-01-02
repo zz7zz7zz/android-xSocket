@@ -52,6 +52,10 @@ public class BioClient extends BaseClient{
 		mConnector.reconnect();
 	}
 
+	public boolean isConnected(){
+		return mConnector.isConnected();
+	}
+
 	//-------------------------------------------------------------------------------------------
 	private OutputStream mOutputStream =null;
 	private InputStream  mInputStream =null;

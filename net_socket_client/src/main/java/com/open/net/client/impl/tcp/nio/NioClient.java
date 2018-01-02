@@ -52,6 +52,10 @@ public final class NioClient extends BaseClient {
         mConnector.reconnect();
     }
 
+    public boolean isConnected(){
+        return mConnector.isConnected();
+    }
+
     //-------------------------------------------------------------------------------------------
     private SocketChannel mSocketChannel;
     private ByteBuffer mReadByteBuffer  = ByteBuffer.allocate(64*1024);

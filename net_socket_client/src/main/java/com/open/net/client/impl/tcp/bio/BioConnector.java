@@ -73,7 +73,7 @@ public class BioConnector {
     }
 
     //-------------------------------------------------------------------------------------------
-    private boolean isConnected(){
+    public boolean isConnected(){
         return state == STATE_CONNECT_SUCCESS;
     }
 
