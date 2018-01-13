@@ -25,6 +25,12 @@
 					        android:layout_weight="1.0"
 					        android:hint="Port:"/>
 			</LinearLayout>
+		<TextView
+			android:id="@+id/status"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:padding="5dp"
+			android:textColor="#ff0000"/>
 		<Button
 			android:id="@+id/set_ip_port"
 			android:layout_width="match_parent"

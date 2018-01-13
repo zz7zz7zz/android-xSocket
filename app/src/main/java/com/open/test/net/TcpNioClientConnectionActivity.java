@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.open.net.client.impl.tcp.nio.NioClient;
 import com.open.net.client.structures.BaseClient;
@@ -62,14 +63,19 @@ public class TcpNioClientConnectionActivity extends Activity {
 
 				case R.id.open:
 					mClient.connect();
+					if(!mClient.isConnected()){
+						((TextView)findViewById(R.id.status)).setText("Connectioning");
+					}
 					break;
 					
 				case R.id.close:
 					mClient.disconnect();
+					((TextView)findViewById(R.id.status)).setText("disconnect");
 					break;
 					
 				case R.id.reconn:
 					mClient.reconnect();
+					((TextView)findViewById(R.id.status)).setText("Re-Connectioning");
 					break;
 					
 				case R.id.send:
@@ -87,12 +93,20 @@ public class TcpNioClientConnectionActivity extends Activity {
 	private IConnectListener mConnectResultListener = new IConnectListener() {
 		@Override
 		public void onConnectionSuccess() {
-
+			runOnUiThread(new Runnable() {
+				public void run() {
+					((TextView)findViewById(R.id.status)).setText("Connection-Success");
+				}
+			});
 		}
 
 		@Override
 		public void onConnectionFailed() {
-
+			runOnUiThread(new Runnable() {
+				public void run() {
+					((TextView)findViewById(R.id.status)).setText("Connection-Failed");
+				}
+			});
 		}
 	};
 
