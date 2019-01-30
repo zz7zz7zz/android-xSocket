@@ -16,9 +16,9 @@ android-socket-client / java-socket-client
 ## 二、效果展示 
 
 ![image](https://github.com/zz7zz7zz/android-socket-client/blob/master/1.jpg "附图一")
+
 ![image](https://github.com/zz7zz7zz/android-socket-client/blob/master/2.jpg "附图二")
-![image](https://github.com/zz7zz7zz/android-socket-client/blob/master/3.jpg "附图三") 
-![image](https://github.com/zz7zz7zz/android-socket-client/blob/master/4.jpg "附图四")
+
 
 
 
