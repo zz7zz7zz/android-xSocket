@@ -27,6 +27,8 @@ android-socket-client / java-socket-client
 
 
 
+**Android Studio** 工程请点击这里查看：https://github.com/jp1017/android-socket-client
+
 
 [欢迎访问我的CSDN博客](http://blog.csdn.net/zz7zz7zz)<br />
 
